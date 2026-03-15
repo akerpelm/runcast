@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(claude mcp add:*)",
+      "mcp__astro__search_astro_docs",
+      "mcp__starwind-ui__starwind_docs",
+      "Bash(node --version:*)",
+      "Bash(npm create:*)",
+      "Bash(npm install:*)",
+      "Bash(npx starwind@latest init:*)",
+      "mcp__starwind-ui__starwind_add",
+      "Bash(npx starwind@latest add:*)",
+      "Bash(npm run build:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}

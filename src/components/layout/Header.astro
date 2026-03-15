@@ -1,0 +1,31 @@
+---
+
+---
+
+<header class="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-md">
+  <div class="mx-auto flex h-16 max-w-4xl items-center justify-between px-4 sm:px-6">
+    <!-- Logo -->
+    <a href="/" class="flex items-center gap-2 font-[var(--font-display)] text-xl font-800 tracking-tight text-foreground">
+      <div class="flex h-9 w-9 items-center justify-center rounded-[var(--radius-inner)] bg-background neu-extruded-sm">
+        <svg class="h-5 w-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+        </svg>
+      </div>
+      <span>Run<span class="text-primary">Cast</span></span>
+    </a>
+
+    <!-- Location display (populated by JS) -->
+    <div class="flex items-center gap-3">
+      <div
+        id="location-display"
+        class="flex items-center gap-1.5 rounded-[var(--radius-base)] bg-background px-3 py-1.5 text-sm font-medium text-muted-foreground neu-inset-sm"
+      >
+        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+          <circle cx="12" cy="10" r="3" />
+        </svg>
+        <span id="location-text">Locating...</span>
+      </div>
+    </div>
+  </div>
+</header>
