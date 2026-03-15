@@ -14,7 +14,7 @@
       <span>Run<span class="text-primary">Cast</span></span>
     </a>
 
-    <!-- Location display (populated by JS) -->
+    <!-- Right side: location + theme toggle -->
     <div class="flex items-center gap-3">
       <div
         id="location-display"
@@ -26,6 +26,23 @@
         </svg>
         <span id="location-text">Locating...</span>
       </div>
+
+      <!-- Theme toggle -->
+      <button
+        id="theme-toggle"
+        type="button"
+        aria-label="Toggle dark mode"
+        class="flex h-9 w-9 items-center justify-center rounded-[var(--radius-inner)] bg-background text-muted-foreground transition-shadow hover:text-foreground neu-extruded-sm active:neu-inset-sm"
+      >
+        <!-- Sun icon (shown in dark mode) -->
+        <svg class="hidden h-4.5 w-4.5 dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" />
+        </svg>
+        <!-- Moon icon (shown in light mode) -->
+        <svg class="block h-4.5 w-4.5 dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+        </svg>
+      </button>
     </div>
   </div>
 </header>

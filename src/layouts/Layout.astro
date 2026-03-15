@@ -8,7 +8,7 @@ interface Props {
 
 const {
   title,
-  description = "RunCast — Your daily running briefing. Weather, pace adjustment, and gear for today's run."
+  description = "RunCast — Your daily running briefing. Weather, pace adjustment, and gear for today's run.",
 } = Astro.props;
 ---
 
@@ -20,6 +20,19 @@ const {
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+
+    <!-- Theme: prevent flash by setting class before paint -->
+    <script is:inline>
+      (function () {
+        const stored = localStorage.getItem("runcast-theme");
+        if (
+          stored === "dark" ||
+          (!stored && window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
 
     <!-- Preload fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -41,22 +54,39 @@ const {
     <title>{title}</title>
 
     <!-- JSON-LD Structured Data -->
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "RunCast",
-      "description": "Your daily running briefing — weather, pace adjustment, surface warnings, and gear recommendations.",
-      "url": Astro.url.origin,
-      "applicationCategory": "SportsApplication",
-      "operatingSystem": "Any",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      }
-    })} />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        name: "RunCast",
+        description:
+          "Your daily running briefing — weather, pace adjustment, surface warnings, and gear recommendations.",
+        url: Astro.url.origin,
+        applicationCategory: "SportsApplication",
+        operatingSystem: "Any",
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
+        },
+      })}
+    />
   </head>
   <body class="min-h-screen bg-background text-foreground antialiased">
     <slot />
+
+    <!-- Theme toggle logic -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const toggle = document.getElementById("theme-toggle");
+        if (!toggle) return;
+
+        toggle.addEventListener("click", () => {
+          const isDark = document.documentElement.classList.toggle("dark");
+          localStorage.setItem("runcast-theme", isDark ? "dark" : "light");
+        });
+      });
+    </script>
   </body>
 </html>
