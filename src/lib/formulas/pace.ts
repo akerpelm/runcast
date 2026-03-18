@@ -58,7 +58,7 @@ export function getColdPaceAdjustment(windChillF: number): {
     return {
       min: 8,
       max: Infinity,
-      warning: "Extreme cold — consider treadmill",
+      warning: "Extreme cold - consider treadmill",
     };
   }
 }

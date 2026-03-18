@@ -13,7 +13,7 @@ export interface ClothingModifiers {
   windMph: number;
   precipitating: boolean;
   coldAndPrecip: boolean; // precip + temp < 35
-  highUV: boolean; // UV > 6
+  uvIndex: number;
 }
 
 /**
@@ -58,9 +58,9 @@ export function getClothingRec(
 function getBaseRecommendation(feelsLikeF: number): ClothingRec {
   if (feelsLikeF > 75) {
     return {
-      bottom: "Short shorts",
-      top: "Singlet/sports bra",
-      accessories: ["Sunglasses", "Sunscreen", "Hat for sun"],
+      bottom: "Split shorts",
+      top: "Singlet or sports bra",
+      accessories: [],
     };
   }
 
@@ -68,7 +68,7 @@ function getBaseRecommendation(feelsLikeF: number): ClothingRec {
     return {
       bottom: "Shorts",
       top: "T-shirt or singlet",
-      accessories: ["Sunglasses"],
+      accessories: [],
     };
   }
 
@@ -76,39 +76,39 @@ function getBaseRecommendation(feelsLikeF: number): ClothingRec {
     return {
       bottom: "Shorts",
       top: "T-shirt or light long sleeve",
-      accessories: ["Optional arm sleeves"],
+      accessories: ["Arm sleeves (optional)"],
     };
   }
 
   if (feelsLikeF >= 45) {
     return {
-      bottom: "Shorts or capris",
-      top: "Long sleeve tech",
-      accessories: ["Light gloves (optional)", "Headband"],
+      bottom: "Shorts or half tights",
+      top: "Long-sleeve tech tee",
+      accessories: ["Lightweight gloves (optional)", "Headband"],
     };
   }
 
   if (feelsLikeF >= 35) {
     return {
-      bottom: "Tights or pants",
-      top: "Long sleeve + light jacket/vest",
-      accessories: ["Gloves", "Headband or light hat"],
+      bottom: "Running tights",
+      top: "Long-sleeve base layer + half-zip or vest",
+      accessories: ["Gloves", "Headband or ear cover"],
     };
   }
 
   if (feelsLikeF >= 25) {
     return {
-      bottom: "Tights",
+      bottom: "Running tights",
       top: "Base layer + midweight jacket",
-      accessories: ["Warm gloves", "Beanie", "Buff/neck gaiter"],
+      accessories: ["Warm gloves", "Beanie", "Neck gaiter"],
     };
   }
 
   if (feelsLikeF >= 15) {
     return {
       bottom: "Insulated tights",
-      top: "Base layer + heavy jacket",
-      accessories: ["Heavy gloves", "Balaclava", "Buff"],
+      top: "Thermal base layer + insulated jacket",
+      accessories: ["Insulated gloves", "Balaclava", "Neck gaiter"],
     };
   }
 
@@ -117,10 +117,10 @@ function getBaseRecommendation(feelsLikeF: number): ClothingRec {
     bottom: "Insulated tights + wind pants",
     top: "Base + mid + wind shell",
     accessories: [
-      "Full coverage — minimize exposed skin",
-      "Heavy gloves",
+      "Full coverage - minimize exposed skin",
+      "Insulated gloves",
       "Balaclava",
-      "Face mask/neck protection",
+      "Face coverage / balaclava",
     ],
   };
 }
@@ -140,7 +140,7 @@ function applyModifiers(
 
   // Wind > 15mph: add wind-resistant outer layer
   if (modifiers.windMph > 15) {
-    accessories.add("Wind-resistant outer layer");
+    accessories.add("Wind-resistant layer");
   }
 
   // Precipitating: add water-resistant layer
@@ -148,16 +148,18 @@ function applyModifiers(
     accessories.add("Water-resistant layer");
   }
 
-  // Cold and precip: add waterproof gloves and water-shedding hat
+  // Cold and precip: add waterproof gloves and brimmed cap
   if (modifiers.coldAndPrecip) {
     accessories.add("Waterproof gloves");
-    accessories.add("Water-shedding hat");
+    accessories.add("Brimmed cap");
   }
 
-  // High UV: add sun protection (deduplicated if already present)
-  if (modifiers.highUV) {
-    accessories.add("Hat");
+  // UV-based sun protection — sunglasses at UV 3+, full sun kit at UV 6+
+  if (modifiers.uvIndex >= 3) {
     accessories.add("Sunglasses");
+  }
+  if (modifiers.uvIndex >= 6) {
+    accessories.add("Lightweight cap");
     accessories.add("Sunscreen");
   }
 

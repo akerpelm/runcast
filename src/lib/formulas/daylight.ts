@@ -25,13 +25,14 @@ export function checkDaylightAtEnd(
   if (minutesBeforeSunset > 0) {
     return {
       safe: true,
-      message: `You'll finish ${minutesBeforeSunset} min before sunset — bring reflective gear just in case`,
+      message: `You'll finish ~${minutesBeforeSunset} min before sunset - bring reflective gear just in case`,
     };
   }
 
+  const endLabel = formatTime(endTime);
   return {
     safe: false,
-    message: `You'll be running ${Math.abs(minutesBeforeSunset)} min after sunset — wear reflective gear and a headlamp`,
+    message: `You'll finish around ${endLabel}, ${Math.abs(minutesBeforeSunset)} min after sunset`,
   };
 }
 
@@ -54,7 +55,7 @@ export function checkDaylightAtStart(
   const formattedSunrise = formatTime(sunrise);
   return {
     safe: false,
-    message: `Sunrise at ${formattedSunrise} — you'll have ${minutesBeforeSunrise} min of darkness. Wear reflective gear.`,
+    message: `${minutesBeforeSunrise} min before sunrise (${formattedSunrise})`,
   };
 }
 

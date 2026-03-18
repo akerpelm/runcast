@@ -1,0 +1,27 @@
+{
+  "name": "RunCast",
+  "short_name": "RunCast",
+  "description": "Your daily running briefing. Weather, pace, and gear for today's run.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAFAF8",
+  "theme_color": "#DC3B2E",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    },
+    {
+      "src": "/icon-192.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/icon-512.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512"
+    }
+  ],
+  "categories": ["weather", "sports", "health"]
+}

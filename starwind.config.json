@@ -67,6 +67,10 @@
     {
       "name": "select",
       "version": "1.8.4"
+    },
+    {
+      "name": "popover",
+      "version": "1.0.0"
     }
   ]
 }

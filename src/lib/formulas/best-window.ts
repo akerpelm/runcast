@@ -10,11 +10,20 @@ export interface HourlyConditions {
   iceRisk: "NONE" | "LOW" | "MODERATE" | "HIGH";
 }
 
+export interface RankedWindow {
+  startHour: string;
+  endHour: string;
+  score: number;
+  summary: string;
+  label: string;
+}
+
 export interface BestWindowResult {
   startHour: string;
   endHour: string;
   score: number;
   summary: string;
+  ranked: RankedWindow[];
 }
 
 /**
@@ -61,9 +70,15 @@ export function hourlyRunScore(
     score += (uvIndex - 6) * 3;
   }
 
-  // Daylight bonus: penalize if hour is outside sunrise-sunset
+  // Daylight penalty: penalize if hour is outside sunrise-sunset
   if (hour.time < sunrise || hour.time >= sunset) {
     score += 15;
+  }
+
+  // Strong penalty for unsocial hours (11pm-5am) — no one runs at midnight
+  const hourOfDay = new Date(hour.time).getHours();
+  if (hourOfDay >= 23 || hourOfDay < 5) {
+    score += 60;
   }
 
   // Ice risk penalty
@@ -86,69 +101,90 @@ export function findBestWindow(
   hourlyForecast: HourlyConditions[],
   sunrise: string,
   sunset: string,
-  runDurationMinutes = 60
+  runDurationMinutes = 60,
+  formatTemp: (f: number) => string = (f) => `${Math.round(f)}°F`,
 ): BestWindowResult {
   const hoursNeeded = Math.ceil(runDurationMinutes / 60);
-  const now = new Date().toISOString();
+  const now = new Date();
 
-  // Filter out past hours
-  const futureHours = hourlyForecast.filter((h) => h.time >= now);
+  // Filter out past hours (compare Date objects, not strings — avoids UTC vs local mismatch)
+  const futureHours = hourlyForecast.filter((h) => new Date(h.time) >= now);
 
   if (futureHours.length === 0) {
-    // Fallback: no future hours available
     return {
       startHour: "",
       endHour: "",
       score: Infinity,
       summary: "No forecast data available",
+      ranked: [],
     };
   }
 
-  let bestScore = Infinity;
-  let bestIndex = 0;
-
-  // Slide a window of hoursNeeded across the future forecast
+  // Score all possible windows
+  const scored: { index: number; score: number }[] = [];
   for (let i = 0; i <= futureHours.length - hoursNeeded; i++) {
     const windowHours = futureHours.slice(i, i + hoursNeeded);
     const windowScores = windowHours.map((h) => hourlyRunScore(h, sunrise, sunset));
     const avgScore = windowScores.reduce((sum, s) => sum + s, 0) / windowScores.length;
-
-    if (avgScore < bestScore) {
-      bestScore = avgScore;
-      bestIndex = i;
-    }
+    scored.push({ index: i, score: avgScore });
   }
 
   // Handle case where forecast is shorter than hoursNeeded
-  if (futureHours.length < hoursNeeded) {
+  if (scored.length === 0 && futureHours.length > 0) {
     const windowScores = futureHours.map((h) => hourlyRunScore(h, sunrise, sunset));
-    bestScore = windowScores.reduce((sum, s) => sum + s, 0) / windowScores.length;
-    bestIndex = 0;
+    const avgScore = windowScores.reduce((sum, s) => sum + s, 0) / windowScores.length;
+    scored.push({ index: 0, score: avgScore });
   }
 
-  const startHour = futureHours[bestIndex];
-  const endIndex = Math.min(bestIndex + hoursNeeded - 1, futureHours.length - 1);
-  const endHour = futureHours[endIndex];
+  scored.sort((a, b) => a.score - b.score);
 
-  const summary = buildSummary(startHour, sunrise, sunset);
+  // Pick up to 3 non-overlapping windows
+  const picked: typeof scored = [];
+  for (const w of scored) {
+    if (picked.length >= 3) break;
+    // Skip windows overlapping with already-picked ones
+    const overlaps = picked.some(p => Math.abs(w.index - p.index) < hoursNeeded);
+    if (overlaps) continue;
+    // Don't include terrible windows (> 2x best + 40 penalty)
+    if (picked.length > 0 && w.score > picked[0].score * 2 + 40) break;
+    picked.push(w);
+  }
+
+  const labels = ["Best", "Good", "Fair"];
+  const ranked: RankedWindow[] = picked.map((w, i) => {
+    const start = futureHours[w.index];
+    const startDate = new Date(start.time);
+    const endDate = new Date(startDate.getTime() + runDurationMinutes * 60 * 1000);
+    return {
+      startHour: start.time,
+      endHour: endDate.toISOString(),
+      score: w.score,
+      summary: buildSummary(start, sunrise, sunset, formatTemp),
+      label: labels[i] || "Fair",
+    };
+  });
+
+  const primary = ranked[0] || { startHour: "", endHour: "", score: Infinity, summary: "No data", label: "Best" };
 
   return {
-    startHour: startHour.time,
-    endHour: endHour.time,
-    score: bestScore,
-    summary,
+    startHour: primary.startHour,
+    endHour: primary.endHour,
+    score: primary.score,
+    summary: primary.summary,
+    ranked,
   };
 }
 
 function buildSummary(
   hour: HourlyConditions,
   sunrise: string,
-  sunset: string
+  sunset: string,
+  formatTemp: (f: number) => string = (f) => `${Math.round(f)}°F`,
 ): string {
   const parts: string[] = [];
 
   // Temperature
-  parts.push(`${Math.round(hour.temperature)}°F`);
+  parts.push(formatTemp(hour.temperature));
 
   // Wind description
   const wind = hour.windSpeed;
@@ -166,7 +202,7 @@ function buildSummary(
 
   // Daylight status
   const isDaylight = hour.time >= sunrise && hour.time < sunset;
-  parts.push(isDaylight ? "full daylight" : "no daylight");
+  parts.push(isDaylight ? "daylight" : "after dark");
 
   return parts.join(", ");
 }

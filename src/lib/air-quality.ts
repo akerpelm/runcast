@@ -4,6 +4,7 @@ export interface AirQualityData {
   pm10: number;
   category: AQICategory;
   runningGuidance: string;
+  hourlyAQI: Record<string, number>; // ISO time string → AQI value
 }
 
 export type AQICategory =
@@ -50,18 +51,18 @@ export function getAQICategory(aqi: number | null | undefined): AQICategoryInfo 
     return {
       category: "Moderate",
       runningGuidance:
-        "Sensitive individuals may notice — consider reducing intensity",
+        "Sensitive individuals may notice - consider reducing intensity",
     };
   } else if (aqi <= 150) {
     return {
       category: "Unhealthy for Sensitive Groups",
       runningGuidance:
-        "Reduce prolonged outdoor effort — consider indoors",
+        "Reduce prolonged outdoor effort - consider indoors",
     };
   } else if (aqi <= 200) {
     return {
       category: "Unhealthy",
-      runningGuidance: "Avoid outdoor running — go indoors",
+      runningGuidance: "Avoid outdoor running - go indoors",
     };
   } else if (aqi <= 300) {
     return {
@@ -132,11 +133,19 @@ export async function fetchAirQuality(
 
   const { category, runningGuidance } = getAQICategory(currentAQI);
 
+  // Build hourly AQI lookup map
+  const hourlyAQI: Record<string, number> = {};
+  for (let i = 0; i < data.hourly.time.length; i++) {
+    const val = data.hourly.us_aqi[i];
+    if (val !== null) hourlyAQI[data.hourly.time[i]] = val;
+  }
+
   return {
     currentAQI: currentAQI ?? 0,
     pm25,
     pm10,
     category,
     runningGuidance,
+    hourlyAQI,
   };
 }

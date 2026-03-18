@@ -1,48 +1,241 @@
 ---
-
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/starwind/popover";
+import { Switch } from "@/components/starwind/switch";
 ---
 
 <header class="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-md">
   <div class="mx-auto flex h-16 max-w-4xl items-center justify-between px-4 sm:px-6">
     <!-- Logo -->
-    <a href="/" class="flex items-center gap-2 font-[var(--font-display)] text-xl font-800 tracking-tight text-foreground">
-      <div class="flex h-9 w-9 items-center justify-center rounded-[var(--radius-inner)] bg-background neu-extruded-sm">
-        <svg class="h-5 w-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-        </svg>
-      </div>
-      <span>Run<span class="text-primary">Cast</span></span>
-    </a>
+    <a href="/" class="font-[var(--font-display)] text-xl italic tracking-tight text-foreground">Run<span class="text-primary">Cast</span></a>
 
-    <!-- Right side: location + theme toggle -->
-    <div class="flex items-center gap-3">
-      <div
-        id="location-display"
-        class="flex items-center gap-1.5 rounded-[var(--radius-base)] bg-background px-3 py-1.5 text-sm font-medium text-muted-foreground neu-inset-sm"
-      >
-        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-          <circle cx="12" cy="10" r="3" />
-        </svg>
-        <span id="location-text">Locating...</span>
+    <!-- Right side: location + log run + theme toggle -->
+    <div class="flex items-center gap-2 sm:gap-3 min-w-0">
+      <div id="location-wrapper" class="relative min-w-0">
+        <button
+          id="location-display"
+          type="button"
+          class="flex items-center gap-1.5 rounded-full card-inset px-2.5 py-1.5 text-xs font-medium text-muted-foreground cursor-pointer hover:text-foreground hover:border hover:border-border transition-colors"
+        >
+          <svg class="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+          <span id="location-text" class="truncate max-w-[80px] sm:max-w-[140px]">Locating...</span>
+          <svg class="h-3 w-3 ml-0.5 opacity-50 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+
+        <div id="location-dropdown" class="hidden fixed left-4 right-4 top-[4.5rem] sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-1 sm:w-72 rounded-[var(--radius-base)] card-surface-raised p-3 z-50">
+          <input
+            id="location-search"
+            type="text"
+            placeholder="Search city..."
+            autocomplete="off"
+            class="h-8 w-full rounded-[var(--radius-inner)] card-inset px-3 text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/50"
+          />
+          <div id="location-results" class="mt-2"></div>
+          <button
+            id="location-use-current"
+            type="button"
+            class="mt-2 flex w-full items-center gap-2 rounded-[var(--radius-inner)] px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors"
+          >
+            <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="1"/>
+              <path d="M12 2v4"/><path d="M12 18v4"/><path d="M2 12h4"/><path d="M18 12h4"/>
+            </svg>
+            Use current location
+          </button>
+        </div>
       </div>
+
+      <!-- Units toggle popover -->
+      <Popover>
+        <PopoverTrigger asChild>
+          <button
+            id="units-trigger"
+            type="button"
+            class="flex items-center gap-1.5 rounded-full card-inset px-2.5 py-1.5 text-xs font-medium text-muted-foreground cursor-pointer hover:text-foreground hover:border hover:border-border transition-colors shrink-0"
+            aria-label="Toggle units"
+          >
+            <span id="units-label">°F · mi</span>
+            <svg class="h-3 w-3 ml-0.5 opacity-50 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </PopoverTrigger>
+        <PopoverContent align="end" class="w-52">
+          <div class="flex flex-col gap-3 px-0.5">
+            <p class="text-xs font-medium uppercase tracking-wider text-muted-foreground">Units</p>
+            <Switch id="switch-temp" label="Celsius (°C)" size="sm" variant="primary" />
+            <Switch id="switch-dist" label="Metric (km)" size="sm" variant="primary" />
+          </div>
+        </PopoverContent>
+      </Popover>
 
       <!-- Theme toggle -->
       <button
         id="theme-toggle"
         type="button"
         aria-label="Toggle dark mode"
-        class="flex h-9 w-9 items-center justify-center rounded-[var(--radius-inner)] bg-background text-muted-foreground transition-shadow hover:text-foreground neu-extruded-sm active:neu-inset-sm"
+        class="flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-inner)] card-inset text-muted-foreground transition-colors hover:text-foreground hover:border hover:border-border"
       >
         <!-- Sun icon (shown in dark mode) -->
-        <svg class="hidden h-4.5 w-4.5 dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="hidden h-4 w-4 dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" />
         </svg>
         <!-- Moon icon (shown in light mode) -->
-        <svg class="block h-4.5 w-4.5 dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="block h-4 w-4 dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
         </svg>
       </button>
     </div>
   </div>
 </header>
+
+<script>
+  import { getUserLocation, saveLocation, clearSavedLocation, searchLocations, type GeoLocation, type SearchResult } from "@/lib/geo";
+
+  // Resolve location and expose promise globally so index.astro's initApp() can reuse it
+  const locationPromise = getUserLocation();
+  (window as any).__runcastLocationPromise = locationPromise;
+
+  locationPromise.then((loc) => {
+    const el = document.getElementById("location-text");
+    if (el) el.textContent = loc.name;
+  });
+
+  // ─── Location Search Dropdown ──────────────────────────────────────────────
+  let lastSearchResults: SearchResult[] = [];
+  let searchDebounceTimer: ReturnType<typeof setTimeout> | null = null;
+
+  const toggle = document.getElementById("location-display");
+  const dropdown = document.getElementById("location-dropdown");
+  const searchInput = document.getElementById("location-search") as HTMLInputElement | null;
+  const resultsContainer = document.getElementById("location-results");
+  const useCurrentBtn = document.getElementById("location-use-current");
+
+  if (toggle && dropdown && searchInput) {
+    toggle.addEventListener("click", () => {
+      const isHidden = dropdown.classList.contains("hidden");
+      dropdown.classList.toggle("hidden");
+      if (isHidden) {
+        searchInput.value = "";
+        if (resultsContainer) resultsContainer.innerHTML = "";
+        searchInput.focus();
+      }
+    });
+
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.trim();
+      if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+      if (query.length < 2) {
+        if (resultsContainer) resultsContainer.innerHTML = "";
+        return;
+      }
+      searchDebounceTimer = setTimeout(async () => {
+        const results = await searchLocations(query);
+        lastSearchResults = results;
+        renderSearchResults(results);
+      }, 300);
+    });
+
+    dropdown.addEventListener("click", (e) => {
+      const target = (e.target as HTMLElement).closest("[data-action='select-location']") as HTMLElement | null;
+      if (!target) return;
+      const idx = parseInt(target.dataset.locIndex || "0", 10);
+      const result = lastSearchResults[idx];
+      if (!result) return;
+      const name = result.admin1 ? `${result.name}, ${result.admin1}` : `${result.name}, ${result.country}`;
+      const loc: GeoLocation = { latitude: result.latitude, longitude: result.longitude, name };
+      dropdown.classList.add("hidden");
+      saveLocation(loc);
+      updateLocationDisplay(loc.name);
+      window.dispatchEvent(new CustomEvent("runcast:location-change", { detail: loc }));
+    });
+
+    if (useCurrentBtn) {
+      useCurrentBtn.addEventListener("click", async () => {
+        dropdown.classList.add("hidden");
+        clearSavedLocation();
+        updateLocationDisplay("Locating...");
+        try {
+          const loc = await getUserLocation();
+          updateLocationDisplay(loc.name);
+          window.dispatchEvent(new CustomEvent("runcast:location-change", { detail: loc }));
+        } catch {
+          updateLocationDisplay("Location unavailable");
+        }
+      });
+    }
+
+    document.addEventListener("click", (e) => {
+      const wrapper = document.getElementById("location-wrapper");
+      if (wrapper && !wrapper.contains(e.target as Node)) {
+        dropdown.classList.add("hidden");
+      }
+    });
+  }
+
+  function updateLocationDisplay(name: string): void {
+    const el = document.getElementById("location-text");
+    if (el) el.textContent = name;
+  }
+
+  function esc(str: string): string {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function renderSearchResults(results: SearchResult[]): void {
+    const container = document.getElementById("location-results");
+    if (!container) return;
+    if (results.length === 0) {
+      container.innerHTML = '<p class="px-3 py-2 text-xs text-muted-foreground">No results found</p>';
+      return;
+    }
+    container.innerHTML = results.map((r, i) => {
+      const label = r.admin1 ? `${r.name}, ${r.admin1}, ${r.country}` : `${r.name}, ${r.country}`;
+      return `<button data-action="select-location" data-loc-index="${i}"
+        class="flex w-full items-center gap-2 rounded-[var(--radius-inner)] px-3 py-2 text-left text-sm text-foreground hover:bg-muted/30 transition-colors">
+        ${esc(label)}
+      </button>`;
+    }).join("");
+  }
+
+  // ─── Units Toggle ────────────────────────────────────────────────────────────
+  import type { SwitchChangeEvent } from "@/components/starwind/switch";
+
+  const LS_UNITS = "runcast-units";
+  const LS_DIST = "runcast-dist";
+
+  function isCelsius(): boolean { return localStorage.getItem(LS_UNITS) === "C"; }
+  function isMetric(): boolean { return localStorage.getItem(LS_DIST) === "metric"; }
+
+  function updateUnitsLabel(): void {
+    const label = document.getElementById("units-label");
+    if (label) {
+      const temp = isCelsius() ? "°C" : "°F";
+      const dist = isMetric() ? "km" : "mi";
+      label.textContent = `${temp} · ${dist}`;
+    }
+  }
+
+  // Set initial switch states from localStorage
+  const tempSwitch = document.getElementById("switch-temp") as HTMLButtonElement | null;
+  const distSwitch = document.getElementById("switch-dist") as HTMLButtonElement | null;
+  if (tempSwitch && isCelsius()) tempSwitch.setAttribute("aria-checked", "true");
+  if (distSwitch && isMetric()) distSwitch.setAttribute("aria-checked", "true");
+  updateUnitsLabel();
+
+  // Listen for switch changes
+  document.addEventListener("starwind-switch:change", (e: Event) => {
+    const evt = e as SwitchChangeEvent;
+    if (evt.detail.switchId === "switch-temp") {
+      localStorage.setItem(LS_UNITS, evt.detail.checked ? "C" : "F");
+      updateUnitsLabel();
+      window.dispatchEvent(new CustomEvent("runcast:units-change"));
+    } else if (evt.detail.switchId === "switch-dist") {
+      localStorage.setItem(LS_DIST, evt.detail.checked ? "metric" : "imperial");
+      updateUnitsLabel();
+      window.dispatchEvent(new CustomEvent("runcast:units-change"));
+    }
+  });
+</script>

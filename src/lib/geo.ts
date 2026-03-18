@@ -4,11 +4,53 @@ export interface GeoLocation {
   name: string; // city/neighborhood name for display
 }
 
+export interface SearchResult {
+  name: string;
+  country: string;
+  admin1: string;
+  latitude: number;
+  longitude: number;
+}
+
 const BROOKLYN_DEFAULT: GeoLocation = {
   latitude: 40.69,
   longitude: -73.99,
   name: "Brooklyn, NY",
 };
+
+const LS_LOCATION = "runcast-location";
+
+export function saveLocation(location: GeoLocation): void {
+  localStorage.setItem(LS_LOCATION, JSON.stringify(location));
+}
+
+export function loadSavedLocation(): GeoLocation | null {
+  try {
+    const s = localStorage.getItem(LS_LOCATION);
+    if (s) return JSON.parse(s) as GeoLocation;
+  } catch { /* ignore */ }
+  return null;
+}
+
+export function clearSavedLocation(): void {
+  localStorage.removeItem(LS_LOCATION);
+}
+
+export async function searchLocations(query: string): Promise<SearchResult[]> {
+  if (query.length < 2) return [];
+  const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=5&language=en&format=json`;
+  const response = await fetch(url);
+  if (!response.ok) return [];
+  const data = await response.json();
+  if (!data.results) return [];
+  return data.results.map((r: Record<string, unknown>) => ({
+    name: r.name as string,
+    country: (r.country as string) ?? "",
+    admin1: (r.admin1 as string) ?? "",
+    latitude: r.latitude as number,
+    longitude: r.longitude as number,
+  }));
+}
 
 export async function reverseGeocode(lat: number, lng: number): Promise<string> {
   try {
@@ -68,6 +110,10 @@ async function getLocationFromIP(): Promise<GeoLocation> {
 }
 
 export async function getUserLocation(): Promise<GeoLocation> {
+  // Check for saved location first
+  const saved = loadSavedLocation();
+  if (saved) return saved;
+
   // Try browser Geolocation API first
   if (typeof navigator !== "undefined" && navigator.geolocation) {
     try {

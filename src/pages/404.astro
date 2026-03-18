@@ -1,0 +1,33 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/layout/Header.astro";
+import Footer from "@/components/layout/Footer.astro";
+---
+
+<Layout title="Page Not Found — RunCast" noindex={true}>
+  <Header />
+
+  <main class="mx-auto flex max-w-3xl flex-col items-center px-4 py-16 sm:px-6 sm:py-24">
+    <div class="rounded-[var(--radius-container)] card-surface-raised p-8 text-center sm:p-12">
+      <p class="font-[var(--font-display)] text-6xl italic tracking-tight text-muted-foreground/30 sm:text-8xl">404</p>
+      <h1 class="mt-4 text-xl font-bold text-foreground sm:text-2xl">
+        Wrong turn
+      </h1>
+      <p class="mt-2 text-sm text-muted-foreground">
+        This page doesn't exist. Let's get you back on course.
+      </p>
+      <a
+        href="/"
+        class="mt-6 inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+      >
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        Back to RunCast
+      </a>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>

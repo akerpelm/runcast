@@ -47,12 +47,12 @@ export function getIceRisk(
     ) {
       risk = upgradeRisk(risk, "HIGH");
       reasons.push(
-        "Active freezing precipitation — extremely slippery surfaces"
+        "Active freezing precipitation - extremely slippery surfaces"
       );
     } else if (current.precipType === "snow") {
       risk = upgradeRisk(risk, "MODERATE");
       reasons.push(
-        "Active snowfall — reduced traction, watch for hidden ice beneath"
+        "Active snowfall - reduced traction, watch for hidden ice beneath"
       );
     }
   }
@@ -67,7 +67,7 @@ export function getIceRisk(
     } else if (history.tempMax24h > 40) {
       risk = upgradeRisk(risk, "MODERATE");
       reasons.push(
-        "Freeze/thaw cycle — melted snow or puddles likely refreezing"
+        "Freeze/thaw cycle - melted snow or puddles likely refreezing"
       );
     }
   }
@@ -82,7 +82,7 @@ export function getIceRisk(
   ) {
     risk = upgradeRisk(risk, "LOW");
     reasons.push(
-      "Frost likely on surfaces — sidewalks and bridges may be slippery"
+      "Frost likely on surfaces - sidewalks and bridges may be slippery"
     );
   }
 
@@ -94,7 +94,7 @@ export function getIceRisk(
   ) {
     risk = upgradeRisk(risk, "HIGH");
     reasons.push(
-      "Freezing fog conditions — rapid ice formation possible on all surfaces"
+      "Freezing fog conditions - rapid ice formation possible on all surfaces"
     );
   }
 
@@ -109,7 +109,7 @@ export function getIceRisk(
   if (isEarlyMorning && current.tempF <= 40 && current.cloudCover < 30) {
     risk = upgradeRisk(risk, "LOW");
     reasons.push(
-      "Early morning after clear night — ground surfaces may be colder than air temp, watch for ice patches"
+      "Early morning after clear night - ground surfaces may be colder than air temp, watch for ice patches"
     );
   }
 

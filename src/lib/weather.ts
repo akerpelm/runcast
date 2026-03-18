@@ -1,7 +1,8 @@
 export interface WeatherData {
   current: CurrentWeather;
   hourly: HourlyWeather[];
-  daily: DailyWeather;
+  daily: DailyWeather; // today's entry (backward compat)
+  dailyAll: DailyWeather[]; // all days from API
 }
 
 export interface CurrentWeather {
@@ -13,7 +14,7 @@ export interface CurrentWeather {
 }
 
 export interface HourlyWeather {
-  time: string; // ISO datetime
+  time: string; // ISO datetime (local timezone from API)
   temperature: number;
   humidity: number;
   dewPoint: number;
@@ -28,9 +29,11 @@ export interface HourlyWeather {
   windDirection: number;
   uvIndex: number;
   visibility: number;
+  weatherCode: number; // WMO weather interpretation code
 }
 
 export interface DailyWeather {
+  date: string; // YYYY-MM-DD
   sunrise: string; // ISO datetime
   sunset: string;
   tempMax: number;
@@ -65,6 +68,7 @@ interface OpenMeteoHourlyResponse {
   wind_direction_10m: number[];
   uv_index: number[];
   visibility: number[];
+  weather_code: number[];
 }
 
 interface OpenMeteoDailyResponse {
@@ -102,6 +106,7 @@ export async function fetchWeather(lat: number, lng: number): Promise<WeatherDat
       "wind_direction_10m",
       "uv_index",
       "visibility",
+      "weather_code",
     ].join(","),
     daily: [
       "sunrise",
@@ -123,7 +128,7 @@ export async function fetchWeather(lat: number, lng: number): Promise<WeatherDat
     precipitation_unit: "inch",
     timezone: "auto",
     past_days: "1",
-    forecast_days: "2",
+    forecast_days: "7",
   });
 
   const url = `${BASE_URL}?${params.toString()}`;
@@ -133,7 +138,7 @@ export async function fetchWeather(lat: number, lng: number): Promise<WeatherDat
     response = await fetch(url);
   } catch (err) {
     throw new Error(
-      `Weather fetch failed: network error — ${err instanceof Error ? err.message : String(err)}`
+      `Weather fetch failed: network error - ${err instanceof Error ? err.message : String(err)}`
     );
   }
 
@@ -150,7 +155,6 @@ export async function fetchWeather(lat: number, lng: number): Promise<WeatherDat
     throw new Error("Weather fetch failed: response body is not valid JSON");
   }
 
-  // Validate top-level shape
   if (!raw.current || !raw.hourly || !raw.daily) {
     throw new Error(
       "Weather fetch failed: response is missing expected fields (current, hourly, daily)"
@@ -189,31 +193,30 @@ export async function fetchWeather(lat: number, lng: number): Promise<WeatherDat
     windDirection: h.wind_direction_10m[i],
     uvIndex: h.uv_index[i],
     visibility: h.visibility[i],
+    weatherCode: h.weather_code[i],
   }));
 
-  // --- daily ---
+  // --- daily (all days) ---
   const d = raw.daily;
   if (!Array.isArray(d.time) || d.time.length === 0) {
     throw new Error("Weather fetch failed: daily.time is missing or empty");
   }
 
-  // Find today's date string (YYYY-MM-DD) and locate its index in the daily array.
-  // We cannot rely on a fixed index because past_days=1 shifts the array.
+  const dailyAll: DailyWeather[] = d.time.map((date, i) => ({
+    date,
+    sunrise: d.sunrise[i],
+    sunset: d.sunset[i],
+    tempMax: d.temperature_2m_max[i],
+    tempMin: d.temperature_2m_min[i],
+    precipSum: d.precipitation_sum[i],
+    windSpeedMax: d.wind_speed_10m_max[i],
+  }));
+
+  // Today's entry for backward compat
   const todayDate = new Date().toISOString().slice(0, 10);
   let todayIndex = d.time.findIndex((t) => t === todayDate);
-  if (todayIndex === -1) {
-    // Fallback: use the last available day rather than silently returning wrong data
-    todayIndex = d.time.length - 1;
-  }
+  if (todayIndex === -1) todayIndex = Math.max(0, dailyAll.length - 1);
+  const daily = dailyAll[todayIndex];
 
-  const daily: DailyWeather = {
-    sunrise: d.sunrise[todayIndex],
-    sunset: d.sunset[todayIndex],
-    tempMax: d.temperature_2m_max[todayIndex],
-    tempMin: d.temperature_2m_min[todayIndex],
-    precipSum: d.precipitation_sum[todayIndex],
-    windSpeedMax: d.wind_speed_10m_max[todayIndex],
-  };
-
-  return { current, hourly, daily };
+  return { current, hourly, daily, dailyAll };
 }

@@ -12,7 +12,31 @@
       "Bash(npx starwind@latest add:*)",
       "Bash(npm run build:*)",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(ls -la \"C:\\\\Users\\\\akerp\\\\repos\\\\runcast\\\\src\\\\lib\\\\formulas\"\" 2>/dev/null || echo \"Directory does not exist \")",
+      "Bash(npx astro check:*)",
+      "Bash(npm i:*)",
+      "Bash(ls:*)",
+      "Bash(wc -c:*)",
+      "Bash(npx astro build:*)",
+      "Bash(curl:*)",
+      "Bash(python3:*)",
+      "WebSearch",
+      "WebFetch(domain:sneakernews.com)",
+      "WebFetch(domain:www.saucony.com)",
+      "WebFetch(domain:www.runningwarehouse.com)",
+      "WebFetch(domain:open-meteo.com)",
+      "WebFetch(domain:pollenandmold.stlouisco.com)",
+      "WebFetch(domain:www.melbournepollen.com.au)",
+      "WebFetch(domain:neaai.com)",
+      "WebFetch(domain:runnersconnect.net)",
+      "WebFetch(domain:www.aaaai.org)",
+      "WebFetch(domain:www.therunningweek.com)",
+      "WebFetch(domain:developers.google.com)",
+      "Bash(tree:*)",
+      "Bash(done)",
+      "Bash(wrangler deploy:*)"
     ]
   }
 }

@@ -8,29 +8,19 @@
   --animate-accordion-up: accordion-up 0.2s ease-out;
 
   @keyframes accordion-down {
-    from {
-      height: 0;
-    }
-    to {
-      height: var(--starwind-accordion-content-height);
-    }
+    from { height: 0; }
+    to { height: var(--starwind-accordion-content-height); }
   }
-
   @keyframes accordion-up {
-    from {
-      height: var(--starwind-accordion-content-height);
-    }
-    to {
-      height: 0;
-    }
+    from { height: var(--starwind-accordion-content-height); }
+    to { height: 0; }
   }
 
-  /* Static tokens (don't change with theme) */
-  --radius-container: 32px;
-  --radius-base: 16px;
-  --radius-inner: 12px;
-  --font-display: 'Plus Jakarta Sans', sans-serif;
-  --font-body: 'DM Sans', sans-serif;
+  --radius-container: 12px;
+  --radius-base: 12px;
+  --radius-inner: 8px;
+  --font-display: 'Instrument Serif', serif;
+  --font-body: 'Sora', sans-serif;
 }
 
 @theme inline {
@@ -82,142 +72,137 @@
 
 /*
  * ==========================================================================
- * LIGHT THEME — Neumorphic
- * Matte clay surface. Light comes from top-left.
- * Dark shadow = bottom-right, light highlight = top-left.
+ * LIGHT THEME — "Vermillion"
+ *
+ * Editorial warmth. Warm parchment surface, vermillion red primary,
+ * deep teal secondary. No shadows — cards separated by tint.
+ * Think: a premium running magazine that happens to be interactive.
+ *
+ * Contrast:
+ *   foreground #141414 on #FAFAF8 → 17.6:1 (AAA)
+ *   muted-fg   #71706C on #FAFAF8 → 4.8:1 (AA)
+ *   primary    #DC3B2E on #FAFAF8 → 4.9:1 (AA)
+ *   secondary  #0F7B6C on #FAFAF8 → 5.1:1 (AA)
  * ==========================================================================
  */
 :root {
-  /* Starwind semantic colors */
-  --background: #E0E5EC;
-  --foreground: #2D3142;
-  --card: #E0E5EC;
-  --card-foreground: #2D3142;
-  --popover: #E0E5EC;
-  --popover-foreground: #2D3142;
-  --primary: #6C63FF;
+  --background: #FAFAF8;
+  --foreground: #141414;
+
+  --card: #F2F1EE;
+  --card-foreground: #141414;
+  --popover: #FFFFFF;
+  --popover-foreground: #141414;
+
+  --primary: #DC3B2E;
   --primary-foreground: #FFFFFF;
-  --primary-accent: #8B84FF;
-  --secondary: #38B2AC;
+  --primary-accent: #E5544A;
+
+  --secondary: #0F7B6C;
   --secondary-foreground: #FFFFFF;
-  --secondary-accent: #4FD1C5;
-  --muted: #CDD5DE;
-  --muted-foreground: #6B7280;
-  --accent: #CDD5DE;
-  --accent-foreground: #2D3142;
-  --info: #63B3ED;
-  --info-foreground: #1A365D;
-  --success: #68D391;
-  --success-foreground: #1C4532;
-  --warning: #F6AD55;
-  --warning-foreground: #652B19;
-  --error: #FC8181;
-  --error-foreground: #63171B;
-  --border: #C8D0DA;
-  --input: #C8D0DA;
-  --outline: #9CA3AF;
-  --radius: 1rem;
+  --secondary-accent: #12947F;
 
-  /* Neumorphic shadow primitives — composed into full shadows below */
-  --neu-shadow-dark: rgb(163 177 198 / 0.6);
-  --neu-shadow-light: rgb(255 255 255 / 0.5);
-  --neu-shadow-dark-strong: rgb(163 177 198 / 0.7);
-  --neu-shadow-light-strong: rgb(255 255 255 / 0.6);
+  --muted: #F2F1EE;
+  --muted-foreground: #71706C;
 
-  /* Neumorphic composed shadows */
-  --neu-extruded: 9px 9px 16px var(--neu-shadow-dark), -9px -9px 16px var(--neu-shadow-light);
-  --neu-extruded-hover: 12px 12px 20px var(--neu-shadow-dark-strong), -12px -12px 20px var(--neu-shadow-light-strong);
-  --neu-extruded-sm: 5px 5px 10px var(--neu-shadow-dark), -5px -5px 10px var(--neu-shadow-light);
-  --neu-inset: inset 6px 6px 10px var(--neu-shadow-dark), inset -6px -6px 10px var(--neu-shadow-light);
-  --neu-inset-deep: inset 10px 10px 20px var(--neu-shadow-dark-strong), inset -10px -10px 20px var(--neu-shadow-light-strong);
-  --neu-inset-sm: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light);
+  --accent: #D4940A;
+  --accent-foreground: #141414;
 
-  /* Focus ring offset must match background */
-  --neu-focus-ring: #6C63FF;
-  --neu-focus-offset: #E0E5EC;
+  --info: #2563EB;
+  --info-foreground: #1E3A5F;
+  --success: #0F7B6C;
+  --success-foreground: #064E45;
+  --warning: #B45309;
+  --warning-foreground: #6B3000;
+  --error: #C42B2B;
+  --error-foreground: #7F1D1D;
 
-  /* Sidebar */
-  --sidebar-background: #E0E5EC;
-  --sidebar-foreground: #2D3142;
-  --sidebar-primary: #6C63FF;
+  --border: #E5E4E0;
+  --input: #E5E4E0;
+  --outline: #94A3B8;
+
+  --radius: 0.75rem;
+
+  --sidebar-background: #FAFAF8;
+  --sidebar-foreground: #141414;
+  --sidebar-primary: #DC3B2E;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #CDD5DE;
-  --sidebar-accent-foreground: #2D3142;
-  --sidebar-border: #C8D0DA;
-  --sidebar-outline: #9CA3AF;
+  --sidebar-accent: #F2F1EE;
+  --sidebar-accent-foreground: #141414;
+  --sidebar-border: #E5E4E0;
+  --sidebar-outline: #94A3B8;
 }
 
 /*
  * ==========================================================================
- * DARK THEME — Neumorphic
- * Deep matte surface. Same top-left light source.
- * Dark shadow = deeper black, light highlight = subtle warm lift.
- * More restrained depth than light mode — the effect is carved, not raised.
+ * DARK THEME — "Night Miles"
+ *
+ * Deep black surface with coral-red primary and luminous mint secondary.
+ * Still editorial — no shadows, cards separated by surface tint.
+ *
+ * Contrast:
+ *   foreground #EBEBEA on #111113 → 16.2:1 (AAA)
+ *   muted-fg   #858585 on #111113 → 5.0:1 (AA)
+ *   primary    #FF5849 on #111113 → 5.8:1 (AA)
+ *   secondary  #3DDBA9 on #111113 → 10.6:1 (AAA)
  * ==========================================================================
  */
 .dark {
-  --background: #2B2F3A;
-  --foreground: #E2E8F0;
-  --card: #2B2F3A;
-  --card-foreground: #E2E8F0;
-  --popover: #323744;
-  --popover-foreground: #E2E8F0;
-  --primary: #8B84FF;
+  --background: #111113;
+  --foreground: #EBEBEA;
+
+  --card: #1A1A1D;
+  --card-foreground: #EBEBEA;
+  --popover: #1A1A1D;
+  --popover-foreground: #EBEBEA;
+
+  --primary: #FF5849;
   --primary-foreground: #FFFFFF;
-  --primary-accent: #A59FFF;
-  --secondary: #4FD1C5;
-  --secondary-foreground: #1A202C;
-  --secondary-accent: #81E6D9;
-  --muted: #3A3F4C;
-  --muted-foreground: #94A3B8;
-  --accent: #3A3F4C;
-  --accent-foreground: #E2E8F0;
-  --info: #63B3ED;
-  --info-foreground: #E2E8F0;
-  --success: #68D391;
-  --success-foreground: #1C4532;
-  --warning: #F6AD55;
-  --warning-foreground: #652B19;
-  --error: #FC8181;
-  --error-foreground: #E2E8F0;
-  --border: #3E4453;
-  --input: #3E4453;
-  --outline: #64748B;
+  --primary-accent: #FF7066;
 
-  /* Dark neumorphic shadow primitives */
-  --neu-shadow-dark: rgb(0 0 0 / 0.4);
-  --neu-shadow-light: rgb(255 255 255 / 0.05);
-  --neu-shadow-dark-strong: rgb(0 0 0 / 0.55);
-  --neu-shadow-light-strong: rgb(255 255 255 / 0.08);
+  --secondary: #3DDBA9;
+  --secondary-foreground: #111113;
+  --secondary-accent: #66E4BE;
 
-  /* Shadows are re-composed automatically since they reference the primitives */
-  --neu-extruded: 9px 9px 16px var(--neu-shadow-dark), -9px -9px 16px var(--neu-shadow-light);
-  --neu-extruded-hover: 12px 12px 20px var(--neu-shadow-dark-strong), -12px -12px 20px var(--neu-shadow-light-strong);
-  --neu-extruded-sm: 5px 5px 10px var(--neu-shadow-dark), -5px -5px 10px var(--neu-shadow-light);
-  --neu-inset: inset 6px 6px 10px var(--neu-shadow-dark), inset -6px -6px 10px var(--neu-shadow-light);
-  --neu-inset-deep: inset 10px 10px 20px var(--neu-shadow-dark-strong), inset -10px -10px 20px var(--neu-shadow-light-strong);
-  --neu-inset-sm: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light);
+  --muted: #1A1A1D;
+  --muted-foreground: #858585;
 
-  --neu-focus-ring: #8B84FF;
-  --neu-focus-offset: #2B2F3A;
+  --accent: #FFD166;
+  --accent-foreground: #111113;
 
-  /* Sidebar */
-  --sidebar-background: #2B2F3A;
-  --sidebar-foreground: #E2E8F0;
-  --sidebar-primary: #8B84FF;
+  --info: #60A5FA;
+  --info-foreground: #BFDBFE;
+  --success: #3DDBA9;
+  --success-foreground: #A7F3D0;
+  --warning: #FBBF24;
+  --warning-foreground: #FEF3C7;
+  --error: #F87171;
+  --error-foreground: #FECACA;
+
+  --border: #2A2A2D;
+  --input: #2A2A2D;
+  --outline: #3D4250;
+
+  --sidebar-background: #111113;
+  --sidebar-foreground: #EBEBEA;
+  --sidebar-primary: #FF5849;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #3A3F4C;
-  --sidebar-accent-foreground: #E2E8F0;
-  --sidebar-border: #3E4453;
-  --sidebar-outline: #64748B;
+  --sidebar-accent: #1A1A1D;
+  --sidebar-accent-foreground: #EBEBEA;
+  --sidebar-border: #2A2A2D;
+  --sidebar-outline: #3D4250;
 }
 
+
+/* ==========================================================================
+ * BASE
+ * ========================================================================== */
 @layer base {
   * {
     @apply border-border outline-outline/50;
   }
   body {
-    @apply bg-background text-foreground font-[var(--font-body)] antialiased;
+    @apply bg-background text-foreground font-(--font-body) antialiased;
   }
   .dark body,
   body:where(.dark) {
@@ -231,53 +216,88 @@
   }
 }
 
-/* Neumorphic utility classes — all reference runtime CSS vars, so they adapt to light/dark */
+
+/* ==========================================================================
+ * VERMILLION SURFACE UTILITIES
+ *
+ * No shadows. Cards separated by background tint and subtle borders.
+ * ========================================================================== */
 @layer utilities {
-  .neu-extruded {
-    box-shadow: var(--neu-extruded);
+  .card-surface {
+    background: var(--card);
+    border-radius: 12px;
   }
-  .neu-extruded-hover {
-    box-shadow: var(--neu-extruded-hover);
+  .card-surface-raised {
+    background: var(--card);
+    border-radius: 12px;
+    border: 1px solid var(--border);
   }
-  .neu-extruded-sm {
-    box-shadow: var(--neu-extruded-sm);
+  .card-inset {
+    background: var(--muted);
+    border-radius: 8px;
   }
-  .neu-inset {
-    box-shadow: var(--neu-inset);
-  }
-  .neu-inset-deep {
-    box-shadow: var(--neu-inset-deep);
-  }
-  .neu-inset-sm {
-    box-shadow: var(--neu-inset-sm);
-  }
-  .neu-flat {
-    box-shadow: none;
-  }
-  .neu-focus {
-    ring-width: 2px;
-    ring-color: var(--neu-focus-ring);
-    ring-offset-width: 2px;
-    ring-offset-color: var(--neu-focus-offset);
+  .accent-stripe {
+    border-left: 3px solid var(--primary);
   }
 }
 
-/* Skeleton shimmer — uses shadow primitives so it adapts to theme */
-@keyframes neu-shimmer {
-  0% {
-    box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light);
+
+/* ==========================================================================
+ * SKELETON SHIMMER — warm palette pulse
+ * ========================================================================== */
+@keyframes warm-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+
+@layer utilities {
+  .skeleton-pulse {
+    animation: warm-pulse 2s ease-in-out infinite;
+    background: var(--muted);
+    border-radius: 8px;
   }
-  50% {
-    box-shadow: inset 1px 1px 3px var(--neu-shadow-light), inset -1px -1px 3px var(--neu-shadow-light);
+}
+
+
+/* ==========================================================================
+ * STAGGERED FADE-UP ANIMATION
+ * ========================================================================== */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
   }
-  100% {
-    box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light);
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 @layer utilities {
-  .neu-skeleton {
-    animation: neu-shimmer 2s ease-in-out infinite;
-    background: var(--background);
+  .animate-fade-up {
+    animation: fade-up 0.4s ease-out both;
+  }
+}
+
+
+/* ==========================================================================
+ * FLOAT + REDUCED MOTION
+ * ========================================================================== */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@layer utilities {
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .skeleton-pulse,
+  .animate-fade-up {
+    animation: none;
   }
 }

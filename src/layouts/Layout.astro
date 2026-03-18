@@ -4,12 +4,17 @@ import "@/styles/starwind.css";
 interface Props {
   title: string;
   description?: string;
+  noindex?: boolean;
 }
 
 const {
   title,
-  description = "RunCast — Your daily running briefing. Weather, pace adjustment, and gear for today's run.",
+  description = "Free daily running briefing with weather-adjusted pace, clothing recommendations, ice warnings, and optimal run timing. No account needed.",
+  noindex = false,
 } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || Astro.url.origin);
+const ogImageURL = new URL("/og.svg", Astro.site || Astro.url.origin).href;
 ---
 
 <!doctype html>
@@ -18,7 +23,13 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#DC3B2E" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link rel="apple-touch-icon" href="/icon-192.svg" />
     <meta name="generator" content={Astro.generator} />
 
     <!-- Theme: prevent flash by setting class before paint -->
@@ -38,7 +49,7 @@ const {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Sora:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
 
@@ -47,29 +58,68 @@ const {
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="RunCast" />
+    <meta property="og:url" content={canonicalURL.href} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/svg+xml" />
+    <meta property="og:image:alt" content="RunCast — Your daily running briefing" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
+    <meta name="twitter:image:alt" content="RunCast — Your daily running briefing" />
 
     <!-- Canonical -->
-    <link rel="canonical" href={Astro.url.href} />
+    <link rel="canonical" href={canonicalURL.href} />
 
     <title>{title}</title>
 
-    <!-- JSON-LD Structured Data -->
+    <!-- JSON-LD: WebApplication -->
     <script
       type="application/ld+json"
       set:html={JSON.stringify({
         "@context": "https://schema.org",
         "@type": "WebApplication",
         name: "RunCast",
+        alternateName: "RunCast Running Weather",
         description:
-          "Your daily running briefing — weather, pace adjustment, surface warnings, and gear recommendations.",
-        url: Astro.url.origin,
+          "Free daily running briefing with weather-adjusted pace, clothing recommendations, surface warnings, and optimal run timing.",
+        url: (Astro.site || Astro.url.origin).toString(),
         applicationCategory: "SportsApplication",
         operatingSystem: "Any",
+        browserRequirements: "Requires JavaScript. Requires Geolocation.",
         offers: {
           "@type": "Offer",
           price: "0",
           priceCurrency: "USD",
         },
+        featureList: [
+          "Weather-adjusted pace calculator",
+          "Running clothing recommendations",
+          "Ice and surface risk detection",
+          "Best run window scoring",
+          "Air quality index for runners",
+          "Sunrise and sunset run planning",
+          "Run type suggestions",
+          "Shoe rotation tracking",
+        ],
+        screenshot: ogImageURL,
+      })}
+    />
+
+    <!-- JSON-LD: Organization -->
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        name: "RunCast",
+        url: (Astro.site || Astro.url.origin).toString(),
+        logo: new URL("/favicon.svg", Astro.site || Astro.url.origin).href,
+        sameAs: [],
       })}
     />
   </head>

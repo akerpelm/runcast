@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#F0F2F5"/>
+
+  <!-- Neumorphic card -->
+  <rect x="100" y="80" width="1000" height="470" rx="28" fill="#F0F2F5"
+        style="filter: drop-shadow(6px 6px 12px rgba(163,177,198,0.6)) drop-shadow(-4px -4px 10px rgba(255,255,255,0.8))"/>
+
+  <!-- Accent stripe -->
+  <rect x="100" y="80" width="1000" height="6" rx="3" fill="#D94F00"/>
+
+  <!-- RunCast wordmark -->
+  <text x="600" y="290" font-family="system-ui, -apple-system, sans-serif" font-size="96" font-weight="800" text-anchor="middle">
+    <tspan fill="#1A1A1A">Run</tspan><tspan fill="#D94F00">Cast</tspan>
+  </text>
+
+  <!-- Tagline -->
+  <text x="600" y="360" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="500" fill="#5A5E66" text-anchor="middle">
+    Your daily running briefing
+  </text>
+
+  <!-- Subtitle -->
+  <text x="600" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="400" fill="#9CA0A8" text-anchor="middle">
+    Weather-adjusted pace · Surface warnings · Gear recommendations
+  </text>
+</svg>

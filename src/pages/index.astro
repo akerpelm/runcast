@@ -4,72 +4,82 @@ import Header from "@/components/layout/Header.astro";
 import Footer from "@/components/layout/Footer.astro";
 ---
 
-<Layout title="RunCast — Your Daily Running Briefing">
+<Layout
+  title="RunCast — What to Wear Running Today | Weather-Adjusted Pace & Gear"
+  description="Free running weather app: get today's pace adjustment, clothing recommendation, ice warnings, air quality, and best time to run. No signup needed."
+>
   <Header />
 
-  <main class="mx-auto max-w-4xl px-4 py-6 sm:px-6" role="main">
-    <!-- Weather Briefing Hero -->
+  <main class="mx-auto max-w-5xl px-4 py-6 sm:px-6" role="main">
+    <h1 class="sr-only">RunCast: Today's Running Weather Briefing</h1>
     <section aria-label="Today's running briefing" aria-live="polite" id="briefing-section">
-      <!-- Loading skeleton (shown until weather loads) -->
+      <!-- Loading skeleton -->
       <div id="briefing-skeleton">
-        <!-- Run type + conditions summary skeleton -->
-        <div class="rounded-[var(--radius-container)] bg-background p-6 neu-extruded">
+        <!-- Hero skeleton -->
+        <div class="rounded-[var(--radius-container)] card-surface-raised p-6">
           <div class="mb-4 flex items-center gap-3">
-            <div class="h-7 w-28 rounded-[var(--radius-inner)] neu-skeleton"></div>
-            <div class="h-5 w-40 rounded-[var(--radius-inner)] neu-skeleton"></div>
+            <div class="h-7 w-28 skeleton-pulse"></div>
+            <div class="h-5 w-40 skeleton-pulse"></div>
           </div>
           <div class="grid gap-4 sm:grid-cols-3">
-            <div class="rounded-[var(--radius-base)] bg-background p-4 neu-inset">
-              <div class="mb-2 h-4 w-20 rounded-md neu-skeleton"></div>
-              <div class="h-8 w-24 rounded-md neu-skeleton"></div>
-            </div>
-            <div class="rounded-[var(--radius-base)] bg-background p-4 neu-inset">
-              <div class="mb-2 h-4 w-20 rounded-md neu-skeleton"></div>
-              <div class="h-8 w-24 rounded-md neu-skeleton"></div>
-            </div>
-            <div class="rounded-[var(--radius-base)] bg-background p-4 neu-inset">
-              <div class="mb-2 h-4 w-20 rounded-md neu-skeleton"></div>
-              <div class="h-8 w-24 rounded-md neu-skeleton"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Hour timeline skeleton -->
-        <div class="mt-6 rounded-[var(--radius-container)] bg-background p-4 neu-extruded">
-          <div class="mb-3 h-5 w-32 rounded-md neu-skeleton"></div>
-          <div class="flex gap-3 overflow-hidden">
-            {Array.from({ length: 8 }).map(() => (
-              <div class="flex w-16 shrink-0 flex-col items-center gap-2 rounded-[var(--radius-base)] bg-background p-3 neu-inset-sm">
-                <div class="h-3 w-10 rounded-sm neu-skeleton"></div>
-                <div class="h-8 w-8 rounded-full neu-skeleton"></div>
-                <div class="h-4 w-8 rounded-sm neu-skeleton"></div>
+            {Array.from({ length: 3 }).map(() => (
+              <div class="rounded-[var(--radius-inner)] card-inset p-4">
+                <div class="mb-2 h-4 w-20 skeleton-pulse"></div>
+                <div class="h-8 w-24 skeleton-pulse"></div>
               </div>
             ))}
           </div>
         </div>
 
-        <!-- Best window + ice warning skeleton row -->
-        <div class="mt-6 grid gap-4 sm:grid-cols-2">
-          <div class="rounded-[var(--radius-container)] bg-background p-5 neu-extruded">
-            <div class="mb-3 h-5 w-28 rounded-md neu-skeleton"></div>
-            <div class="h-6 w-36 rounded-md neu-skeleton"></div>
-            <div class="mt-2 h-4 w-48 rounded-md neu-skeleton"></div>
-          </div>
-          <div class="rounded-[var(--radius-container)] bg-background p-5 neu-extruded">
-            <div class="mb-3 h-5 w-24 rounded-md neu-skeleton"></div>
-            <div class="h-6 w-32 rounded-md neu-skeleton"></div>
-            <div class="mt-2 h-4 w-44 rounded-md neu-skeleton"></div>
+        <!-- Settings bar skeleton -->
+        <div class="mt-4 rounded-[var(--radius-container)] card-surface p-4">
+          <div class="flex items-center gap-4">
+            <div class="h-4 w-24 skeleton-pulse"></div>
+            <div class="h-4 w-px bg-border"></div>
+            <div class="h-4 w-20 skeleton-pulse"></div>
           </div>
         </div>
 
-        <!-- Clothing recs skeleton -->
-        <div class="mt-6 rounded-[var(--radius-container)] bg-background p-5 neu-extruded">
-          <div class="mb-4 h-5 w-40 rounded-md neu-skeleton"></div>
-          <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {Array.from({ length: 4 }).map(() => (
-              <div class="rounded-[var(--radius-base)] bg-background p-4 neu-inset-sm">
-                <div class="mb-2 h-10 w-10 rounded-[var(--radius-inner)] neu-skeleton"></div>
-                <div class="h-4 w-20 rounded-sm neu-skeleton"></div>
+        <!-- Timeline skeleton -->
+        <div class="mt-6 rounded-[var(--radius-container)] card-surface-raised p-4">
+          <div class="mb-3 h-5 w-32 skeleton-pulse"></div>
+          <div class="flex items-center gap-2">
+            <div class="h-8 w-8 skeleton-pulse"></div>
+            <div class="flex flex-1 gap-2 overflow-hidden justify-center">
+              {Array.from({ length: 8 }).map(() => (
+                <div class="flex w-16 shrink-0 flex-col items-center gap-1.5 rounded-[var(--radius-inner)] card-inset p-2">
+                  <div class="h-3 w-8 skeleton-pulse"></div>
+                  <div class="h-5 w-5 rounded-full skeleton-pulse"></div>
+                  <div class="h-4 w-8 skeleton-pulse"></div>
+                </div>
+              ))}
+            </div>
+            <div class="h-8 w-8 skeleton-pulse"></div>
+          </div>
+        </div>
+
+        <!-- Best window + daylight skeleton -->
+        <div class="mt-6 grid gap-4 sm:grid-cols-2">
+          <div class="rounded-[var(--radius-container)] card-surface-raised p-5">
+            <div class="mb-3 h-5 w-28 skeleton-pulse"></div>
+            <div class="h-6 w-36 skeleton-pulse"></div>
+            <div class="mt-2 h-4 w-48 skeleton-pulse"></div>
+          </div>
+          <div class="rounded-[var(--radius-container)] card-surface-raised p-5">
+            <div class="mb-3 h-5 w-24 skeleton-pulse"></div>
+            <div class="h-6 w-32 skeleton-pulse"></div>
+            <div class="mt-2 h-4 w-44 skeleton-pulse"></div>
+          </div>
+        </div>
+
+        <!-- Clothing skeleton -->
+        <div class="mt-6 rounded-[var(--radius-container)] card-surface-raised p-5">
+          <div class="mb-4 h-5 w-40 skeleton-pulse"></div>
+          <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: 3 }).map(() => (
+              <div class="rounded-[var(--radius-inner)] card-inset p-3">
+                <div class="mb-2 h-3 w-16 skeleton-pulse"></div>
+                <div class="h-4 w-28 skeleton-pulse"></div>
               </div>
             ))}
           </div>
@@ -77,9 +87,7 @@ import Footer from "@/components/layout/Footer.astro";
       </div>
 
       <!-- Live content (hidden until weather loads, populated by JS) -->
-      <div id="briefing-live" class="hidden">
-        <!-- Populated by weather/app.ts -->
-      </div>
+      <div id="briefing-live" class="hidden"></div>
     </section>
   </main>
 
