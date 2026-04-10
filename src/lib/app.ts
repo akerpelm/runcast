@@ -566,9 +566,9 @@ function renderForecast(): string {
         <div class="flex gap-1.5 overflow-x-auto">${dayTabs}</div>
       </div>
       <div class="flex items-center gap-2">
-        <button data-action="timeline-back" class="${navCls} ${canBack ? "hover:text-foreground hover:bg-muted" : "opacity-30 cursor-not-allowed"}" ${canBack ? "" : "disabled"}>${chevronLeft}</button>
+        <button data-action="timeline-back" aria-label="Previous hours" class="${navCls} ${canBack ? "hover:text-foreground hover:bg-muted" : "opacity-30 cursor-not-allowed"}" ${canBack ? "" : "disabled"}>${chevronLeft}</button>
         <div class="flex flex-1 gap-2 overflow-hidden justify-center">${pills}</div>
-        <button data-action="timeline-forward" class="${navCls} ${canFwd ? "hover:text-foreground hover:bg-muted" : "opacity-30 cursor-not-allowed"}" ${canFwd ? "" : "disabled"}>${chevronRight}</button>
+        <button data-action="timeline-forward" aria-label="Next hours" class="${navCls} ${canFwd ? "hover:text-foreground hover:bg-muted" : "opacity-30 cursor-not-allowed"}" ${canFwd ? "" : "disabled"}>${chevronRight}</button>
       </div>
     </div>`;
 }
@@ -934,7 +934,7 @@ function renderClothing(b: HourBriefing): string {
         ${zones.map(zone => {
           const isCore = zone.label === "LEGS" || zone.label === "TORSO";
           return `<div>
-            <p class="mb-1.5 text-[10px] font-medium uppercase tracking-wider ${isCore ? "text-primary/70" : "text-muted-foreground"}">${zone.label}</p>
+            <p class="mb-1.5 text-[10px] font-medium uppercase tracking-wider ${isCore ? "text-primary/70 dark:text-primary" : "text-muted-foreground"}">${zone.label}</p>
             <div class="flex flex-wrap gap-2">
               ${zone.items.map(it => `<span class="inline-flex items-center gap-1.5 rounded-full ${isCore ? "bg-background border border-primary/20" : "bg-background border border-border/60"} px-3 py-1.5 text-sm font-medium text-foreground">
                 ${esc(it.value)}${it.reason ? `<span class="text-xs text-muted-foreground">${esc(it.reason)}</span>` : ""}
