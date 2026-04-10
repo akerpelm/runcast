@@ -143,7 +143,7 @@
  * Contrast:
  *   foreground #EBEBEA on #111113 → 16.2:1 (AAA)
  *   muted-fg   #858585 on #111113 → 5.0:1 (AA)
- *   primary    #FF5849 on #111113 → 5.8:1 (AA)
+ *   primary    #FF5849 on #111113 → 5.8:1 (AA)  |  #111113 text on #FF5849 → 6.5:1 (AA)
  *   secondary  #3DDBA9 on #111113 → 10.6:1 (AAA)
  * ==========================================================================
  */
@@ -157,7 +157,7 @@
   --popover-foreground: #EBEBEA;
 
   --primary: #FF5849;
-  --primary-foreground: #FFFFFF;
+  --primary-foreground: #111113;
   --primary-accent: #FF7066;
 
   --secondary: #3DDBA9;
@@ -186,7 +186,7 @@
   --sidebar-background: #111113;
   --sidebar-foreground: #EBEBEA;
   --sidebar-primary: #FF5849;
-  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-primary-foreground: #111113;
   --sidebar-accent: #1A1A1D;
   --sidebar-accent-foreground: #EBEBEA;
   --sidebar-border: #2A2A2D;
