@@ -723,7 +723,7 @@ function renderPaceEffort(b: HourBriefing): string {
     const hasPace = state.paces[e] > 0;
     return `<button data-action="select-effort" data-effort="${e}"
       class="shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold transition-colors
-        ${active ? "bg-primary/10 text-primary card-inset" : hasPace ? "text-foreground hover:bg-muted" : "text-muted-foreground/50"}"
+        ${active ? "bg-primary/10 text-foreground card-inset" : hasPace ? "text-foreground hover:bg-muted" : "text-muted-foreground"}"
     >${EFFORT_LABELS[e]}</button>`;
   }).join("");
 
@@ -912,7 +912,7 @@ function renderClothing(b: HourBriefing): string {
   const factorStr = factors.length ? ` · ${factors.join(", ")}` : "";
 
   const effortTag = state.selectedEffort !== "easy"
-    ? `<span class="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">${EFFORT_LABELS[state.selectedEffort]}</span>` : "";
+    ? `<span class="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-foreground">${EFFORT_LABELS[state.selectedEffort]}</span>` : "";
   const hotTag = state.runsHot
     ? '<span class="rounded-full bg-warning/15 px-2 py-0.5 text-xs font-medium text-warning-foreground">Runs hot</span>' : "";
 
