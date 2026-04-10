@@ -80,8 +80,8 @@
  *
  * Contrast:
  *   foreground #141414 on #FAFAF8 → 17.6:1 (AAA)
- *   muted-fg   #71706C on #FAFAF8 → 4.8:1 (AA)
- *   primary    #DC3B2E on #FAFAF8 → 4.9:1 (AA)
+ *   muted-fg   #5E5D59 on #F2F1EE (card) → 5.8:1 (AA)  |  on #FAFAF8 → 6.3:1 (AA)
+ *   primary    #C8362A, white text → 5.3:1 (AA)
  *   secondary  #0F7B6C on #FAFAF8 → 5.1:1 (AA)
  * ==========================================================================
  */
@@ -94,16 +94,16 @@
   --popover: #FFFFFF;
   --popover-foreground: #141414;
 
-  --primary: #DC3B2E;
+  --primary: #C8362A;
   --primary-foreground: #FFFFFF;
-  --primary-accent: #E5544A;
+  --primary-accent: #D6453B;
 
   --secondary: #0F7B6C;
   --secondary-foreground: #FFFFFF;
   --secondary-accent: #12947F;
 
   --muted: #F2F1EE;
-  --muted-foreground: #71706C;
+  --muted-foreground: #5E5D59;
 
   --accent: #D4940A;
   --accent-foreground: #141414;
@@ -125,7 +125,7 @@
 
   --sidebar-background: #FAFAF8;
   --sidebar-foreground: #141414;
-  --sidebar-primary: #DC3B2E;
+  --sidebar-primary: #C8362A;
   --sidebar-primary-foreground: #FFFFFF;
   --sidebar-accent: #F2F1EE;
   --sidebar-accent-foreground: #141414;
