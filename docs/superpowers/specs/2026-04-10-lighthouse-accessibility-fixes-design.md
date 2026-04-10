@@ -69,7 +69,8 @@ The `public/robots.txt` in the repo is already clean (5 lines, no `Content-Signa
 | File | Change |
 |---|---|
 | `src/styles/starwind.css` | 6 CSS variable value changes + update contrast comments |
-| `src/lib/app.ts` | 1 class interpolation change (effort badge) |
+| `src/lib/app.ts` | 2 class interpolation changes (effort selector button + effort tag span) |
+| `src/lib/feedback.ts` | 2 class interpolation changes (feedback pill + clothing button) |
 
 ---
 
