@@ -367,7 +367,7 @@ export function renderFeedback(_b: FeedbackBriefing, state: FeedbackState): stri
       const active = value === selected;
       return `<button data-action="feedback-select" data-fb-group="${group}" data-fb-value="${value}"
         class="rounded-full px-3 py-1.5 text-xs font-semibold transition-colors
-          ${active ? "bg-primary/10 text-primary card-inset" : "text-muted-foreground hover:text-foreground hover:bg-muted"}"
+          ${active ? "bg-primary/10 text-foreground card-inset" : "text-muted-foreground hover:text-foreground hover:bg-muted"}"
       >${label}</button>`;
     }
 
@@ -379,7 +379,7 @@ export function renderFeedback(_b: FeedbackBriefing, state: FeedbackState): stri
           const active = o.value === state.feedbackClothing;
           return `<button data-action="feedback-select" data-fb-group="clothing" data-fb-value="${o.value}"
             class="flex flex-col items-center gap-1.5 rounded-[var(--radius-inner)] p-3 transition-colors
-              ${active ? "bg-primary/10 text-primary card-inset" : "card-inset text-muted-foreground hover:text-foreground"}">
+              ${active ? "bg-primary/10 text-foreground card-inset" : "card-inset text-muted-foreground hover:text-foreground"}">
             ${clothingIcons[o.value]}
             <span class="text-xs font-semibold">${o.label}</span>
           </button>`;
