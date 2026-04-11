@@ -22,7 +22,7 @@ export function renderDetailsRow(b: HourBriefing, bw: BestWindowResult, ctx: Ren
   }
 
   // Ranked windows
-  const windowColors: Record<string, string> = { Best: "text-primary", Good: "text-success-foreground", Fair: "text-muted-foreground" };
+  const windowColors: Record<string, string> = { Best: "text-primary", Good: "text-success", Fair: "text-muted-foreground" };
   const windowRows = bw.ranked.map(w => {
     const start = w.startHour ? formatTime(new Date(w.startHour)) : "--";
     const end = w.endHour ? formatTime(new Date(w.endHour)) : "--";

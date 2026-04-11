@@ -74,7 +74,7 @@ export const settingsIcon = `<svg viewBox="0 0 24 24" ${s} class="h-4 w-4"><path
 // ─── Safety Alert Severity Styles ───────────────────────────────────────────
 export const ALERT_STYLES: Record<string, { bg: string; border: string; text: string; icon: string }> = {
   danger:  { bg: "bg-error/10",   border: "border-l-error",      text: "text-error",             icon: `<svg viewBox="0 0 24 24" ${s} class="h-4 w-4"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>` },
-  warning: { bg: "bg-warning/10", border: "border-l-warning",    text: "text-warning-foreground", icon: `<svg viewBox="0 0 24 24" ${s} class="h-4 w-4"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>` },
-  caution: { bg: "bg-warning/5",  border: "border-l-warning/50", text: "text-warning-foreground", icon: `<svg viewBox="0 0 24 24" ${s} class="h-4 w-4"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>` },
-  info:    { bg: "bg-info/5",     border: "border-l-info",       text: "text-info-foreground",    icon: `<svg viewBox="0 0 24 24" ${s} class="h-4 w-4"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>` },
+  warning: { bg: "bg-warning/10", border: "border-l-warning",    text: "text-warning", icon: `<svg viewBox="0 0 24 24" ${s} class="h-4 w-4"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>` },
+  caution: { bg: "bg-warning/5",  border: "border-l-warning/50", text: "text-warning", icon: `<svg viewBox="0 0 24 24" ${s} class="h-4 w-4"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>` },
+  info:    { bg: "bg-info/5",     border: "border-l-info",       text: "text-info",    icon: `<svg viewBox="0 0 24 24" ${s} class="h-4 w-4"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>` },
 };

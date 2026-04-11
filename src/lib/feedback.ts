@@ -364,7 +364,7 @@ export function renderFeedback(b: FeedbackBriefing, state: FeedbackState): strin
       const countStr = count > 1 ? `${count} runs tracked` : "";
       return `
         <div id="feedback-section" class="mb-3 flex items-center gap-2 rounded-[var(--radius-base)] bg-success/5 px-3 py-2">
-          <svg viewBox="0 0 24 24" class="h-3.5 w-3.5 text-success-foreground shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          <svg viewBox="0 0 24 24" class="h-3.5 w-3.5 text-success shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
           <p class="text-xs text-muted-foreground">Logged, see you tomorrow${countStr ? ` \u00b7 ${countStr}` : ""}${insightStr}</p>
         </div>`;
     }

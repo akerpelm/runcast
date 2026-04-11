@@ -48,7 +48,7 @@ export function renderHeroForecast(b: HourBriefing, ctx: RenderContext): string 
     const dayLabel = rainDay === "Today" ? "" : `${rainDay} `;
     forecastNote += `<span class="text-xs text-info">${rainIcon} ${dayLabel}${rainTime} (${b.nextRain.prob}%)</span>`;
   } else if (!b.nextThunderstorm) {
-    forecastNote = `<span class="text-xs text-success-foreground">No rain</span>`;
+    forecastNote = `<span class="text-xs text-success">No rain</span>`;
   }
 
   // Accent stripe

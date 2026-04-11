@@ -159,9 +159,12 @@
  *
  * Contrast:
  *   foreground #E8EAE6 on #0E1117 → 15.8:1 (AAA)
- *   muted-fg   #7B8794 on #0E1117 → 5.2:1 (AA)
- *   primary    #FF6347 on #161B22 → 4.9:1 (AA)
+ *   muted-fg   #7B8794 on #0E1117 → 5.2:1 (AA)  |  on #161B22 → 4.9:1 (AA)
+ *   primary    #FF6347 on #161B22 → 4.9:1 (AA)  |  #0E1117 on #FF6347 → 6.5:1 (AA)
  *   secondary  #4EEAB3 on #0E1117 → 10.8:1 (AAA)
+ *
+ *   -foreground tokens are for text ON the semantic badge/button bg.
+ *   For colored text on the page, use text-{color} (e.g. text-success).
  * ==========================================================================
  */
 .dark {
@@ -174,7 +177,7 @@
   --popover-foreground: #e8eae6;
 
   --primary: #ff6347;
-  --primary-foreground: #ffffff;
+  --primary-foreground: #0e1117;
   --primary-accent: #ff7d66;
 
   --secondary: #4eeab3;
@@ -188,13 +191,13 @@
   --accent-foreground: #0e1117;
 
   --info: #60a5fa;
-  --info-foreground: #bfdbfe;
+  --info-foreground: #0e1117;
   --success: #4eeab3;
-  --success-foreground: #a7f3d0;
+  --success-foreground: #0e1117;
   --warning: #fbbf24;
-  --warning-foreground: #fef3c7;
+  --warning-foreground: #0e1117;
   --error: #f87171;
-  --error-foreground: #fecaca;
+  --error-foreground: #0e1117;
 
   --border: #2a3040;
   --input: #2a3040;

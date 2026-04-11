@@ -10,8 +10,8 @@ export function renderAlerts(alerts: SafetyAlert[], alertsExpanded: boolean): st
 
   if (!alerts.length) {
     return `<div class="mb-3 flex items-center gap-2 rounded-[var(--radius-base)] bg-success/5 px-3 py-2">
-      <span class="text-success-foreground shrink-0">${checkSvg}</span>
-      <p class="text-xs font-medium text-success-foreground">No safety concerns</p>
+      <span class="text-success shrink-0">${checkSvg}</span>
+      <p class="text-xs font-medium text-success">No safety concerns</p>
     </div>`;
   }
 

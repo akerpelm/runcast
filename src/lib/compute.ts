@@ -5,7 +5,7 @@ import type { WeatherData, HourlyWeather, DailyWeather } from "./weather";
 import type { AirQualityData } from "./air-quality";
 import { getAQICategory } from "./air-quality";
 import { windChillF } from "./formulas/wind-chill";
-import { getHeatPaceAdjustment, getColdPaceAdjustment, formatPace, adjustPace } from "./formulas/pace";
+import { getHeatPaceAdjustment, getColdPaceAdjustment, formatPace, adjustPace, windImpactSeconds } from "./formulas/pace";
 import { getIceRisk } from "./formulas/ice-risk";
 import { findBestWindow, type HourlyConditions, type BestWindowResult } from "./formulas/best-window";
 import { getClothingRec, getRunnerFeelsLike } from "./formulas/clothing";
@@ -52,20 +52,26 @@ export function computeForHour(params: ComputeForHourParams): HourBriefing {
     ? { ...getHeatPaceAdjustment(hour.temperature, hour.dewPoint), type: "heat" as const }
     : { ...getColdPaceAdjustment(wc), type: "cold" as const };
 
-  // Adjusted paces for all set effort levels
+  // Adjusted paces for all set effort levels (temperature + wind)
   const adjustedPaces: HourBriefing["adjustedPaces"] = [];
+  const windSec = hour.windSpeed > 10 ? windImpactSeconds(hour.windSpeed, true) : 0;
   for (const effort of EFFORTS) {
     const base = paces[effort];
     if (base > 0) {
-      const minAdj = adjustPace(base, paceAdj.min);
-      const maxAdj = paceAdj.max === Infinity ? 0 : adjustPace(base, paceAdj.max);
+      const minAdj = adjustPace(base, paceAdj.min) + windSec;
+      const maxAdj = paceAdj.max === Infinity ? 0 : adjustPace(base, paceAdj.max) + windSec;
+      const noAdj = paceAdj.min === 0 && paceAdj.max === 0 && windSec === 0;
       adjustedPaces.push({
         effort,
         label: EFFORT_LABELS[effort],
         base: formatPace(pfd(base)),
-        adjusted: paceAdj.min === 0 && paceAdj.max === 0
+        adjusted: noAdj
           ? formatPace(pfd(base))
-          : maxAdj > 0 ? `${formatPace(pfd(minAdj))}–${formatPace(pfd(maxAdj))}` : `${formatPace(pfd(minAdj))}+`,
+          : paceAdj.min === 0 && paceAdj.max === 0
+            ? formatPace(pfd(minAdj))
+            : maxAdj > 0
+              ? `${formatPace(pfd(minAdj))}–${formatPace(pfd(maxAdj))}`
+              : `${formatPace(pfd(minAdj))}+`,
       });
     }
   }

@@ -25,11 +25,15 @@ export function renderPaceEffort(b: HourBriefing, ctx: RenderContext): string {
   }).join("");
 
   // Pace adjustment info
+  const noTempAdj = b.paceAdjustment.min === 0 && b.paceAdjustment.max === 0;
+  const hasWind = h.windSpeed > 10;
   const pctStr = b.paceAdjustment.warning
     ? b.paceAdjustment.warning
-    : b.paceAdjustment.min === 0 && b.paceAdjustment.max === 0
-      ? "No adjustment"
-      : `+${b.paceAdjustment.min}–${b.paceAdjustment.max}% (${b.paceAdjustment.type})`;
+    : noTempAdj
+      ? hasWind ? "Wind adjusted" : "No adjustment"
+      : hasWind
+        ? `+${b.paceAdjustment.min}–${b.paceAdjustment.max}% (${b.paceAdjustment.type}) + wind`
+        : `+${b.paceAdjustment.min}–${b.paceAdjustment.max}% (${b.paceAdjustment.type})`;
 
   // Pace table rows (if paces set)
   let paceSection = "";
@@ -56,7 +60,7 @@ export function renderPaceEffort(b: HourBriefing, ctx: RenderContext): string {
         <p class="text-xs text-muted-foreground">${pctStr}</p>
         <div class="mt-2 rounded-[var(--radius-inner)] card-inset p-3 text-center">
           <p class="text-xs font-medium text-foreground">Set your paces to see adjusted times</p>
-          <p class="mt-0.5 text-xs text-muted-foreground">E.g. "Your 8:00${pu} becomes 8:39${pu} today"</p>
+          <p class="mt-0.5 text-xs text-foreground/60">E.g. "Your 8:00${pu} becomes 8:39${pu} today"</p>
           ${htmlButton("Enter paces", { variant: "primary", size: "sm", dataAction: "toggle-settings", class: "mt-2" })}
         </div>
       </div>`;

@@ -15,10 +15,10 @@ const BADGE_VARIANT_CLASSES: Record<BadgeVariant, string> = {
   secondary: "bg-secondary text-secondary-foreground",
   outline: "border-border border",
   ghost: "bg-foreground/10 text-foreground",
-  info: "bg-info text-white",
-  success: "bg-success text-white",
-  warning: "bg-warning text-white",
-  error: "bg-error text-white",
+  info: "bg-info text-info-foreground",
+  success: "bg-success text-success-foreground",
+  warning: "bg-warning text-warning-foreground",
+  error: "bg-error text-error-foreground",
 };
 
 const BADGE_SIZE_CLASSES: Record<BadgeSize, string> = {
