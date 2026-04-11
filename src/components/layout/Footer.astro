@@ -9,8 +9,8 @@
         class="flex flex-col items-center gap-4 text-center sm:flex-row sm:justify-between sm:text-left"
       >
         <div>
-          <p class="font-[var(--font-display)] text-sm italic text-foreground">
-            Run<span class="text-primary">Cast</span>
+          <p class="font-[var(--font-display)] text-sm text-foreground italic">
+            ShouldI<span class="font-semibold text-primary not-italic">Run</span>
           </p>
           <p class="mt-1 text-xs text-muted-foreground">
             Your daily running briefing. Weather-adjusted pace, gear, and
@@ -23,17 +23,37 @@
         >
           <a href="/" class="transition-colors hover:text-foreground">Home</a>
           <span class="text-border hidden sm:inline">|</span>
-          <a href="/about" class="transition-colors hover:text-foreground"
+          <a href="/about/" class="transition-colors hover:text-foreground"
             >How It Works</a
           >
           <span class="text-border hidden sm:inline">|</span>
-          <a href="/legal" class="transition-colors hover:text-foreground"
+          <a href="/legal/" class="transition-colors hover:text-foreground"
             >Privacy & Terms</a
           >
           <span class="text-border hidden sm:inline">|</span>
-          <span>&copy; {new Date().getFullYear()} RunCast</span>
+          <a href="/blog/" class="transition-colors hover:text-foreground"
+            >Blog</a
+          >
+          <span class="text-border hidden sm:inline">|</span>
+          <a href="#" id="footer-log-run" class="transition-colors hover:text-foreground"
+            >Log a Run</a
+          >
+          <span class="text-border hidden sm:inline">|</span>
+          <span>&copy; {new Date().getFullYear()} Should I Run</span>
         </nav>
       </div>
     </div>
   </div>
 </footer>
+
+<script>
+  document.getElementById("footer-log-run")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (window.location.pathname !== "/") {
+      window.location.href = "/";
+      return;
+    }
+    window.dispatchEvent(new CustomEvent("runcast:open-feedback"));
+    document.getElementById("feedback-section")?.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+</script>

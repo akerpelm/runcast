@@ -19,6 +19,7 @@ export interface RunConditions {
   precipProb: number; // 0-100
   iceRisk: "NONE" | "LOW" | "MODERATE" | "HIGH";
   windChillF: number;
+  visibilityMeters: number;
 }
 
 /**
@@ -55,6 +56,14 @@ export function suggestRunType(
     return {
       type: "TREADMILL_OR_EASY",
       reason: `Extreme cold (wind chill ${formatTemp(conditions.windChillF)}) - treadmill or short easy run with full coverage`,
+    };
+  }
+
+  const visMiles = conditions.visibilityMeters / 1609;
+  if (visMiles < 0.5) {
+    return {
+      type: "TREADMILL_OR_EASY",
+      reason: "Near-zero visibility — treadmill or stay on closed, well-lit paths only",
     };
   }
 

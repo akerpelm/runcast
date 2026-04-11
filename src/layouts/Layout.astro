@@ -1,20 +1,25 @@
 ---
 import "@/styles/starwind.css";
+import { Font } from "astro:assets";
 
 interface Props {
   title: string;
   description?: string;
   noindex?: boolean;
+  ogImage?: string;
 }
 
 const {
   title,
   description = "Free daily running briefing with weather-adjusted pace, clothing recommendations, ice warnings, and optimal run timing. No account needed.",
   noindex = false,
+  ogImage,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || Astro.url.origin);
-const ogImageURL = new URL("/og.svg", Astro.site || Astro.url.origin).href;
+const ogImageURL = ogImage
+  ? new URL(ogImage, Astro.site || Astro.url.origin).href
+  : new URL("/og.svg", Astro.site || Astro.url.origin).href;
 ---
 
 <!doctype html>
@@ -26,9 +31,8 @@ const ogImageURL = new URL("/og.svg", Astro.site || Astro.url.origin).href;
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#DC3B2E" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="theme-color" content="#D64C2F" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <link rel="apple-touch-icon" href="/icon-192.svg" />
     <meta name="generator" content={Astro.generator} />
 
@@ -45,35 +49,43 @@ const ogImageURL = new URL("/og.svg", Astro.site || Astro.url.origin).href;
       })();
     </script>
 
-    <!-- Preload fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Sora:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Preconnect to critical API origins -->
+    <link rel="preconnect" href="https://api.open-meteo.com" />
+    <link rel="preconnect" href="https://air-quality-api.open-meteo.com" />
+
+    <!-- Self-hosted fonts via Astro Fonts API -->
+    <Font cssVariable="--font-display" />
+    <Font cssVariable="--font-body" />
+    <Font cssVariable="--font-mono" />
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="RunCast" />
+    <meta property="og:site_name" content="Should I Run" />
     <meta property="og:url" content={canonicalURL.href} />
     <meta property="og:image" content={ogImageURL} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:type" content="image/svg+xml" />
-    <meta property="og:image:alt" content="RunCast — Your daily running briefing" />
+    <meta property="og:image:alt" content="Should I Run — Your daily running briefing" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageURL} />
-    <meta name="twitter:image:alt" content="RunCast — Your daily running briefing" />
+    <meta name="twitter:image:alt" content="Should I Run — Your daily running briefing" />
 
     <!-- Canonical -->
     <link rel="canonical" href={canonicalURL.href} />
+
+    <!-- Privacy-friendly analytics by Plausible -->
+    <script async src="https://plausible.io/js/pa-DjNsHBzg9pQdRPNvM3OdN.js"></script>
+    <script is:inline>
+      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+      plausible.init();
+    </script>
 
     <title>{title}</title>
 
@@ -83,8 +95,8 @@ const ogImageURL = new URL("/og.svg", Astro.site || Astro.url.origin).href;
       set:html={JSON.stringify({
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        name: "RunCast",
-        alternateName: "RunCast Running Weather",
+        name: "Should I Run",
+        alternateName: "Should I Run Running Weather",
         description:
           "Free daily running briefing with weather-adjusted pace, clothing recommendations, surface warnings, and optimal run timing.",
         url: (Astro.site || Astro.url.origin).toString(),
@@ -116,7 +128,7 @@ const ogImageURL = new URL("/og.svg", Astro.site || Astro.url.origin).href;
       set:html={JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Organization",
-        name: "RunCast",
+        name: "Should I Run",
         url: (Astro.site || Astro.url.origin).toString(),
         logo: new URL("/favicon.svg", Astro.site || Astro.url.origin).href,
         sameAs: [],
@@ -125,6 +137,13 @@ const ogImageURL = new URL("/og.svg", Astro.site || Astro.url.origin).href;
   </head>
   <body class="min-h-screen bg-background text-foreground antialiased">
     <slot />
+
+    <!-- Service worker registration -->
+    <script is:inline>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/sw.js");
+      }
+    </script>
 
     <!-- Theme toggle logic -->
     <script>

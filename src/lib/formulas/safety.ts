@@ -189,6 +189,36 @@ function getAQIAlert(aqi: number | undefined): SafetyAlert | null {
   return null;
 }
 
+// ─── Visibility ────────────────────────────────────────────────────────────
+function getVisibilityAlert(visibilityMeters: number): SafetyAlert | null {
+  const visMiles = visibilityMeters / 1609;
+  if (visMiles < 0.5) {
+    return {
+      severity: "danger",
+      type: "visibility",
+      title: "Near-Zero Visibility",
+      message: `Visibility under ½ mile. Do not run on or near roads — drivers cannot see you. If running, stay on closed paths and wear high-vis with a headlamp.`,
+    };
+  }
+  if (visMiles < 1) {
+    return {
+      severity: "warning",
+      type: "visibility",
+      title: "Very Poor Visibility",
+      message: `Visibility under 1 mile. Wear high-vis clothing and a headlamp. Avoid roads with traffic and use well-lit paths.`,
+    };
+  }
+  if (visMiles < 3) {
+    return {
+      severity: "caution",
+      type: "visibility",
+      title: "Reduced Visibility",
+      message: `Visibility under 3 miles. Wear bright or reflective clothing. Be extra cautious at road crossings.`,
+    };
+  }
+  return null;
+}
+
 // ─── Flooding / Standing Water ──────────────────────────────────────────────
 function getFloodingAlert(recentPrecipInches: number): SafetyAlert | null {
   if (recentPrecipInches > 1.5) {
@@ -238,6 +268,9 @@ export function getSafetyAlerts(
   const aqiAlert = getAQIAlert(aqi);
   if (aqiAlert) alerts.push(aqiAlert);
 
+  const visibility = getVisibilityAlert(hour.visibility);
+  if (visibility) alerts.push(visibility);
+
   const flood = getFloodingAlert(recentPrecipInches);
   if (flood) alerts.push(flood);
 
@@ -252,8 +285,10 @@ export function findNextPrecip(
   hourly: HourlyWeather[],
   afterTime: Date
 ): { time: string; prob: number } | null {
+  const cutoff = new Date(afterTime.getTime() + 48 * 3600000); // 48h lookahead
   for (const h of hourly) {
-    if (new Date(h.time) > afterTime && h.precipProbability >= 40) {
+    const t = new Date(h.time);
+    if (t > afterTime && t <= cutoff && h.precipProbability >= 40) {
       return { time: h.time, prob: h.precipProbability };
     }
   }
@@ -264,8 +299,10 @@ export function findNextThunderstorm(
   hourly: HourlyWeather[],
   afterTime: Date
 ): string | null {
+  const cutoff = new Date(afterTime.getTime() + 48 * 3600000); // 48h lookahead
   for (const h of hourly) {
-    if (new Date(h.time) > afterTime && h.weatherCode >= 95) {
+    const t = new Date(h.time);
+    if (t > afterTime && t <= cutoff && h.weatherCode >= 95) {
       return h.time;
     }
   }

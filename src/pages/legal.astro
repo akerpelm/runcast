@@ -5,8 +5,8 @@ import Footer from "@/components/layout/Footer.astro";
 ---
 
 <Layout
-  title="Privacy Policy & Terms of Service — RunCast"
-  description="RunCast privacy policy, terms of service, and third-party data disclosures. No accounts, no cookies, no tracking. Your data stays yours."
+  title="Privacy Policy & Terms of Service — Should I Run"
+  description="Should I Run privacy policy, terms of service, and third-party data disclosures. No accounts, no cookies, no tracking. Your data stays yours."
 >
   <Header />
 
@@ -23,19 +23,25 @@ import Footer from "@/components/layout/Footer.astro";
           <h2 class="text-lg font-bold text-foreground">Terms of Service</h2>
           <div class="mt-3 space-y-3 text-sm leading-relaxed text-muted-foreground">
             <p>
-              RunCast provides weather-based running recommendations for informational purposes only.
+              Should I Run provides weather-based running recommendations for informational purposes only.
               Our guidance is not a substitute for professional medical advice, personal judgment, or
               common sense. Always assess conditions yourself before heading out.
             </p>
             <p>
               <strong class="text-foreground">Use at your own risk.</strong> Weather data, pace adjustments,
               clothing suggestions, and safety alerts are algorithmic estimates based on third-party data.
-              They may be inaccurate, delayed, or incomplete. RunCast is not liable for any injury, illness,
+              They may be inaccurate, delayed, or incomplete. Should I Run is not liable for any injury, illness,
               or loss arising from reliance on this information.
             </p>
             <p>
               The service is provided as-is, without warranties of any kind, express or implied. We reserve
               the right to modify, suspend, or discontinue any part of the service at any time.
+            </p>
+            <p>
+              <strong class="text-foreground">Governing law.</strong> These terms are governed by and construed
+              in accordance with the laws of the State of New York, without regard to its conflict of law
+              provisions. Any disputes arising from or relating to these terms or your use of Should I Run shall
+              be resolved in the courts located in New York County, New York.
             </p>
           </div>
         </section>
@@ -45,7 +51,7 @@ import Footer from "@/components/layout/Footer.astro";
           <h2 class="text-lg font-bold text-foreground">Privacy Policy</h2>
           <div class="mt-3 space-y-3 text-sm leading-relaxed text-muted-foreground">
             <p>
-              RunCast is designed with privacy as a core principle. Here's what we do and don't do:
+              Should I Run is designed with privacy as a core principle. Here's what we do and don't do:
             </p>
             <ul class="list-disc list-inside space-y-1.5">
               <li><strong class="text-foreground">No accounts.</strong> There is no sign-up, login, or user profile.</li>
@@ -53,12 +59,13 @@ import Footer from "@/components/layout/Footer.astro";
               <li><strong class="text-foreground">No cookies or tracking.</strong> We don't use cookies, analytics trackers, or fingerprinting.</li>
               <li><strong class="text-foreground">Local storage.</strong> Your preferences (paces, effort level, runs-hot toggle), feedback entries, and shoe history are stored in your browser's localStorage.</li>
               <li><strong class="text-foreground">Feedback sync.</strong> When you log a run, your feedback entry — including weather conditions, what you wore, effort level, and optionally which shoes you ran in — is synced to our server (Cloudflare D1) so we can improve recommendations across sessions and devices. Entries include your anonymous ID, approximate location (~1 km precision), and the weather snapshot at the time of your run. No personally identifiable information is collected.</li>
+              <li><strong class="text-foreground">Data retention.</strong> Synced feedback entries are retained on our server indefinitely to improve recommendations. They remain associated with your original anonymous ID even if you clear localStorage and generate a new one. Because entries contain no personally identifiable information, we cannot link them back to you. If you would like your synced entries deleted, contact us with your anonymous ID (visible in your browser's localStorage under <code class="rounded bg-muted/50 px-1.5 py-0.5 text-xs font-mono">runcast-anon-id</code>) and we will remove all entries associated with it.</li>
               <li><strong class="text-foreground">Location data.</strong> Your coordinates are sent directly from your browser to third-party weather and geocoding APIs to fetch forecasts. When you log feedback, an approximate location (latitude/longitude rounded to ~1 km) is included in the synced entry. We do not store precise coordinates.</li>
             </ul>
             <p>
               To clear all locally stored data, open your browser's developer tools and run
               <code class="rounded bg-muted/50 px-1.5 py-0.5 text-xs font-mono">localStorage.clear()</code>
-              on the RunCast domain, or use your browser's "Clear site data" option.
+              on the Should I Run domain, or use your browser's "Clear site data" option.
             </p>
           </div>
         </section>
@@ -68,7 +75,7 @@ import Footer from "@/components/layout/Footer.astro";
           <h2 class="text-lg font-bold text-foreground">Third-Party Services</h2>
           <div class="mt-3 space-y-3 text-sm leading-relaxed text-muted-foreground">
             <p>
-              RunCast fetches data from the following external APIs directly from your browser:
+              Should I Run fetches data from the following external APIs directly from your browser:
             </p>
             <div class="mt-3 space-y-3">
               <div class="rounded-[var(--radius-base)] bg-background p-4 card-inset">

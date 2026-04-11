@@ -1,0 +1,81 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/layout/Header.astro";
+import Footer from "@/components/layout/Footer.astro";
+
+const posts = (await getCollection("blog"))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+
+const title = "Running Weather Tips & Guides | Should I Run Blog";
+const description =
+  "Expert guides on running in heat, cold, and rain. Pace adjustment science, clothing recommendations, and seasonal training tips.";
+---
+
+<Layout title={title} description={description}>
+  <Header />
+  <main class="mx-auto max-w-4xl px-4 py-8 sm:px-6">
+    <div class="mb-8">
+      <h1 class="font-[var(--font-display)] text-3xl italic text-foreground">
+        <span class="italic">Should I</span> <span class="font-semibold text-primary">Run</span> Blog
+      </h1>
+      <p class="mt-2 text-muted-foreground">
+        Tips, science, and guides for running in any weather.
+      </p>
+    </div>
+
+    <div class="grid gap-6 sm:grid-cols-2">
+      {
+        posts.map((post) => (
+          <a
+            href={`/blog/${post.id}`}
+            class="bg-card text-card-foreground card-surface-raised flex flex-col gap-4 py-4 px-5"
+            data-slot="card"
+            data-size="sm"
+          >
+            <div>
+              <p class="text-xs text-muted-foreground">
+                {post.data.publishDate.toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </p>
+              <h2 class="mt-1 text-lg font-semibold text-foreground leading-snug">
+                {post.data.title}
+              </h2>
+              <p class="mt-2 text-sm text-muted-foreground line-clamp-3">
+                {post.data.description}
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-1.5 mt-auto">
+              {post.data.tags.map((tag: string) => (
+                <span class="starwind-badge inline-flex items-center rounded-full font-medium whitespace-nowrap bg-foreground/10 text-foreground px-2.5 py-0.5 text-xs">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: title,
+    description: description,
+    url: new URL("/blog", Astro.site || Astro.url.origin).href,
+    isPartOf: {
+      "@type": "WebSite",
+      name: "Should I Run",
+      url: (Astro.site || Astro.url.origin).toString(),
+    },
+  })}
+/>

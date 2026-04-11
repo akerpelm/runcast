@@ -1,7 +1,10 @@
+export type GeoSource = "saved" | "browser" | "ip" | "default";
+
 export interface GeoLocation {
   latitude: number;
   longitude: number;
   name: string; // city/neighborhood name for display
+  source: GeoSource;
 }
 
 export interface SearchResult {
@@ -16,6 +19,7 @@ const BROOKLYN_DEFAULT: GeoLocation = {
   latitude: 40.69,
   longitude: -73.99,
   name: "Brooklyn, NY",
+  source: "default",
 };
 
 const LS_LOCATION = "runcast-location";
@@ -27,7 +31,11 @@ export function saveLocation(location: GeoLocation): void {
 export function loadSavedLocation(): GeoLocation | null {
   try {
     const s = localStorage.getItem(LS_LOCATION);
-    if (s) return JSON.parse(s) as GeoLocation;
+    if (s) {
+      const loc = JSON.parse(s) as GeoLocation;
+      loc.source = "saved";
+      return loc;
+    }
   } catch { /* ignore */ }
   return null;
 }
@@ -106,7 +114,7 @@ async function getLocationFromIP(): Promise<GeoLocation> {
   const latitude: number = data.latitude;
   const longitude: number = data.longitude;
   const city: string = data.city ?? "Your Location";
-  return { latitude, longitude, name: city };
+  return { latitude, longitude, name: city, source: "ip" };
 }
 
 export async function getUserLocation(): Promise<GeoLocation> {
@@ -120,7 +128,7 @@ export async function getUserLocation(): Promise<GeoLocation> {
       const position = await getBrowserLocation();
       const { latitude, longitude } = position.coords;
       const name = await reverseGeocode(latitude, longitude);
-      return { latitude, longitude, name };
+      return { latitude, longitude, name, source: "browser" };
     } catch {
       // Fall through to IP-based geolocation
     }

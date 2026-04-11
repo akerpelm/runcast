@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <rect width="64" height="64" rx="14" fill="#F0F2F5"/>
-  <text x="10" y="46" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="36" letter-spacing="-2">
-    <tspan fill="#1A1A1A">R</tspan><tspan fill="#D94F00">C</tspan>
+  <rect width="64" height="64" rx="14" fill="#F4F5F0"/>
+  <text x="32" y="50" font-family="Georgia, serif" font-weight="400" font-size="40" font-style="italic" letter-spacing="-3" text-anchor="middle">
+    <tspan fill="#1B1F1E">SI</tspan><tspan fill="#D64C2F" font-style="normal" font-weight="700">R</tspan>
   </text>
 </svg>

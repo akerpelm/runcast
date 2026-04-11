@@ -1,11 +1,11 @@
 {
-  "name": "RunCast",
-  "short_name": "RunCast",
+  "name": "Should I Run",
+  "short_name": "S.I.R.",
   "description": "Your daily running briefing. Weather, pace, and gear for today's run.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FAFAF8",
-  "theme_color": "#DC3B2E",
+  "background_color": "#F4F5F0",
+  "theme_color": "#D64C2F",
   "icons": [
     {
       "src": "/favicon.svg",

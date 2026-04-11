@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offline — Should I Run</title>
+  <style>
+    body {
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: #F4F5F0;
+      color: #1B1F1E;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 1rem;
+    }
+    .container {
+      text-align: center;
+      max-width: 400px;
+    }
+    .logo {
+      font-family: Georgia, serif;
+      font-style: italic;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .logo span { color: #D64C2F; }
+    h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 0 0 0.75rem;
+    }
+    p {
+      color: #78716C;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      margin: 0 0 1.5rem;
+    }
+    a {
+      display: inline-block;
+      background: #D64C2F;
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1.5rem;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: #0E1117; color: #E8EAE6; }
+      p { color: #A8A29E; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo"><em>Should I</em> <span>Run</span></div>
+    <h1>You're offline</h1>
+    <p>Should I Run needs an internet connection to fetch weather data for your location. Check your connection and try again.</p>
+    <a href="/">Try again</a>
+  </div>
+</body>
+</html>

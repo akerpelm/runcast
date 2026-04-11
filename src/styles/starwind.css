@@ -1,6 +1,7 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 @plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/typography";
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
@@ -8,19 +9,28 @@
   --animate-accordion-up: accordion-up 0.2s ease-out;
 
   @keyframes accordion-down {
-    from { height: 0; }
-    to { height: var(--starwind-accordion-content-height); }
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--starwind-accordion-content-height);
+    }
   }
   @keyframes accordion-up {
-    from { height: var(--starwind-accordion-content-height); }
-    to { height: 0; }
+    from {
+      height: var(--starwind-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
   }
 
-  --radius-container: 12px;
-  --radius-base: 12px;
-  --radius-inner: 8px;
-  --font-display: 'Instrument Serif', serif;
-  --font-body: 'Sora', sans-serif;
+  --radius-container: 14px;
+  --radius-base: 14px;
+  --radius-inner: 10px;
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Outfit', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
 @theme inline {
@@ -72,127 +82,138 @@
 
 /*
  * ==========================================================================
- * LIGHT THEME — "Vermillion"
+ * LIGHT THEME — "Dawn Run"
  *
- * Editorial warmth. Warm parchment surface, vermillion red primary,
- * deep teal secondary. No shadows — cards separated by tint.
- * Think: a premium running magazine that happens to be interactive.
+ * 6 AM morning fog with warm accents breaking through.
+ * Sage-tinted surface, ember red primary, eucalyptus teal secondary.
+ * Cards float via subtle shadow on sage background.
  *
  * Contrast:
- *   foreground #141414 on #FAFAF8 → 17.6:1 (AAA)
- *   muted-fg   #5E5D59 on #F2F1EE (card) → 5.8:1 (AA)  |  on #FAFAF8 → 6.3:1 (AA)
- *   primary    #C8362A, white text → 5.3:1 (AA)
- *   secondary  #0F7B6C on #FAFAF8 → 5.1:1 (AA)
+ *   foreground #1B1F1E on #F4F5F0 → 15.4:1 (AAA)
+ *   muted-fg   #6B7370 on #F4F5F0 → 4.5:1 (AA)
+ *   primary    #D64C2F on #FFFFFF → 4.6:1 (AA)
+ *   secondary  #2B7A6F on #FFFFFF → 5.2:1 (AA)
  * ==========================================================================
  */
 :root {
-  --background: #FAFAF8;
-  --foreground: #141414;
+  --background: #f4f5f0;
+  --foreground: #1b1f1e;
 
-  --card: #F2F1EE;
-  --card-foreground: #141414;
-  --popover: #FFFFFF;
-  --popover-foreground: #141414;
+  --card: #ffffff;
+  --card-foreground: #1b1f1e;
+  --popover: #ffffff;
+  --popover-foreground: #1b1f1e;
 
-  --primary: #C8362A;
-  --primary-foreground: #FFFFFF;
-  --primary-accent: #D6453B;
+  --primary: #c4402a;
+  --primary-foreground: #ffffff;
+  --primary-accent: #d65540;
 
-  --secondary: #0F7B6C;
-  --secondary-foreground: #FFFFFF;
-  --secondary-accent: #12947F;
+  --secondary: #2b7a6f;
+  --secondary-foreground: #ffffff;
+  --secondary-accent: #349185;
 
-  --muted: #F2F1EE;
-  --muted-foreground: #5E5D59;
+  --muted: #eceee8;
+  --muted-foreground: #4a4f4d;
 
-  --accent: #D4940A;
-  --accent-foreground: #141414;
+  --accent: #e09f3e;
+  --accent-foreground: #1b1f1e;
 
-  --info: #2563EB;
-  --info-foreground: #1E3A5F;
-  --success: #0F7B6C;
-  --success-foreground: #064E45;
-  --warning: #B45309;
-  --warning-foreground: #6B3000;
-  --error: #C42B2B;
-  --error-foreground: #7F1D1D;
+  --info: #2563eb;
+  --info-foreground: #1e3a5f;
+  --success: #2b7a6f;
+  --success-foreground: #064e45;
+  --warning: #c77b1e;
+  --warning-foreground: #6b3000;
+  --error: #c43030;
+  --error-foreground: #7f1d1d;
 
-  --border: #E5E4E0;
-  --input: #E5E4E0;
-  --outline: #94A3B8;
+  --border: #e2e5de;
+  --input: #e2e5de;
+  --outline: #94a3b8;
 
-  --radius: 0.75rem;
+  --radius: 0.875rem;
 
-  --sidebar-background: #FAFAF8;
-  --sidebar-foreground: #141414;
-  --sidebar-primary: #C8362A;
-  --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #F2F1EE;
-  --sidebar-accent-foreground: #141414;
-  --sidebar-border: #E5E4E0;
-  --sidebar-outline: #94A3B8;
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.03);
+  --shadow-card-hover:
+    0 4px 12px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  --dot-color: rgba(0, 0, 0, 0.025);
+  --glow-color: rgba(214, 76, 47, 0.035);
+
+  --sidebar-background: #f4f5f0;
+  --sidebar-foreground: #1b1f1e;
+  --sidebar-primary: #d64c2f;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #eceee8;
+  --sidebar-accent-foreground: #1b1f1e;
+  --sidebar-border: #e2e5de;
+  --sidebar-outline: #94a3b8;
 }
 
 /*
  * ==========================================================================
  * DARK THEME — "Night Miles"
  *
- * Deep black surface with coral-red primary and luminous mint secondary.
- * Still editorial — no shadows, cards separated by surface tint.
+ * Pre-dawn blue-black sky with luminous data points.
+ * Tomato primary for high visibility, mint trail markers.
+ * Cards elevated by tone, no shadows needed.
  *
  * Contrast:
- *   foreground #EBEBEA on #111113 → 16.2:1 (AAA)
- *   muted-fg   #858585 on #111113 → 5.0:1 (AA)
- *   primary    #FF5849 on #111113 → 5.8:1 (AA)  |  #111113 text on #FF5849 → 6.5:1 (AA)
- *   secondary  #3DDBA9 on #111113 → 10.6:1 (AAA)
+ *   foreground #E8EAE6 on #0E1117 → 15.8:1 (AAA)
+ *   muted-fg   #7B8794 on #0E1117 → 5.2:1 (AA)
+ *   primary    #FF6347 on #161B22 → 4.9:1 (AA)
+ *   secondary  #4EEAB3 on #0E1117 → 10.8:1 (AAA)
  * ==========================================================================
  */
 .dark {
-  --background: #111113;
-  --foreground: #EBEBEA;
+  --background: #0e1117;
+  --foreground: #e8eae6;
 
-  --card: #1A1A1D;
-  --card-foreground: #EBEBEA;
-  --popover: #1A1A1D;
-  --popover-foreground: #EBEBEA;
+  --card: #161b22;
+  --card-foreground: #e8eae6;
+  --popover: #161b22;
+  --popover-foreground: #e8eae6;
 
-  --primary: #FF5849;
-  --primary-foreground: #111113;
-  --primary-accent: #FF7066;
+  --primary: #ff6347;
+  --primary-foreground: #ffffff;
+  --primary-accent: #ff7d66;
 
-  --secondary: #3DDBA9;
-  --secondary-foreground: #111113;
-  --secondary-accent: #66E4BE;
+  --secondary: #4eeab3;
+  --secondary-foreground: #0e1117;
+  --secondary-accent: #6ef0c5;
 
-  --muted: #1A1A1D;
-  --muted-foreground: #858585;
+  --muted: #1c2129;
+  --muted-foreground: #7b8794;
 
-  --accent: #FFD166;
-  --accent-foreground: #111113;
+  --accent: #ffd074;
+  --accent-foreground: #0e1117;
 
-  --info: #60A5FA;
-  --info-foreground: #BFDBFE;
-  --success: #3DDBA9;
-  --success-foreground: #A7F3D0;
-  --warning: #FBBF24;
-  --warning-foreground: #FEF3C7;
-  --error: #F87171;
-  --error-foreground: #FECACA;
+  --info: #60a5fa;
+  --info-foreground: #bfdbfe;
+  --success: #4eeab3;
+  --success-foreground: #a7f3d0;
+  --warning: #fbbf24;
+  --warning-foreground: #fef3c7;
+  --error: #f87171;
+  --error-foreground: #fecaca;
 
-  --border: #2A2A2D;
-  --input: #2A2A2D;
-  --outline: #3D4250;
+  --border: #2a3040;
+  --input: #2a3040;
+  --outline: #3d4250;
 
-  --sidebar-background: #111113;
-  --sidebar-foreground: #EBEBEA;
-  --sidebar-primary: #FF5849;
-  --sidebar-primary-foreground: #111113;
-  --sidebar-accent: #1A1A1D;
-  --sidebar-accent-foreground: #EBEBEA;
-  --sidebar-border: #2A2A2D;
-  --sidebar-outline: #3D4250;
+  --shadow-card: none;
+  --shadow-card-hover: none;
+  --dot-color: rgba(255, 255, 255, 0.015);
+  --glow-color: rgba(78, 234, 179, 0.025);
+
+  --sidebar-background: #0e1117;
+  --sidebar-foreground: #e8eae6;
+  --sidebar-primary: #ff6347;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1c2129;
+  --sidebar-accent-foreground: #e8eae6;
+  --sidebar-border: #2a3040;
+  --sidebar-outline: #3d4250;
 }
-
 
 /* ==========================================================================
  * BASE
@@ -203,6 +224,13 @@
   }
   body {
     @apply bg-background text-foreground font-(--font-body) antialiased;
+    background-image:
+      radial-gradient(ellipse at 80% 0%, var(--glow-color) 0%, transparent 60%),
+      radial-gradient(circle at 1px 1px, var(--dot-color) 1px, transparent 0);
+    background-size:
+      100% 100%,
+      24px 24px;
+    background-attachment: fixed;
   }
   .dark body,
   body:where(.dark) {
@@ -211,61 +239,75 @@
   button {
     @apply cursor-pointer;
   }
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-display);
   }
 }
 
-
 /* ==========================================================================
- * VERMILLION SURFACE UTILITIES
+ * SURFACE UTILITIES — Trail Cartography
  *
- * No shadows. Cards separated by background tint and subtle borders.
+ * Light: cards float via subtle shadow on sage background.
+ * Dark: cards elevated by background tone contrast.
  * ========================================================================== */
 @layer utilities {
   .card-surface {
     background: var(--card);
-    border-radius: 12px;
+    border-radius: var(--radius-container);
+    box-shadow: var(--shadow-card);
   }
   .card-surface-raised {
     background: var(--card);
-    border-radius: 12px;
-    border: 1px solid var(--border);
+    border-radius: var(--radius-container);
+    box-shadow: var(--shadow-card);
   }
   .card-inset {
     background: var(--muted);
-    border-radius: 8px;
+    border-radius: var(--radius-inner);
   }
   .accent-stripe {
     border-left: 3px solid var(--primary);
   }
 }
 
-
 /* ==========================================================================
- * SKELETON SHIMMER — warm palette pulse
+ * SKELETON — shimmer sweep (radar scan feel)
  * ========================================================================== */
-@keyframes warm-pulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.7; }
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 @layer utilities {
   .skeleton-pulse {
-    animation: warm-pulse 2s ease-in-out infinite;
-    background: var(--muted);
-    border-radius: 8px;
+    background: linear-gradient(
+      90deg,
+      var(--muted) 25%,
+      color-mix(in srgb, var(--muted) 85%, var(--foreground)) 50%,
+      var(--muted) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+    border-radius: var(--radius-inner);
   }
 }
 
-
 /* ==========================================================================
- * STAGGERED FADE-UP ANIMATION
+ * PAGE ENTER — staggered fade-up
  * ========================================================================== */
-@keyframes fade-up {
+@keyframes enter {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -274,18 +316,25 @@
 }
 
 @layer utilities {
+  .animate-enter {
+    animation: enter 0.35s ease-out both;
+  }
   .animate-fade-up {
-    animation: fade-up 0.4s ease-out both;
+    animation: enter 0.35s ease-out both;
   }
 }
 
-
 /* ==========================================================================
- * FLOAT + REDUCED MOTION
+ * FLOAT + INTERACTIVE MOTION
  * ========================================================================== */
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
 }
 
 @layer utilities {
@@ -294,10 +343,31 @@
   }
 }
 
+/* Card hover lift — touch devices don't get hover transform */
+@media (hover: hover) {
+  .card-surface-raised:hover,
+  .card-surface:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-1px);
+    transition:
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+}
+
+/* Mono data class for instrument readouts */
+@layer utilities {
+  .font-data {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-float,
   .skeleton-pulse,
-  .animate-fade-up {
+  .animate-fade-up,
+  .animate-enter {
     animation: none;
   }
 }

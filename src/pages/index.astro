@@ -5,13 +5,36 @@ import Footer from "@/components/layout/Footer.astro";
 ---
 
 <Layout
-  title="RunCast — What to Wear Running Today | Weather-Adjusted Pace & Gear"
+  title="Should I Run — What to Wear Running Today | Weather-Adjusted Pace & Gear"
   description="Free running weather app: get today's pace adjustment, clothing recommendation, ice warnings, air quality, and best time to run. No signup needed."
 >
   <Header />
 
-  <main class="mx-auto max-w-5xl px-4 py-6 sm:px-6" role="main">
-    <h1 class="sr-only">RunCast: Today's Running Weather Briefing</h1>
+  <main class="mx-auto max-w-7xl px-4 pt-3 pb-6 sm:px-6 lg:px-8" role="main">
+    <h1 class="sr-only">Should I Run: Today's Running Weather Briefing</h1>
+
+    <div id="hero-tagline" class="mb-6 text-center hidden">
+      <p class="text-base font-semibold text-foreground sm:text-lg">Weather apps give you a number. <span class="text-primary">We give you a plan.</span></p>
+      <p class="mt-1 text-xs text-muted-foreground">Pace adjustments, clothing recs, surface warnings, and optimal timing — no signup needed.</p>
+    </div>
+    <script>
+      const LS_SEEN = "runcast-seen";
+      if (!localStorage.getItem(LS_SEEN)) {
+        document.getElementById("hero-tagline")?.classList.remove("hidden");
+        localStorage.setItem(LS_SEEN, "1");
+      }
+    </script>
+
+    <!-- Location fallback banner — shown when geolocation denied, hidden by default -->
+    <div id="location-fallback-banner" class="hidden mb-4 rounded-[var(--radius-base)] bg-warning/5 px-4 py-3 flex items-start gap-3">
+      <svg class="h-4 w-4 mt-0.5 shrink-0 text-warning-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+      <div class="flex-1">
+        <p class="text-sm font-medium text-foreground">We couldn't detect your exact location</p>
+        <p class="mt-0.5 text-xs text-muted-foreground">Showing approximate results. Search for your city above for accurate data.</p>
+      </div>
+      <button id="dismiss-location-banner" class="shrink-0 text-xs text-muted-foreground hover:text-foreground transition-colors" aria-label="Dismiss">&times;</button>
+    </div>
+
     <section aria-label="Today's running briefing" aria-live="polite" id="briefing-section">
       <!-- Loading skeleton -->
       <div id="briefing-skeleton">
@@ -96,5 +119,14 @@ import Footer from "@/components/layout/Footer.astro";
   <script>
     import { initApp } from "@/lib/app";
     initApp();
+
+    // Dismiss location fallback banner
+    document.getElementById("dismiss-location-banner")?.addEventListener("click", () => {
+      document.getElementById("location-fallback-banner")?.classList.add("hidden");
+    });
+    // Also hide banner when user selects a location
+    window.addEventListener("runcast:location-change", () => {
+      document.getElementById("location-fallback-banner")?.classList.add("hidden");
+    });
   </script>
 </Layout>

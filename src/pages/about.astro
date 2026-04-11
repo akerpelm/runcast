@@ -11,41 +11,61 @@ import {
 
 const faqItems = [
   {
-    question: "How does RunCast adjust my running pace for heat?",
+    question: "How does Should I Run adjust my running pace for heat?",
     answer:
       "We use the Hadley method, which combines air temperature and dew point into a single metric (combined = tempF + dewPointF). This captures humidity's outsized effect on running performance. Adjustments range from 0% at combined ≤100 up to 10%+ above 180, where hard running is not recommended.",
   },
   {
-    question: "How does RunCast recommend what to wear running?",
+    question: "How does Should I Run recommend what to wear running?",
     answer:
       "We calculate a runner-specific feels-like temperature by adding metabolic heat offset (+15°F base), effort level offset (Easy +15°F to Interval +25°F), and a runs-hot adjustment (+5°F if toggled). This maps to eight clothing tiers, from singlet (>75°F) to triple-layer with balaclava (<15°F). Wind, rain, UV, and darkness add modifier layers.",
   },
   {
-    question: "How does RunCast detect ice risk for runners?",
+    question: "How does Should I Run detect ice risk for runners?",
     answer:
       "Our 6-scenario algorithm checks active freezing precipitation, black ice from freeze-after-rain cycles, frost formation on clear calm nights, freezing fog, bridge/overpass warnings, and morning radiative cooling. Risk levels never downgrade — the final risk is the worst of all triggered scenarios.",
   },
   {
-    question: "How does RunCast find the best time to run?",
+    question: "How does Should I Run find the best time to run?",
     answer:
       "Every future hour gets a composite penalty score based on temperature (ideal 45–55°F), humidity, wind, gusts, precipitation probability, UV index, darkness, unsocial hours, and ice risk. We scan all windows of your target duration and pick the top 3 non-overlapping options.",
   },
   {
-    question: "What safety alerts does RunCast provide?",
+    question: "What safety alerts does Should I Run provide?",
     answer:
       "We follow NWS, WHO, and EPA thresholds. Danger alerts include heat index ≥104°F, thunderstorms, wind gusts ≥40 mph, AQI >150, and extreme UV. Warning alerts cover heat index 90–103°F, sustained wind ≥31 mph, AQI 101–150, and heavy rain. Caution alerts flag moderate heat, strong wind, high UV, and wet surfaces.",
   },
   {
-    question: "Is RunCast free?",
+    question: "Is Should I Run free?",
     answer:
-      "Yes, RunCast is completely free. No subscription, no paywall, no display ads. Weather data comes from Open-Meteo, a free open-source API. Your optional run logs help us improve recommendations for everyone.",
+      "Yes. No subscription required, no paywall, no display ads. Weather data comes from Open-Meteo, a free open-source API. Your optional run logs help us improve recommendations for everyone.",
+  },
+  {
+    question: "What should I wear running in cold weather?",
+    answer:
+      "We use eight temperature tiers from singlet (>75°F) to triple-layer (<15°F). For cold weather, the key insight is the runner metabolic heat offset: you should dress for roughly 15–20°F warmer than the feels-like temperature. At 35°F, dress for ~50°F — running tights and a long-sleeve base layer with a half-zip. Wind above 15 mph adds a wind-resistant outer layer. Effort level matters too: a tempo run at 35°F needs lighter clothing than an easy jog.",
+  },
+  {
+    question: "How does wind affect running pace?",
+    answer:
+      "Headwinds slow you by approximately 1.2 seconds per mile for every mph of wind speed. A 15 mph headwind costs roughly 18 seconds per mile. Tailwinds help, but only about half as much — aerodynamic drag isn't symmetric. Should I Run calculates the headwind penalty and displays it alongside your adjusted pace. Wind gusts above 30 mph trigger an 'Easy day' recommendation regardless of other conditions.",
+  },
+  {
+    question: "Is it safe to run in high humidity?",
+    answer:
+      "Dew point is the key metric, not relative humidity. The Hadley method adds air temperature and dew point: values above 150 (e.g. 85°F + 68°F dew point = 153) mean you should slow down 4.5–6%. Above 180, hard running is not recommended. High humidity prevents sweat from evaporating, which is your body's primary cooling mechanism during exercise. Runners breathe 10–20x more air than sedentary people, amplifying the effect.",
+  },
+  {
+    question: "How does air quality affect running performance?",
+    answer:
+      "We use EPA AQI thresholds with more conservative guidance for runners. AQI 0–50 is fine for all workouts. At 51–100, sensitive individuals may notice effects. At 101–150, reduce prolonged outdoor effort. Above 150, avoid outdoor running entirely. Because runners breathe far more air per minute than the general population, the standard EPA categories understate the impact for exercisers.",
   },
 ];
 ---
 
 <Layout
-  title="About RunCast — How Running Weather Recommendations Work"
-  description="Learn how RunCast calculates pace adjustments, clothing recommendations, ice risk, and best run timing using exercise science and real-time weather data. Free forever."
+  title="About Should I Run — How Running Weather Recommendations Work"
+  description="Learn how Should I Run calculates pace adjustments, clothing recommendations, ice risk, and best run timing using exercise science and real-time weather data. Free forever."
 >
   <Header />
 
@@ -57,7 +77,7 @@ const faqItems = [
         <h1
           class="font-[var(--font-display)] text-2xl italic tracking-tight text-foreground sm:text-3xl"
         >
-          About Run<span class="text-primary">Cast</span>
+          About <span class="italic">Should I</span> <span class="font-semibold text-primary">Run</span>
         </h1>
 
         <div
@@ -65,12 +85,11 @@ const faqItems = [
         >
           <p>
             <strong class="text-foreground"
-              >Weather apps tell you temperatures. RunCast tells you how to run
-              today.</strong
+              >Weather apps give you a number. We give you a plan.</strong
             >
           </p>
           <p>
-            RunCast is a free daily running briefing for runners who want more
+            Should I Run is a free daily running briefing for runners who want more
             than a wardrobe assistant. We take the same weather data everyone
             else has and layer actionable running intelligence on top: pace
             adjustments, surface warnings, optimal timing, and run type
@@ -151,12 +170,12 @@ const faqItems = [
           </p>
         </div>
 
-        <h2 class="mt-8 text-lg font-bold text-foreground">Free Forever</h2>
+        <h2 class="mt-8 text-lg font-bold text-foreground">Free to Use</h2>
         <div class="mt-3 text-sm leading-relaxed text-muted-foreground">
           <p>
-            No subscription. No paywall. No display ads. Your feedback keeps
-            RunCast free — every log helps us deliver better recommendations for
-            everyone.
+            No subscription required. No paywall. No display ads. Your feedback
+            keeps Should I Run free — every log helps us deliver better
+            recommendations for everyone.
           </p>
         </div>
       </div>
@@ -166,7 +185,7 @@ const faqItems = [
         class="mt-6 rounded-[var(--radius-container)] card-surface-raised p-6 sm:p-8"
       >
         <h2 class="text-lg font-bold text-foreground">
-          The Science Behind RunCast
+          The Science Behind Should I Run <span class="text-sm font-normal text-muted-foreground">(for nerds)</span>
         </h2>
         <p class="mt-2 mb-4 text-sm text-muted-foreground">
           Every recommendation is backed by a specific algorithm. Here's exactly
@@ -188,14 +207,14 @@ const faqItems = [
                   metric:
                   <code
                     class="rounded bg-muted px-1.5 py-0.5 text-xs font-mono"
-                    >combined = tempF + dewPointF</code
-                  >. This captures humidity's outsized effect on running
-                  performance better than temperature alone.
+                    >hadleyIndex = tempF + dewPointF</code
+                  >. This "Hadley index" captures humidity's outsized effect on
+                  running performance better than temperature alone.
                 </p>
                 <div
                   class="rounded-[var(--radius-inner)] bg-muted p-3 text-xs font-mono leading-relaxed"
                 >
-                  combined &le; 100 &rarr; no adjustment<br />
+                  hadleyIndex &le; 100 &rarr; no adjustment<br />
                   101&ndash;110 &rarr; 0&ndash;0.5% slower<br />
                   111&ndash;120 &rarr; 0.5&ndash;1%<br />
                   121&ndash;130 &rarr; 1&ndash;2%<br />
@@ -251,8 +270,9 @@ const faqItems = [
                 <p>
                   <strong class="text-foreground">Modifiers:</strong> Wind above 15
                   mph adds a wind-resistant layer. Active precipitation adds a water-resistant
-                  layer. UV &ge; 6 adds sunscreen, cap, and sunglasses. Running after
-                  dark adds reflective vest and headlamp.
+                  layer. When precipitation probability is &ge; 50% but it's not yet raining,
+                  we suggest a light rain shell. UV &ge; 6 adds sunscreen, cap, and sunglasses.
+                  Running after dark adds reflective vest and headlamp.
                 </p>
               </div>
             </AccordionContent>

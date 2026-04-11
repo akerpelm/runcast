@@ -1,26 +1,41 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <!-- Background -->
-  <rect width="1200" height="630" fill="#F0F2F5"/>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F4F5F0"/>
+      <stop offset="100%" stop-color="#ECEEE8"/>
+    </linearGradient>
+  </defs>
 
-  <!-- Neumorphic card -->
-  <rect x="100" y="80" width="1000" height="470" rx="28" fill="#F0F2F5"
-        style="filter: drop-shadow(6px 6px 12px rgba(163,177,198,0.6)) drop-shadow(-4px -4px 10px rgba(255,255,255,0.8))"/>
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Card -->
+  <rect x="100" y="80" width="1000" height="470" rx="28" fill="#FFFFFF" opacity="0.9"/>
 
   <!-- Accent stripe -->
-  <rect x="100" y="80" width="1000" height="6" rx="3" fill="#D94F00"/>
+  <rect x="100" y="80" width="6" height="470" rx="3" fill="#D64C2F"/>
 
-  <!-- RunCast wordmark -->
-  <text x="600" y="290" font-family="system-ui, -apple-system, sans-serif" font-size="96" font-weight="800" text-anchor="middle">
-    <tspan fill="#1A1A1A">Run</tspan><tspan fill="#D94F00">Cast</tspan>
+  <!-- Wordmark -->
+  <text x="600" y="280" font-family="Georgia, serif" font-size="96" text-anchor="middle">
+    <tspan fill="#1B1F1E" font-style="italic" font-weight="400">ShouldI</tspan><tspan fill="#D64C2F" font-weight="700">Run</tspan>
   </text>
 
   <!-- Tagline -->
-  <text x="600" y="360" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="500" fill="#5A5E66" text-anchor="middle">
+  <text x="600" y="355" font-family="sans-serif" font-size="32" font-weight="500" fill="#6B7370" text-anchor="middle">
     Your daily running briefing
   </text>
 
-  <!-- Subtitle -->
-  <text x="600" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="400" fill="#9CA0A8" text-anchor="middle">
+  <!-- Features -->
+  <text x="600" y="415" font-family="sans-serif" font-size="20" font-weight="400" fill="#9CA0A8" text-anchor="middle">
     Weather-adjusted pace · Surface warnings · Gear recommendations
   </text>
+
+  <!-- URL -->
+  <text x="600" y="510" font-family="sans-serif" font-size="18" font-weight="400" fill="#A8A29E" text-anchor="middle">
+    shouldirun.today
+  </text>
+
+  <!-- Decorative circles -->
+  <circle cx="1020" cy="160" r="40" fill="none" stroke="#D64C2F" stroke-width="1.5" opacity="0.1"/>
+  <circle cx="1020" cy="160" r="25" fill="none" stroke="#2B7A6F" stroke-width="1" opacity="0.1"/>
 </svg>

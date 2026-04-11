@@ -4,9 +4,9 @@ import { Switch } from "@/components/starwind/switch";
 ---
 
 <header class="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-md">
-  <div class="mx-auto flex h-16 max-w-4xl items-center justify-between px-4 sm:px-6">
+  <div class="mx-auto flex h-12 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
     <!-- Logo -->
-    <a href="/" class="font-[var(--font-display)] text-xl italic tracking-tight text-foreground">Run<span class="text-primary">Cast</span></a>
+    <a href="/" class="font-[var(--font-display)] text-xl tracking-tight text-foreground italic">ShouldI<span class="font-semibold text-primary not-italic">Run</span></a>
 
     <!-- Right side: location + log run + theme toggle -->
     <div class="flex items-center gap-2 sm:gap-3 min-w-0">
@@ -14,7 +14,7 @@ import { Switch } from "@/components/starwind/switch";
         <button
           id="location-display"
           type="button"
-          class="flex items-center gap-1.5 rounded-full card-inset px-2.5 py-1.5 text-xs font-medium text-muted-foreground cursor-pointer hover:text-foreground hover:border hover:border-border transition-colors"
+          class="flex items-center gap-1.5 rounded-full card-inset px-2.5 py-1.5 text-xs font-medium text-foreground/70 cursor-pointer hover:text-foreground hover:border hover:border-border transition-colors"
         >
           <svg class="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
@@ -53,7 +53,7 @@ import { Switch } from "@/components/starwind/switch";
           <button
             id="units-trigger"
             type="button"
-            class="flex items-center gap-1.5 rounded-full card-inset px-2.5 py-1.5 text-xs font-medium text-muted-foreground cursor-pointer hover:text-foreground hover:border hover:border-border transition-colors shrink-0"
+            class="flex items-center gap-1.5 rounded-full card-inset px-2.5 py-1.5 text-xs font-medium text-foreground/70 cursor-pointer hover:text-foreground hover:border hover:border-border transition-colors shrink-0"
             aria-label="Toggle units"
           >
             <span id="units-label">°F · mi</span>
@@ -99,6 +99,22 @@ import { Switch } from "@/components/starwind/switch";
   locationPromise.then((loc) => {
     const el = document.getElementById("location-text");
     if (el) el.textContent = loc.name;
+
+    // If we fell back to IP or default, nudge the user to set their location
+    if (loc.source === "ip" || loc.source === "default") {
+      const dropdown = document.getElementById("location-dropdown");
+      const searchInput = document.getElementById("location-search") as HTMLInputElement | null;
+      // Show a fallback banner in the briefing area
+      const banner = document.getElementById("location-fallback-banner");
+      if (banner) banner.classList.remove("hidden");
+      // Auto-open location dropdown after a brief delay so the user notices
+      setTimeout(() => {
+        if (dropdown && searchInput) {
+          dropdown.classList.remove("hidden");
+          searchInput.focus();
+        }
+      }, 1500);
+    }
   });
 
   // ─── Location Search Dropdown ──────────────────────────────────────────────
@@ -143,7 +159,7 @@ import { Switch } from "@/components/starwind/switch";
       const result = lastSearchResults[idx];
       if (!result) return;
       const name = result.admin1 ? `${result.name}, ${result.admin1}` : `${result.name}, ${result.country}`;
-      const loc: GeoLocation = { latitude: result.latitude, longitude: result.longitude, name };
+      const loc: GeoLocation = { latitude: result.latitude, longitude: result.longitude, name, source: "saved" };
       dropdown.classList.add("hidden");
       saveLocation(loc);
       updateLocationDisplay(loc.name);

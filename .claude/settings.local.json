@@ -36,7 +36,14 @@
       "WebFetch(domain:developers.google.com)",
       "Bash(tree:*)",
       "Bash(done)",
-      "Bash(wrangler deploy:*)"
+      "Bash(wrangler deploy:*)",
+      "Bash(wc -l /Users/akerpelm/repos/runcast/src/lib/*.ts)",
+      "Bash(npx tsc:*)",
+      "Bash(wc:*)",
+      "WebFetch(domain:docs.astro.build)",
+      "Bash(npx astro:*)",
+      "Bash(node_modules/.bin/astro --version)",
+      "WebFetch(domain:astro.build)"
     ]
   }
 }

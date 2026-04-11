@@ -51,9 +51,15 @@ export interface FeedbackEntry {
   clothingFeel: string | null;
   effortLevel: string | null;
   shoes: string | null;
+  wornTop: string | null;
+  wornBottom: string | null;
 }
 
 export interface FeedbackState {
+  feedbackWornTop: string | null;
+  feedbackWornBottom: string | null;
+  feedbackWornConfirmed: boolean; // user confirmed or changed what they wore
+  feedbackWornEditing: boolean;   // user clicked "Change" to pick different clothing
   feedbackClothing: string | null;
   feedbackEffortLevel: string | null;
   feedbackShoes: string | null;
@@ -290,6 +296,8 @@ export function saveFeedback(b: FeedbackBriefing, ctx: FeedbackContext, state: F
     clothingFeel: state.feedbackClothing,
     effortLevel: state.feedbackEffortLevel,
     shoes: state.feedbackShoes || null,
+    wornTop: state.feedbackWornTop || null,
+    wornBottom: state.feedbackWornBottom || null,
   };
 
   // Persist shoe to history if provided
@@ -325,8 +333,29 @@ export function submitFeedback(
   }
 }
 
+// ─── Clothing tier options for the "what did you wear?" picker ──────────────
+const TOP_OPTIONS = [
+  "Singlet or sports bra",
+  "T-shirt or singlet",
+  "T-shirt or light long sleeve",
+  "Long-sleeve tech tee",
+  "Long-sleeve base layer + half-zip or vest",
+  "Base layer + midweight jacket",
+  "Thermal base layer + insulated jacket",
+  "Base + mid + wind shell",
+];
+
+const BOTTOM_OPTIONS = [
+  "Split shorts",
+  "Shorts",
+  "Shorts or half tights",
+  "Running tights",
+  "Insulated tights",
+  "Insulated tights + wind pants",
+];
+
 // ─── Render ──────────────────────────────────────────────────────────────────
-export function renderFeedback(_b: FeedbackBriefing, state: FeedbackState): string {
+export function renderFeedback(b: FeedbackBriefing, state: FeedbackState): string {
   if (state.feedbackSubmitted || isFeedbackDismissedToday()) {
     if (state.feedbackSubmitted && hasFeedbackToday()) {
       const count = getFeedbackCount();
@@ -343,8 +372,15 @@ export function renderFeedback(_b: FeedbackBriefing, state: FeedbackState): stri
   }
 
   if (state.feedbackOpen) {
-    // Determine which step we're on
-    const step = !state.feedbackClothing ? 1 : !state.feedbackEffortLevel ? 2 : 3;
+    // Pre-fill worn clothing from recommendation if not yet set
+    if (state.feedbackWornTop === null) state.feedbackWornTop = b.clothing.top;
+    if (state.feedbackWornBottom === null) state.feedbackWornBottom = b.clothing.bottom;
+
+    // Steps: 1=what did you wear, 2=clothing feel, 3=effort, 4=shoes
+    const step = !state.feedbackWornConfirmed ? 1
+      : !state.feedbackClothing ? 2
+      : !state.feedbackEffortLevel ? 3
+      : 4;
 
     const clothingIcons: Record<string, string> = {
       "too-cold": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="M2 12h10"/><path d="M9 4v16"/><path d="m3 9 3 3-3 3"/><path d="M12 6 9.7 3.7a1 1 0 0 1 0-1.4l.6-.6a1 1 0 0 1 1.4 0L15 5"/><path d="m20 4-8.5 8.5"/><path d="M12 18l3.3 3.3a1 1 0 0 0 1.4 0l.6-.6a1 1 0 0 0 0-1.4L14 16"/></svg>`,
@@ -371,34 +407,92 @@ export function renderFeedback(_b: FeedbackBriefing, state: FeedbackState): stri
       >${label}</button>`;
     }
 
-    // Step 1: Clothing feel — large tappable cards with icons
-    let step1HTML = `<div>
-      <p class="mb-2 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">1. How did the clothing feel?</p>
-      <div class="grid grid-cols-3 gap-2">
-        ${clothingOptions.map(o => {
-          const active = o.value === state.feedbackClothing;
-          return `<button data-action="feedback-select" data-fb-group="clothing" data-fb-value="${o.value}"
-            class="flex flex-col items-center gap-1.5 rounded-[var(--radius-inner)] p-3 transition-colors
-              ${active ? "bg-primary/10 text-foreground card-inset" : "card-inset text-muted-foreground hover:text-foreground"}">
-            ${clothingIcons[o.value]}
-            <span class="text-xs font-semibold">${o.label}</span>
-          </button>`;
-        }).join("")}
-      </div>
-    </div>`;
+    // Step 1: What did you wear? — show recommendation, option to change
+    let step1HTML = "";
+    if (!state.feedbackWornEditing) {
+      const matchesRec = state.feedbackWornTop === b.clothing.top && state.feedbackWornBottom === b.clothing.bottom;
+      step1HTML = `<div>
+        <p class="mb-2 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">1. What did you wear?</p>
+        <div class="flex items-center gap-3">
+          <div class="flex-1 rounded-[var(--radius-inner)] card-inset p-3">
+            <p class="text-xs text-muted-foreground">Top</p>
+            <p class="text-sm font-semibold text-foreground">${esc(state.feedbackWornTop!)}</p>
+            <p class="mt-1.5 text-xs text-muted-foreground">Bottom</p>
+            <p class="text-sm font-semibold text-foreground">${esc(state.feedbackWornBottom!)}</p>
+            ${matchesRec ? `<p class="mt-1.5 text-[10px] text-muted-foreground/60">Matches our suggestion</p>` : `<p class="mt-1.5 text-[10px] text-primary">Different from our suggestion — your feedback helps us improve</p>`}
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <button data-action="feedback-worn-confirm"
+              class="rounded-lg bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 transition-opacity">Wore this</button>
+            <button data-action="feedback-worn-edit"
+              class="rounded-lg px-4 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">Change</button>
+          </div>
+        </div>
+      </div>`;
+    } else {
+      // Editing mode: show tier pickers for top and bottom
+      const topPills = TOP_OPTIONS.map(t => {
+        const active = t === state.feedbackWornTop;
+        return `<button data-action="feedback-select" data-fb-group="wornTop" data-fb-value="${esc(t)}"
+          class="rounded-full px-3 py-1.5 text-xs font-semibold transition-colors text-left
+            ${active ? "bg-primary/10 text-primary card-inset" : "text-muted-foreground hover:text-foreground hover:bg-muted"}"
+        >${esc(t)}</button>`;
+      }).join("");
+      const bottomPills = BOTTOM_OPTIONS.map(bt => {
+        const active = bt === state.feedbackWornBottom;
+        return `<button data-action="feedback-select" data-fb-group="wornBottom" data-fb-value="${esc(bt)}"
+          class="rounded-full px-3 py-1.5 text-xs font-semibold transition-colors text-left
+            ${active ? "bg-primary/10 text-primary card-inset" : "text-muted-foreground hover:text-foreground hover:bg-muted"}"
+        >${esc(bt)}</button>`;
+      }).join("");
+      step1HTML = `<div>
+        <p class="mb-2 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">1. What did you actually wear?</p>
+        <div class="space-y-2">
+          <div>
+            <p class="mb-1 text-xs text-muted-foreground">Top</p>
+            <div class="flex flex-wrap gap-1.5">${topPills}</div>
+          </div>
+          <div>
+            <p class="mb-1 text-xs text-muted-foreground">Bottom</p>
+            <div class="flex flex-wrap gap-1.5">${bottomPills}</div>
+          </div>
+          <button data-action="feedback-worn-confirm"
+            class="mt-1 rounded-lg bg-primary px-4 py-1.5 text-xs font-semibold text-primary-foreground hover:opacity-90 transition-opacity">Done</button>
+        </div>
+      </div>`;
+    }
 
-    // Step 2: Effort level
+    // Step 2: Clothing feel — large tappable cards with icons
     let step2HTML = "";
     if (step >= 2) {
       step2HTML = `<div>
-        <p class="mb-1.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">2. Effort level?</p>
+        <p class="mb-2 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">2. How did the clothing feel?</p>
+        <div class="grid grid-cols-3 gap-2">
+          ${clothingOptions.map(o => {
+            const active = o.value === state.feedbackClothing;
+            return `<button data-action="feedback-select" data-fb-group="clothing" data-fb-value="${o.value}"
+              class="flex flex-col items-center gap-1.5 rounded-[var(--radius-inner)] p-3 transition-colors
+                ${active ? "bg-primary/10 text-primary card-inset" : "card-inset text-muted-foreground hover:text-foreground"}">
+              ${clothingIcons[o.value]}
+              <span class="text-xs font-semibold">${o.label}</span>
+            </button>`;
+          }).join("")}
+        </div>
+      </div>`;
+    }
+
+    // Step 3: Effort level
+    let step3HTML = "";
+    if (step >= 3) {
+      step3HTML = `<div>
+        <p class="mb-1.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">3. Effort level?</p>
         <div class="flex flex-wrap gap-1.5">${effortPills.map(p => pill("effortLevel", p.value, p.label, state.feedbackEffortLevel)).join("")}</div>
       </div>`;
     }
 
-    // Step 3: Shoes
-    let step3HTML = "";
-    if (step >= 3) {
+    // Step 4: Shoes
+    let step4HTML = "";
+    if (step >= 4) {
       const shoeHistory = getShoeHistory();
       if (shoeHistory.length > 0 && !state.feedbackShoesOther) {
         const shoePills = shoeHistory.slice(0, 5).map(s =>
@@ -407,14 +501,14 @@ export function renderFeedback(_b: FeedbackBriefing, state: FeedbackState): stri
         const otherPill = `<button data-action="feedback-shoe-other"
           class="rounded-full px-3 py-1.5 text-xs font-semibold transition-colors text-muted-foreground hover:text-foreground hover:bg-muted"
         >Other...</button>`;
-        step3HTML = `<div>
-          <p class="mb-1.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">3. Shoes <span class="font-normal">(optional)</span></p>
+        step4HTML = `<div>
+          <p class="mb-1.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">4. Shoes <span class="font-normal">(optional)</span></p>
           <div class="flex flex-wrap gap-1.5">${shoePills}${otherPill}</div>
         </div>`;
       } else {
         const val = state.feedbackShoes ? esc(state.feedbackShoes) : "";
-        step3HTML = `<div>
-          <p class="mb-1.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">3. Shoes <span class="font-normal">(optional)</span></p>
+        step4HTML = `<div>
+          <p class="mb-1.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">4. Shoes <span class="font-normal">(optional)</span></p>
           <input data-action="feedback-shoe-text" type="text" placeholder="What shoes?" value="${val}"
             class="h-7 w-full max-w-[200px] rounded-[var(--radius-inner)] card-inset px-2 text-xs text-foreground placeholder-muted-foreground/40 focus:outline-none focus:ring-1 focus:ring-primary/50" />
         </div>`;
@@ -426,7 +520,7 @@ export function renderFeedback(_b: FeedbackBriefing, state: FeedbackState): stri
         <div class="flex items-center justify-between mb-3">
           <div class="flex items-center gap-2">
             <p class="text-sm font-semibold text-foreground">How was the run?</p>
-            <span class="text-xs text-muted-foreground">${step} of 3</span>
+            <span class="text-xs text-muted-foreground">${step} of 4</span>
           </div>
           <button data-action="dismiss-feedback" class="text-xs text-muted-foreground hover:text-foreground transition-colors">Skip</button>
         </div>
@@ -434,8 +528,9 @@ export function renderFeedback(_b: FeedbackBriefing, state: FeedbackState): stri
           ${step1HTML}
           ${step2HTML}
           ${step3HTML}
+          ${step4HTML}
         </div>
-        ${state.feedbackClothing && state.feedbackEffortLevel ? `
+        ${state.feedbackWornConfirmed && state.feedbackClothing && state.feedbackEffortLevel ? `
         <div class="mt-3 flex items-center justify-end">
           <button data-action="feedback-submit"
             class="rounded-lg bg-primary px-5 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
@@ -448,7 +543,7 @@ export function renderFeedback(_b: FeedbackBriefing, state: FeedbackState): stri
     <div id="feedback-section" class="mb-4 flex items-center gap-3 rounded-[var(--radius-base)] card-surface-raised accent-stripe px-4 py-3">
       <div class="flex-1">
         <p class="text-sm font-semibold text-foreground">Did you run today?</p>
-        <p class="text-xs text-muted-foreground">Quick log — improves your recs and keeps RunCast free.</p>
+        <p class="text-xs text-muted-foreground">Quick log — improves your recs and keeps Should I Run free.</p>
       </div>
       <button data-action="open-feedback"
         class="shrink-0 rounded-lg bg-primary px-5 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
@@ -476,6 +571,15 @@ export function handleFeedbackAction(
     case "dismiss-feedback":
       dismissFeedback(state, renderCallback);
       return true;
+    case "feedback-worn-confirm":
+      state.feedbackWornConfirmed = true;
+      state.feedbackWornEditing = false;
+      renderCallback();
+      return true;
+    case "feedback-worn-edit":
+      state.feedbackWornEditing = true;
+      renderCallback();
+      return true;
     case "feedback-select": {
       const group = target.dataset.fbGroup;
       const value = target.dataset.fbValue || "";
@@ -485,6 +589,10 @@ export function handleFeedbackAction(
         state.feedbackEffortLevel = state.feedbackEffortLevel === value ? null : value;
       } else if (group === "shoes") {
         state.feedbackShoes = state.feedbackShoes === value ? null : value;
+      } else if (group === "wornTop") {
+        state.feedbackWornTop = value;
+      } else if (group === "wornBottom") {
+        state.feedbackWornBottom = value;
       }
       renderCallback();
       return true;

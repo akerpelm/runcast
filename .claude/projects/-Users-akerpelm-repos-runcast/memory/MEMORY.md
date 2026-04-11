@@ -1,0 +1,3 @@
+- [Editorial Design Decision](feedback_design_direction.md) — Keeping warm parchment/editorial look, not neumorphism
+- [Monetization Timing](project_monetization.md) — Affiliate links deferred; blog + Plausible are next revenue moves
+- [User Profile](user_profile.md) — Builder/owner of RunCast, hands-on fullstack dev
