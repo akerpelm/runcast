@@ -93,6 +93,7 @@
  *   muted-fg   #6B7370 on #F4F5F0 → 4.5:1 (AA)
  *   primary    #D64C2F on #FFFFFF → 4.6:1 (AA)
  *   secondary  #2B7A6F on #FFFFFF → 5.2:1 (AA)
+ *   badge-fg   #FFFFFF on info/success/warning/error bg (white-on-color)
  * ==========================================================================
  */
 :root {
@@ -119,13 +120,13 @@
   --accent-foreground: #1b1f1e;
 
   --info: #2563eb;
-  --info-foreground: #1e3a5f;
+  --info-foreground: #ffffff;
   --success: #2b7a6f;
-  --success-foreground: #064e45;
+  --success-foreground: #ffffff;
   --warning: #c77b1e;
-  --warning-foreground: #6b3000;
+  --warning-foreground: #ffffff;
   --error: #c43030;
-  --error-foreground: #7f1d1d;
+  --error-foreground: #ffffff;
 
   --border: #e2e5de;
   --input: #e2e5de;
