@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 Disallow: /404.html
 
-Sitemap: https://runcast.app/sitemap-index.xml
+Sitemap: https://shouldirun.today/sitemap-index.xml
 
 # AI training crawlers — disallow content scraping for model training
 User-agent: GPTBot

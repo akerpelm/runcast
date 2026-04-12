@@ -1,6 +1,16 @@
 import { defineMiddleware } from "astro:middleware";
 
-export const onRequest = defineMiddleware(async (_context, next) => {
+const CANONICAL_HOST = "shouldirun.today";
+
+export const onRequest = defineMiddleware(async (context, next) => {
+  const url = new URL(context.request.url);
+
+  // Redirect www → non-www (301 permanent)
+  if (url.hostname === `www.${CANONICAL_HOST}`) {
+    url.hostname = CANONICAL_HOST;
+    return Response.redirect(url.toString(), 301);
+  }
+
   const response = await next();
   const ct = response.headers.get("content-type") || "";
 
