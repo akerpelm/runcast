@@ -23,6 +23,7 @@ import { syncFeedback } from "./sync";
 // ─── State ───────────────────────────────────────────────────────────────────
 let state: AppState;
 let eventsBound = false;
+let shouldScrollTimeline = true;
 
 // ─── Entry Point ─────────────────────────────────────────────────────────────
 export async function initApp(): Promise<void> {
@@ -128,6 +129,7 @@ function switchDay(dateStr: string): void {
 
   state.timelineOffset = 0;
   state.alertsExpanded = false;
+  shouldScrollTimeline = true;
   render();
 }
 
@@ -187,18 +189,28 @@ function render(): void {
   skeleton.classList.add("hidden");
   live.classList.remove("hidden");
 
-  // Auto-scroll the selected pill into view
-  requestAnimationFrame(() => {
-    const selectedPill = live.querySelector("[data-selected-pill]") as HTMLElement | null;
-    if (selectedPill) {
-      selectedPill.scrollIntoView({ inline: "center", block: "nearest", behavior: "instant" });
-    }
-    // Also scroll active day tab into view
-    const activeTab = live.querySelector("[data-action='select-day'][class*='border-primary']") as HTMLElement | null;
-    if (activeTab) {
-      activeTab.scrollIntoView({ inline: "center", block: "nearest", behavior: "instant" });
-    }
-  });
+  // Auto-scroll timeline only on initial load, day change, hour change, or location change
+  if (shouldScrollTimeline) {
+    requestAnimationFrame(() => {
+      const selectedPill = live.querySelector("[data-selected-pill]") as HTMLElement | null;
+      if (selectedPill) {
+        const scroller = document.getElementById("timeline-scroll");
+        if (scroller) {
+          const pillLeft = selectedPill.offsetLeft - scroller.offsetLeft;
+          scroller.scrollLeft = pillLeft - scroller.clientWidth / 2 + selectedPill.offsetWidth / 2;
+        }
+      }
+      const activeTab = live.querySelector("[data-action='select-day'][class*='border-primary']") as HTMLElement | null;
+      if (activeTab) {
+        const tabScroller = document.getElementById("day-tabs-scroll");
+        if (tabScroller) {
+          const tabLeft = activeTab.offsetLeft - tabScroller.offsetLeft;
+          tabScroller.scrollLeft = tabLeft - tabScroller.clientWidth / 2 + activeTab.offsetWidth / 2;
+        }
+      }
+    });
+    shouldScrollTimeline = false;
+  }
 
   if (!eventsBound) {
     bindEvents();
@@ -232,7 +244,7 @@ function bindEvents(): void {
         break;
       case "select-hour": {
         const idx = parseInt(target.dataset.hourIndex || "0", 10);
-        if (idx !== state.selectedHourIndex) { state.selectedHourIndex = idx; state.alertsExpanded = false; render(); }
+        if (idx !== state.selectedHourIndex) { state.selectedHourIndex = idx; state.alertsExpanded = false; shouldScrollTimeline = true; render(); }
         break;
       }
       case "select-effort": {
@@ -340,6 +352,7 @@ async function changeLocation(loc: GeoLocation): Promise<void> {
 
     state.timelineOffset = 0;
     state.alertsExpanded = false;
+    shouldScrollTimeline = true;
 
     render();
   } catch (err) {
