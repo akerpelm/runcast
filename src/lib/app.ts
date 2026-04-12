@@ -7,7 +7,7 @@ import { fetchWeather } from "./weather";
 import { fetchAirQuality } from "./air-quality";
 import {
   type AppState, type EffortLevel,
-  EFFORTS, EMPTY_PACES, TIMELINE_VISIBLE, setTimelineVisible, getTimelineVisible,
+  EFFORTS, EMPTY_PACES,
   buildRenderContext, parsePace,
   loadPaces, savePaces, loadRunsHot, saveRunsHot, loadEffort, saveEffort, loadUnits, loadDist,
 } from "./state";
@@ -47,14 +47,6 @@ export async function initApp(): Promise<void> {
     let selectedIdx = displayHours.findIndex(h => new Date(h.time).getHours() === nowHour);
     if (selectedIdx === -1) selectedIdx = Math.max(0, displayHours.length - 1);
 
-    // Calculate visible count before first offset to handle mobile correctly
-    setTimelineVisible(getTimelineVisible());
-
-    const offset = Math.max(0, Math.min(
-      selectedIdx - Math.floor(TIMELINE_VISIBLE / 2),
-      displayHours.length - TIMELINE_VISIBLE
-    ));
-
     state = {
       weather, airQuality, locationName: location.name,
       lat: location.latitude, lng: location.longitude,
@@ -62,7 +54,7 @@ export async function initApp(): Promise<void> {
       availableDays,
       displayHours,
       selectedHourIndex: selectedIdx,
-      timelineOffset: Math.max(0, offset),
+      timelineOffset: 0,
       paces: loadPaces(),
       selectedEffort: loadEffort(),
       runsHot: loadRunsHot(),
@@ -112,15 +104,7 @@ export async function initApp(): Promise<void> {
       syncFeedback();
     });
 
-    // Re-render on resize to adjust timeline visible count
-    let resizeTimer: ReturnType<typeof setTimeout>;
-    window.addEventListener("resize", () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-        const newVisible = getTimelineVisible();
-        if (newVisible !== TIMELINE_VISIBLE) render();
-      }, 150);
-    });
+    // (resize no longer needs re-render — timeline is free-scroll)
   } catch (err) {
     renderError(err instanceof Error ? err.message : "Something went wrong");
   }
@@ -142,10 +126,7 @@ function switchDay(dateStr: string): void {
     if (state.selectedHourIndex === -1) state.selectedHourIndex = 0;
   }
 
-  state.timelineOffset = Math.max(0, Math.min(
-    state.selectedHourIndex - Math.floor(TIMELINE_VISIBLE / 2),
-    state.displayHours.length - TIMELINE_VISIBLE
-  ));
+  state.timelineOffset = 0;
   state.alertsExpanded = false;
   render();
 }
@@ -180,12 +161,6 @@ function render(): void {
   const live = document.getElementById("briefing-live");
   if (!skeleton || !live) return;
 
-  setTimelineVisible(getTimelineVisible());
-
-  // Clamp offset to new visible count
-  const maxOffset = Math.max(0, state.displayHours.length - TIMELINE_VISIBLE);
-  if (state.timelineOffset > maxOffset) state.timelineOffset = maxOffset;
-
   const hour = state.displayHours[state.selectedHourIndex];
   if (!hour) return;
 
@@ -200,15 +175,30 @@ function render(): void {
     ${alertsHTML}
     ${feedbackHTML}
     ${renderHeroForecast(b, ctx)}
-    <div class="mt-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:items-start">
-      <div>${renderClothing(b, ctx)}</div>
-      <div class="mt-4 lg:mt-0">${renderDetailsRow(b, bw, ctx)}</div>
-      <div class="mt-4 lg:mt-0">${renderPaceEffort(b, ctx)}</div>
+    <div class="mt-4 lg:mt-5 space-y-4 lg:space-y-4">
+      ${renderClothing(b, ctx)}
+      <div class="grid gap-4 sm:grid-cols-2">
+        ${renderDetailsRow(b, bw, ctx)}
+        ${renderPaceEffort(b, ctx)}
+      </div>
     </div>
   `;
 
   skeleton.classList.add("hidden");
   live.classList.remove("hidden");
+
+  // Auto-scroll the selected pill into view
+  requestAnimationFrame(() => {
+    const selectedPill = live.querySelector("[data-selected-pill]") as HTMLElement | null;
+    if (selectedPill) {
+      selectedPill.scrollIntoView({ inline: "center", block: "nearest", behavior: "instant" });
+    }
+    // Also scroll active day tab into view
+    const activeTab = live.querySelector("[data-action='select-day'][class*='border-primary']") as HTMLElement | null;
+    if (activeTab) {
+      activeTab.scrollIntoView({ inline: "center", block: "nearest", behavior: "instant" });
+    }
+  });
 
   if (!eventsBound) {
     bindEvents();
@@ -252,44 +242,15 @@ function bindEvents(): void {
         }
         break;
       }
-      case "timeline-back":
-        if (state.timelineOffset > 0) {
-          state.timelineOffset = Math.max(0, state.timelineOffset - TIMELINE_VISIBLE);
-          render();
-        } else {
-          // At the start of this day — try previous day
-          const prevDayIdx = state.availableDays.findIndex(d => d.date === state.selectedDayDate) - 1;
-          if (prevDayIdx >= 0) {
-            const prevDate = state.availableDays[prevDayIdx].date;
-            state.selectedDayDate = prevDate;
-            state.displayHours = state.weather.hourly.filter(h => h.time.startsWith(prevDate));
-            // Jump to the end of the previous day
-            state.selectedHourIndex = Math.max(0, state.displayHours.length - 1);
-            state.timelineOffset = Math.max(0, state.displayHours.length - TIMELINE_VISIBLE);
-            state.alertsExpanded = false;
-            render();
-          }
+      case "scroll-back":
+      case "scroll-fwd": {
+        const scroller = document.getElementById("timeline-scroll");
+        if (scroller) {
+          const amount = scroller.clientWidth * 0.6;
+          scroller.scrollBy({ left: action === "scroll-back" ? -amount : amount, behavior: "smooth" });
         }
         break;
-      case "timeline-forward":
-        if (state.timelineOffset + TIMELINE_VISIBLE < state.displayHours.length) {
-          state.timelineOffset = Math.min(state.displayHours.length - TIMELINE_VISIBLE, state.timelineOffset + TIMELINE_VISIBLE);
-          render();
-        } else {
-          // At the end of this day — try next day
-          const nextDayIdx = state.availableDays.findIndex(d => d.date === state.selectedDayDate) + 1;
-          if (nextDayIdx < state.availableDays.length) {
-            const nextDate = state.availableDays[nextDayIdx].date;
-            state.selectedDayDate = nextDate;
-            state.displayHours = state.weather.hourly.filter(h => h.time.startsWith(nextDate));
-            // Jump to the start of the next day
-            state.selectedHourIndex = 0;
-            state.timelineOffset = 0;
-            state.alertsExpanded = false;
-            render();
-          }
-        }
-        break;
+      }
       case "toggle-alerts":
         state.alertsExpanded = !state.alertsExpanded; render();
         break;
@@ -377,10 +338,7 @@ async function changeLocation(loc: GeoLocation): Promise<void> {
     state.selectedHourIndex = state.displayHours.findIndex(h => new Date(h.time).getHours() === nowHour);
     if (state.selectedHourIndex === -1) state.selectedHourIndex = 0;
 
-    state.timelineOffset = Math.max(0, Math.min(
-      state.selectedHourIndex - Math.floor(TIMELINE_VISIBLE / 2),
-      state.displayHours.length - TIMELINE_VISIBLE
-    ));
+    state.timelineOffset = 0;
     state.alertsExpanded = false;
 
     render();

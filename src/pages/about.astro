@@ -13,27 +13,27 @@ const faqItems = [
   {
     question: "How does Should I Run adjust my running pace for heat?",
     answer:
-      "We use the Hadley method, which combines air temperature and dew point into a single metric (combined = tempF + dewPointF). This captures humidity's outsized effect on running performance. Adjustments range from 0% at combined ≤100 up to 10%+ above 180, where hard running is not recommended.",
+      "We use the Hadley method, which combines air temperature and dew point into a single metric (combined = tempF + dewPointF). This captures humidity's outsized effect on running performance. Adjustments range from 0% at combined \u2264100 up to 10%+ above 180, where hard running is not recommended.",
   },
   {
     question: "How does Should I Run recommend what to wear running?",
     answer:
-      "We calculate a runner-specific feels-like temperature by adding metabolic heat offset (+15°F base), effort level offset (Easy +15°F to Interval +25°F), and a runs-hot adjustment (+5°F if toggled). This maps to eight clothing tiers, from singlet (>75°F) to triple-layer with balaclava (<15°F). Wind, rain, UV, and darkness add modifier layers.",
+      "We calculate a runner-specific feels-like temperature by adding metabolic heat offset (+15\u00b0F base), effort level offset (Easy +15\u00b0F to Interval +25\u00b0F), and a runs-hot adjustment (+5\u00b0F if toggled). This maps to eight clothing tiers, from singlet (>75\u00b0F) to triple-layer with balaclava (<15\u00b0F). Wind, rain, UV, and darkness add modifier layers.",
   },
   {
     question: "How does Should I Run detect ice risk for runners?",
     answer:
-      "Our 6-scenario algorithm checks active freezing precipitation, black ice from freeze-after-rain cycles, frost formation on clear calm nights, freezing fog, bridge/overpass warnings, and morning radiative cooling. Risk levels never downgrade — the final risk is the worst of all triggered scenarios.",
+      "Our 6-scenario algorithm checks active freezing precipitation, black ice from freeze-after-rain cycles, frost formation on clear calm nights, freezing fog, bridge/overpass warnings, and morning radiative cooling. Risk levels never downgrade \u2014 the final risk is the worst of all triggered scenarios.",
   },
   {
     question: "How does Should I Run find the best time to run?",
     answer:
-      "Every future hour gets a composite penalty score based on temperature (ideal 45–55°F), humidity, wind, gusts, precipitation probability, UV index, darkness, unsocial hours, and ice risk. We scan all windows of your target duration and pick the top 3 non-overlapping options.",
+      "Every future hour gets a composite penalty score based on temperature (ideal 45\u201355\u00b0F), humidity, wind, gusts, precipitation probability, UV index, darkness, unsocial hours, and ice risk. We scan all windows of your target duration and pick the top 3 non-overlapping options.",
   },
   {
     question: "What safety alerts does Should I Run provide?",
     answer:
-      "We follow NWS, WHO, and EPA thresholds. Danger alerts include heat index ≥104°F, thunderstorms, wind gusts ≥40 mph, AQI >150, and extreme UV. Warning alerts cover heat index 90–103°F, sustained wind ≥31 mph, AQI 101–150, and heavy rain. Caution alerts flag moderate heat, strong wind, high UV, and wet surfaces.",
+      "We follow NWS, WHO, and EPA thresholds. Danger alerts include heat index \u2265104\u00b0F, thunderstorms, wind gusts \u226540 mph, AQI >150, and extreme UV. Warning alerts cover heat index 90\u2013103\u00b0F, sustained wind \u226531 mph, AQI 101\u2013150, and heavy rain. Caution alerts flag moderate heat, strong wind, high UV, and wet surfaces.",
   },
   {
     question: "Is Should I Run free?",
@@ -43,22 +43,22 @@ const faqItems = [
   {
     question: "What should I wear running in cold weather?",
     answer:
-      "We use eight temperature tiers from singlet (>75°F) to triple-layer (<15°F). For cold weather, the key insight is the runner metabolic heat offset: you should dress for roughly 15–20°F warmer than the feels-like temperature. At 35°F, dress for ~50°F — running tights and a long-sleeve base layer with a half-zip. Wind above 15 mph adds a wind-resistant outer layer. Effort level matters too: a tempo run at 35°F needs lighter clothing than an easy jog.",
+      "We use eight temperature tiers from singlet (>75\u00b0F) to triple-layer (<15\u00b0F). For cold weather, the key insight is the runner metabolic heat offset: you should dress for roughly 15\u201320\u00b0F warmer than the feels-like temperature. At 35\u00b0F, dress for ~50\u00b0F \u2014 running tights and a long-sleeve base layer with a half-zip. Wind above 15 mph adds a wind-resistant outer layer. Effort level matters too: a tempo run at 35\u00b0F needs lighter clothing than an easy jog.",
   },
   {
     question: "How does wind affect running pace?",
     answer:
-      "Headwinds slow you by approximately 1.2 seconds per mile for every mph of wind speed. A 15 mph headwind costs roughly 18 seconds per mile. Tailwinds help, but only about half as much — aerodynamic drag isn't symmetric. Should I Run calculates the headwind penalty and displays it alongside your adjusted pace. Wind gusts above 30 mph trigger an 'Easy day' recommendation regardless of other conditions.",
+      "Headwinds slow you by approximately 1.2 seconds per mile for every mph of wind speed. A 15 mph headwind costs roughly 18 seconds per mile. Tailwinds help, but only about half as much \u2014 aerodynamic drag isn't symmetric. Should I Run calculates the headwind penalty and displays it alongside your adjusted pace. Wind gusts above 30 mph trigger an 'Easy day' recommendation regardless of other conditions.",
   },
   {
     question: "Is it safe to run in high humidity?",
     answer:
-      "Dew point is the key metric, not relative humidity. The Hadley method adds air temperature and dew point: values above 150 (e.g. 85°F + 68°F dew point = 153) mean you should slow down 4.5–6%. Above 180, hard running is not recommended. High humidity prevents sweat from evaporating, which is your body's primary cooling mechanism during exercise. Runners breathe 10–20x more air than sedentary people, amplifying the effect.",
+      "Dew point is the key metric, not relative humidity. The Hadley method adds air temperature and dew point: values above 150 (e.g. 85\u00b0F + 68\u00b0F dew point = 153) mean you should slow down 4.5\u20136%. Above 180, hard running is not recommended. High humidity prevents sweat from evaporating, which is your body's primary cooling mechanism during exercise. Runners breathe 10\u201320x more air than sedentary people, amplifying the effect.",
   },
   {
     question: "How does air quality affect running performance?",
     answer:
-      "We use EPA AQI thresholds with more conservative guidance for runners. AQI 0–50 is fine for all workouts. At 51–100, sensitive individuals may notice effects. At 101–150, reduce prolonged outdoor effort. Above 150, avoid outdoor running entirely. Because runners breathe far more air per minute than the general population, the standard EPA categories understate the impact for exercisers.",
+      "We use EPA AQI thresholds with more conservative guidance for runners. AQI 0\u201350 is fine for all workouts. At 51\u2013100, sensitive individuals may notice effects. At 101\u2013150, reduce prolonged outdoor effort. Above 150, avoid outdoor running entirely. Because runners breathe far more air per minute than the general population, the standard EPA categories understate the impact for exercisers.",
   },
 ];
 ---
@@ -69,24 +69,16 @@ const faqItems = [
 >
   <Header />
 
-  <main class="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+  <main class="mx-auto max-w-3xl px-4 py-12 sm:px-6">
     <article>
-      <div
-        class="rounded-[var(--radius-container)] card-surface-raised p-6 sm:p-8"
-      >
-        <h1
-          class="font-[var(--font-display)] text-2xl italic tracking-tight text-foreground sm:text-3xl"
-        >
-          About <span class="italic">Should I</span> <span class="font-semibold text-primary">Run</span>
+      <div class="card-surface p-6 sm:p-10">
+        <h1 class="font-[var(--font-display)] text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          About <span class="text-primary">Should I Run</span>
         </h1>
 
-        <div
-          class="mt-6 space-y-4 text-sm leading-relaxed text-muted-foreground"
-        >
+        <div class="mt-8 space-y-4 text-sm leading-relaxed text-muted-foreground">
           <p>
-            <strong class="text-foreground"
-              >Weather apps give you a number. We give you a plan.</strong
-            >
+            <strong class="text-foreground">Weather apps give you a number. We give you a plan.</strong>
           </p>
           <p>
             Should I Run is a free daily running briefing for runners who want more
@@ -97,43 +89,31 @@ const faqItems = [
           </p>
         </div>
 
-        <h2 class="mt-8 text-lg font-bold text-foreground">What We Do</h2>
-        <div class="mt-4 grid gap-3 sm:grid-cols-2">
-          <div
-            class="rounded-[var(--radius-inner)] card-inset p-4"
-          >
+        <h2 class="mt-10 text-lg font-bold text-foreground">What We Do</h2>
+        <div class="mt-4 grid gap-4 sm:grid-cols-2">
+          <div class="bg-muted rounded-[var(--radius-inner)] p-4">
             <p class="text-sm font-semibold text-foreground">Pace Adjustment</p>
             <p class="mt-1 text-xs text-muted-foreground">
               Based on the Hadley temp+dew point method for heat, and wind chill
               for cold. Backed by exercise science.
             </p>
           </div>
-          <div
-            class="rounded-[var(--radius-inner)] card-inset p-4"
-          >
-            <p class="text-sm font-semibold text-foreground">
-              Surface Warnings
-            </p>
+          <div class="bg-muted rounded-[var(--radius-inner)] p-4">
+            <p class="text-sm font-semibold text-foreground">Surface Warnings</p>
             <p class="mt-1 text-xs text-muted-foreground">
               We check precipitation history, freezing conditions, and fog to
               warn about ice risk on sidewalks and bridges.
             </p>
           </div>
-          <div
-            class="rounded-[var(--radius-inner)] card-inset p-4"
-          >
+          <div class="bg-muted rounded-[var(--radius-inner)] p-4">
             <p class="text-sm font-semibold text-foreground">Best Window</p>
             <p class="mt-1 text-xs text-muted-foreground">
               We scan every hour and score it for running suitability:
               temperature, wind, UV, precipitation, and daylight.
             </p>
           </div>
-          <div
-            class="rounded-[var(--radius-inner)] card-inset p-4"
-          >
-            <p class="text-sm font-semibold text-foreground">
-              Run Type Suggestion
-            </p>
+          <div class="bg-muted rounded-[var(--radius-inner)] p-4">
+            <p class="text-sm font-semibold text-foreground">Run Type Suggestion</p>
             <p class="mt-1 text-xs text-muted-foreground">
               Conditions dictate the workout. We'll tell you when it's a
               treadmill day, an easy day, or go-time.
@@ -141,79 +121,62 @@ const faqItems = [
           </div>
         </div>
 
-        <h2 class="mt-8 text-lg font-bold text-foreground">Weather Data</h2>
+        <h2 class="mt-10 text-lg font-bold text-foreground">Weather Data</h2>
         <div class="mt-3 text-sm leading-relaxed text-muted-foreground">
           <p>
             Weather data comes from <a
               href="https://open-meteo.com"
               class="text-primary underline decoration-primary/30 underline-offset-2 hover:decoration-primary"
               target="_blank"
-              rel="noopener noreferrer">Open-Meteo</a
-            >, a free and open-source weather API. Air quality data uses the US
-            EPA AQI scale. All data is fetched client-side — no server sees your
-            weather request.
+              rel="noopener noreferrer">Open-Meteo</a>,
+            a free and open-source weather API. Air quality data uses the US
+            EPA AQI scale. All data is fetched client-side.
           </p>
         </div>
 
-        <h2 class="mt-8 text-lg font-bold text-foreground">Run Logging</h2>
+        <h2 class="mt-10 text-lg font-bold text-foreground">Run Logging</h2>
         <div class="mt-3 text-sm leading-relaxed text-muted-foreground">
           <p>
             After each run you can log how the clothing felt, your effort level,
-            and which shoes you wore — three taps, done. Your entries are stored
-            locally in your browser and synced anonymously to improve
-            recommendations over time. No account, no email, no personally
-            identifiable information. See our <a
+            and which shoes you wore. Entries are stored locally and synced
+            anonymously to improve recommendations. No account needed. See our <a
               href="/legal"
               class="text-primary underline decoration-primary/30 underline-offset-2 hover:decoration-primary"
-              >privacy policy</a
-            > for details.
+              >privacy policy</a> for details.
           </p>
         </div>
 
-        <h2 class="mt-8 text-lg font-bold text-foreground">Free to Use</h2>
+        <h2 class="mt-10 text-lg font-bold text-foreground">Free to Use</h2>
         <div class="mt-3 text-sm leading-relaxed text-muted-foreground">
           <p>
             No subscription required. No paywall. No display ads. Your feedback
-            keeps Should I Run free — every log helps us deliver better
-            recommendations for everyone.
+            keeps Should I Run free.
           </p>
         </div>
       </div>
 
       <!-- The Science Section -->
-      <div
-        class="mt-6 rounded-[var(--radius-container)] card-surface-raised p-6 sm:p-8"
-      >
+      <div class="mt-8 card-surface p-6 sm:p-10">
         <h2 class="text-lg font-bold text-foreground">
-          The Science Behind Should I Run <span class="text-sm font-normal text-muted-foreground">(for nerds)</span>
+          The Science <span class="text-sm font-normal text-muted-foreground">(for nerds)</span>
         </h2>
-        <p class="mt-2 mb-4 text-sm text-muted-foreground">
-          Every recommendation is backed by a specific algorithm. Here's exactly
-          how each one works.
+        <p class="mt-2 mb-6 text-sm text-muted-foreground">
+          Every recommendation is backed by a specific algorithm.
         </p>
 
         <Accordion type="multiple">
           <AccordionItem value="pace">
             <AccordionTrigger>
-              <span class="text-sm font-semibold"
-                >Heat & Cold Pace Adjustment</span
-              >
+              <span class="text-sm font-semibold">Heat & Cold Pace Adjustment</span>
             </AccordionTrigger>
             <AccordionContent>
               <div class="space-y-3 text-sm text-muted-foreground">
                 <p>
                   <strong class="text-foreground">Heat:</strong> We use the Hadley
-                  method, which combines air temperature and dew point into a single
-                  metric:
-                  <code
-                    class="rounded bg-muted px-1.5 py-0.5 text-xs font-mono"
-                    >hadleyIndex = tempF + dewPointF</code
-                  >. This "Hadley index" captures humidity's outsized effect on
-                  running performance better than temperature alone.
+                  method:
+                  <code class="rounded bg-muted px-1.5 py-0.5 text-xs font-mono">hadleyIndex = tempF + dewPointF</code>.
                 </p>
-                <div
-                  class="rounded-[var(--radius-inner)] bg-muted p-3 text-xs font-mono leading-relaxed"
-                >
+                <div class="rounded-[var(--radius-inner)] bg-muted p-3 text-xs font-mono leading-relaxed">
                   hadleyIndex &le; 100 &rarr; no adjustment<br />
                   101&ndash;110 &rarr; 0&ndash;0.5% slower<br />
                   111&ndash;120 &rarr; 0.5&ndash;1%<br />
@@ -226,14 +189,8 @@ const faqItems = [
                   &gt; 180 &rarr; 10%+ (hard running not recommended)
                 </div>
                 <p>
-                  <strong class="text-foreground">Cold:</strong> Below 55&deg;F, we
-                  switch to wind chill-based adjustments. Pace slows progressively
-                  from 0% at 40&deg;F wind chill to 8%+ below 0&deg;F, where we recommend
-                  the treadmill.
-                </p>
-                <p>
-                  <strong class="text-foreground">Wind:</strong> Headwind adds ~1.2
-                  seconds per mile per mph. Tailwind recovers about half of that.
+                  <strong class="text-foreground">Cold:</strong> Below 55&deg;F, wind chill-based adjustments.
+                  <strong class="text-foreground">Wind:</strong> ~1.2s/mi per mph headwind.
                 </p>
               </div>
             </AccordionContent>
@@ -241,39 +198,18 @@ const faqItems = [
 
           <AccordionItem value="clothing">
             <AccordionTrigger>
-              <span class="text-sm font-semibold"
-                >Clothing & Feels-Like Temperature</span
-              >
+              <span class="text-sm font-semibold">Clothing & Feels-Like Temperature</span>
             </AccordionTrigger>
             <AccordionContent>
               <div class="space-y-3 text-sm text-muted-foreground">
-                <p>
-                  Runners generate significant metabolic heat. We start with the
-                  weather station's feels-like temperature and apply three
-                  offsets:
-                </p>
-                <div
-                  class="rounded-[var(--radius-inner)] bg-muted p-3 text-xs font-mono leading-relaxed"
-                >
-                  runnerFeelsLike = apparentTemp + 15&deg;F (base metabolic
-                  offset)<br />
-                  &plus; effortOffset (Easy: +15&deg;F &hellip; Interval: +25&deg;F)<br
-                  />
-                  &plus; runsHotOffset (+5&deg;F if toggled on)<br />
-                  &minus; 15&deg;F (net from base recalculation)
+                <p>Runners generate significant metabolic heat. Three offsets:</p>
+                <div class="rounded-[var(--radius-inner)] bg-muted p-3 text-xs font-mono leading-relaxed">
+                  runnerFeelsLike = apparentTemp + 15&deg;F (base)<br />
+                  &plus; effortOffset (Easy: +15&deg;F &hellip; Interval: +25&deg;F)<br />
+                  &plus; runsHotOffset (+5&deg;F if toggled)<br />
+                  &minus; 15&deg;F (net recalculation)
                 </div>
-                <p>
-                  The final adjusted temperature maps to one of eight clothing
-                  tiers, from split shorts and singlet (&gt;75&deg;F) down to
-                  triple-layer with balaclava (&lt;15&deg;F).
-                </p>
-                <p>
-                  <strong class="text-foreground">Modifiers:</strong> Wind above 15
-                  mph adds a wind-resistant layer. Active precipitation adds a water-resistant
-                  layer. When precipitation probability is &ge; 50% but it's not yet raining,
-                  we suggest a light rain shell. UV &ge; 6 adds sunscreen, cap, and sunglasses.
-                  Running after dark adds reflective vest and headlamp.
-                </p>
+                <p>Maps to eight clothing tiers. Modifiers: wind &gt;15 mph, active precipitation, UV &ge;6, darkness.</p>
               </div>
             </AccordionContent>
           </AccordionItem>
@@ -284,52 +220,16 @@ const faqItems = [
             </AccordionTrigger>
             <AccordionContent>
               <div class="space-y-3 text-sm text-muted-foreground">
-                <p>
-                  Ice detection uses a 6-scenario algorithm that checks current
-                  conditions against 24-hour history:
-                </p>
+                <p>6-scenario algorithm checking current conditions against 24-hour history:</p>
                 <ol class="list-decimal list-inside space-y-1.5 text-xs">
-                  <li>
-                    <strong class="text-foreground"
-                      >Active freezing precipitation</strong
-                    > &mdash; temp &le; 34&deg;F with active precip. Freezing rain
-                    or sleet = HIGH risk; snowfall = MODERATE.
-                  </li>
-                  <li>
-                    <strong class="text-foreground"
-                      >Black ice (freeze after rain)</strong
-                    > &mdash; 24h max temp was above 34&deg;F (melting), current temp
-                    &le; 32&deg;F. If there was recent precipitation, HIGH risk. If
-                    just a freeze/thaw cycle, MODERATE.
-                  </li>
-                  <li>
-                    <strong class="text-foreground">Frost formation</strong> &mdash;
-                    temp 28&ndash;38&deg;F, clear skies (&lt;40% cloud), light wind
-                    (&lt;10 mph), dew point spread &lt;5&deg;F. LOW risk.
-                  </li>
-                  <li>
-                    <strong class="text-foreground">Freezing fog</strong> &mdash;
-                    temp &le; 33&deg;F, dew point spread &le; 2&deg;F, wind &lt;8
-                    mph. Rapid ice formation on all surfaces. HIGH risk.
-                  </li>
-                  <li>
-                    <strong class="text-foreground"
-                      >Bridge/overpass warning</strong
-                    > &mdash; temp 30&ndash;36&deg;F. These structures freeze before
-                    roads due to air exposure on all sides.
-                  </li>
-                  <li>
-                    <strong class="text-foreground"
-                      >Morning ice after clear night</strong
-                    > &mdash; early morning (&lt;8 AM), temp &le; 40&deg;F, clear
-                    sky. Ground radiative cooling means surfaces are colder than air
-                    temp. LOW risk.
-                  </li>
+                  <li><strong class="text-foreground">Active freezing precipitation</strong> &mdash; temp &le; 34&deg;F with active precip.</li>
+                  <li><strong class="text-foreground">Black ice</strong> &mdash; freeze after rain cycle.</li>
+                  <li><strong class="text-foreground">Frost formation</strong> &mdash; clear, calm, near-dew-point conditions.</li>
+                  <li><strong class="text-foreground">Freezing fog</strong> &mdash; rapid ice on all surfaces.</li>
+                  <li><strong class="text-foreground">Bridge/overpass warning</strong> &mdash; freezes before roads.</li>
+                  <li><strong class="text-foreground">Morning radiative cooling</strong> &mdash; ground colder than air.</li>
                 </ol>
-                <p>
-                  Risk levels only escalate (never downgrade). The final risk is
-                  the worst of all scenarios that trigger.
-                </p>
+                <p>Risk levels only escalate. Final risk = worst triggered scenario.</p>
               </div>
             </AccordionContent>
           </AccordionItem>
@@ -340,31 +240,12 @@ const faqItems = [
             </AccordionTrigger>
             <AccordionContent>
               <div class="space-y-3 text-sm text-muted-foreground">
-                <p>
-                  Every future hour gets a composite penalty score. Lower =
-                  better for running.
-                </p>
-                <div
-                  class="rounded-[var(--radius-inner)] bg-muted p-3 text-xs font-mono leading-relaxed"
-                >
-                  Temperature: ideal 45&ndash;55&deg;F, +1.5/&deg;F below,
-                  +2.0/&deg;F above<br />
-                  Humidity: (temp + dewPoint &minus; 100) &times; 0.5 when temp &gt;
-                  60&deg;F<br />
-                  Wind: +(windSpeed &minus; 10) &times; 1.0 above 10 mph<br />
-                  Gusts: +(gust &minus; 25) &times; 0.5 above 25 mph<br />
-                  Precipitation: precipProb &times; 0.8<br />
-                  UV: +(uvIndex &minus; 6) &times; 3 above 6<br />
-                  Darkness: +15 outside sunrise&ndash;sunset<br />
-                  Unsocial hours (11pm&ndash;5am): +60<br />
-                  Ice risk: HIGH +40, MODERATE +20, LOW +5
+                <p>Composite penalty score per hour (lower = better):</p>
+                <div class="rounded-[var(--radius-inner)] bg-muted p-3 text-xs font-mono leading-relaxed">
+                  Temperature: ideal 45&ndash;55&deg;F, penalty per &deg;F deviation<br />
+                  Humidity, wind, gusts, precipitation, UV, darkness, unsocial hours, ice risk
                 </div>
-                <p>
-                  We scan all windows of the target duration (default 1 hour),
-                  then pick the top 3 non-overlapping windows. Windows scoring
-                  more than 2x the best + 40 penalty points are excluded as too
-                  poor to recommend.
-                </p>
+                <p>Top 3 non-overlapping windows selected.</p>
               </div>
             </AccordionContent>
           </AccordionItem>
@@ -375,81 +256,28 @@ const faqItems = [
             </AccordionTrigger>
             <AccordionContent>
               <div class="space-y-3 text-sm text-muted-foreground">
-                <p>
-                  Safety alerts follow NWS, WHO, and EPA thresholds where
-                  applicable:
-                </p>
+                <p>NWS, WHO, and EPA thresholds:</p>
                 <div class="space-y-2 text-xs">
                   <div class="rounded-[var(--radius-inner)] bg-error/5 p-2.5">
                     <p class="font-semibold text-error">Danger</p>
-                    <ul
-                      class="mt-1 list-disc list-inside space-y-0.5 text-muted-foreground"
-                    >
-                      <li>
-                        Heat index &ge; 104&deg;F &mdash; heat stroke likely
-                        with activity
-                      </li>
-                      <li>
-                        Thunderstorms (WMO weather code &ge; 95) &mdash;
-                        lightning risk
-                      </li>
-                      <li>
-                        Wind gusts &ge; 40 mph &mdash; falling debris, balance
-                        danger
-                      </li>
-                      <li>AQI &gt; 150 &mdash; unhealthy for everyone</li>
-                      <li>UV index &ge; 11 &mdash; extreme UV exposure</li>
+                    <ul class="mt-1 list-disc list-inside space-y-0.5 text-muted-foreground">
+                      <li>Heat index &ge; 104&deg;F</li>
+                      <li>Thunderstorms</li>
+                      <li>Wind gusts &ge; 40 mph</li>
+                      <li>AQI &gt; 150</li>
+                      <li>UV index &ge; 11</li>
                     </ul>
                   </div>
                   <div class="rounded-[var(--radius-inner)] bg-warning/5 p-2.5">
                     <p class="font-semibold text-warning">Warning</p>
-                    <ul
-                      class="mt-1 list-disc list-inside space-y-0.5 text-muted-foreground"
-                    >
-                      <li>
-                        Heat index 90&ndash;103&deg;F &mdash; heat exhaustion
-                        possible
-                      </li>
-                      <li>
-                        Sustained wind &ge; 31 mph &mdash; advisory-level winds
-                      </li>
-                      <li>
-                        AQI 101&ndash;150 &mdash; unhealthy for sensitive groups
-                      </li>
-                      <li>
-                        Heavy rain &gt; 0.3 in/hr &mdash; poor visibility, slick
-                        surfaces
-                      </li>
-                      <li>
-                        Recent rainfall &gt; 1.5" &mdash; potential flooding on
-                        trails
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="rounded-[var(--radius-inner)] bg-primary/5 p-2.5">
-                    <p class="font-semibold text-foreground">Caution</p>
-                    <ul
-                      class="mt-1 list-disc list-inside space-y-0.5 text-muted-foreground"
-                    >
-                      <li>
-                        Heat index 80&ndash;89&deg;F &mdash; fatigue possible
-                      </li>
-                      <li>
-                        Wind 25+ mph or gusts 30+ mph &mdash; significant
-                        resistance
-                      </li>
-                      <li>
-                        UV index 6&ndash;7 &mdash; high UV, wear sunscreen
-                      </li>
-                      <li>Moderate rain &gt; 0.1 in/hr &mdash; wet surfaces</li>
+                    <ul class="mt-1 list-disc list-inside space-y-0.5 text-muted-foreground">
+                      <li>Heat index 90&ndash;103&deg;F</li>
+                      <li>Sustained wind &ge; 31 mph</li>
+                      <li>AQI 101&ndash;150</li>
+                      <li>Heavy rain &gt; 0.3 in/hr</li>
                     </ul>
                   </div>
                 </div>
-                <p>
-                  Alerts are sorted by severity (danger first) so the most
-                  critical information is always visible at the top of your
-                  briefing.
-                </p>
               </div>
             </AccordionContent>
           </AccordionItem>

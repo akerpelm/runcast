@@ -17,26 +17,27 @@ export function renderDetailsRow(b: HourBriefing, bw: BestWindowResult, ctx: Ren
     const minsToSunset = (sunset.getTime() - hourTime.getTime()) / 60000;
     if (minsToSunset > 0 && minsToSunset < 480) {
       const miles = minsToSunset / (activePace / 60);
-      sunsetNote = `<p class="mt-2 text-xs text-muted-foreground">~${distDisplay(miles, ctx.useMetric)} at ${EFFORT_LABELS[ctx.selectedEffort].toLowerCase()} pace before sunset</p>`;
+      sunsetNote = `<p class="mt-3 text-xs text-muted-foreground">~${distDisplay(miles, ctx.useMetric)} at ${EFFORT_LABELS[ctx.selectedEffort].toLowerCase()} pace before sunset</p>`;
     }
   }
 
-  // Ranked windows
-  const windowColors: Record<string, string> = { Best: "text-primary", Good: "text-success", Fair: "text-muted-foreground" };
+  // Ranked windows — use a structured layout to prevent overlap
   const windowRows = bw.ranked.map(w => {
     const start = w.startHour ? formatTime(new Date(w.startHour)) : "--";
     const end = w.endHour ? formatTime(new Date(w.endHour)) : "--";
     const isPrimary = w.label === "Best";
-    return `<div class="flex items-baseline gap-2 ${isPrimary ? "" : "mt-1"}">
-      <span class="w-8 text-[10px] font-bold uppercase ${windowColors[w.label] || "text-muted-foreground"}">${w.label}</span>
-      <span class="text-sm font-data ${isPrimary ? "font-bold text-foreground" : "font-medium text-muted-foreground"}">${start} – ${end}</span>
-      <span class="text-xs text-muted-foreground">${esc(w.summary)}</span>
+    return `<div class="${isPrimary ? "" : "mt-2"}">
+      <div class="flex items-baseline gap-2 flex-wrap">
+        <span class="text-[0.65rem] font-bold uppercase tracking-[0.05em] ${isPrimary ? "text-primary" : "text-muted-foreground"}">${w.label}</span>
+        <span class="text-sm font-data ${isPrimary ? "font-bold text-foreground" : "font-medium text-muted-foreground"}">${start} \u2013 ${end}</span>
+      </div>
+      <p class="mt-0.5 text-xs text-muted-foreground">${esc(w.summary)}</p>
     </div>`;
   }).join("");
 
   return `
-    <div class="bg-card text-card-foreground card-surface flex flex-col gap-4 py-4 px-4" data-slot="card" data-size="sm">
-      <p class="text-xs font-medium uppercase tracking-wider text-muted-foreground">Run Windows</p>
+    <div class="bg-card text-card-foreground card-surface p-5 min-w-0" data-slot="card">
+      <p class="text-[0.65rem] font-medium uppercase tracking-[0.1em] text-muted-foreground mb-3">Run Windows</p>
       ${windowRows || '<p class="text-xs text-muted-foreground">No data available</p>'}
       ${sunsetNote}
     </div>`;

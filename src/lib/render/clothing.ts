@@ -14,12 +14,12 @@ export function renderClothing(b: HourBriefing, ctx: RenderContext): string {
   const tdd = (fDelta: number) => tempDeltaDisplay(fDelta, ctx.useCelsius);
   const sd = (mph: number) => speedDisplay(mph, ctx.useMetric);
 
-  // Compute adjusted feels-like FIRST (needed for annotations)
+  // Compute adjusted feels-like
   const effortOffset = EFFORT_HEAT_OFFSET[ctx.selectedEffort];
   const hotOffset = ctx.runsHot ? 5 : 0;
   const adjustedFeels = getRunnerFeelsLike(h.apparentTemperature) - 15 + effortOffset + hotOffset;
 
-  // Annotate items with WHY context based on current conditions
+  // Annotate items with WHY context
   function annotate(item: string, isClothing: boolean): { value: string; reason: string } {
     if (item.includes("Wind-resistant"))
       return { value: item, reason: `${sd(h.windSpeed)} winds` };
@@ -61,9 +61,9 @@ export function renderClothing(b: HourBriefing, ctx: RenderContext): string {
   if (h.precipitation > 0 || h.precipProbability > 40) factors.push(`${h.precipProbability}% rain`);
   if (h.uvIndex >= 6) factors.push(`UV ${h.uvIndex}`);
   if (b.iceRisk.risk !== "NONE") factors.push(`${b.iceRisk.risk.toLowerCase()} ice risk`);
-  const factorStr = factors.length ? ` · ${factors.join(", ")}` : "";
+  const factorStr = factors.length ? ` \u00b7 ${factors.join(", ")}` : "";
 
-  // Tags using Starwind badge
+  // Tags
   const effortTag = ctx.selectedEffort !== "easy"
     ? htmlBadge(EFFORT_LABELS[ctx.selectedEffort], { variant: "primary", size: "sm" })
     : "";
@@ -79,23 +79,24 @@ export function renderClothing(b: HourBriefing, ctx: RenderContext): string {
   ].filter(z => z.items.length > 0);
 
   return `
-    <div class="bg-card text-card-foreground card-surface flex flex-col gap-4 py-4 px-5 accent-stripe" data-slot="card" data-size="sm">
+    <div class="bg-card text-card-foreground card-surface p-5" data-slot="card">
       <div class="flex flex-wrap items-center gap-2">
         <p class="text-sm font-semibold text-foreground">What to Wear</p>
         ${effortTag}${hotTag}
       </div>
-      <p class="text-xs text-muted-foreground -mt-2">${td(h.apparentTemperature)} feels-like + ${tdd(effortOffset)} effort${hotOffset > 0 ? ` + ${tdd(hotOffset)} hot` : ""} = dressing for ${td(adjustedFeels)}${factorStr}</p>
-      <div class="space-y-3">
+      <p class="text-xs text-muted-foreground mt-1">${td(h.apparentTemperature)} feels-like + ${tdd(effortOffset)} effort${hotOffset > 0 ? ` + ${tdd(hotOffset)} hot` : ""} = dressing for ${td(adjustedFeels)}${factorStr}</p>
+      <div class="mt-3 grid gap-3 ${zones.length >= 3 ? "sm:grid-cols-3" : zones.length === 2 ? "sm:grid-cols-2" : ""}">
         ${zones.map(zone => {
-          const isCore = zone.label === "LEGS" || zone.label === "TORSO";
           return `<div>
-            <p class="mb-1.5 text-[10px] font-medium uppercase tracking-wider ${isCore ? "text-primary" : "text-muted-foreground"}">${zone.label}</p>
-            <div class="flex flex-wrap items-center gap-2">
+            <p class="mb-1.5 text-[0.65rem] font-medium uppercase tracking-[0.1em] text-muted-foreground">${zone.label}</p>
+            <div class="space-y-2">
               ${zone.items.map(it => {
-                const primary = `<span class="starwind-badge inline-flex items-center gap-1.5 rounded-full font-medium whitespace-nowrap ${isCore ? "border-primary/20 border" : "border-border/60 border"} bg-background px-3 py-1.5 text-sm text-foreground" data-slot="badge">${esc(it.value)}${it.reason ? `<span class="text-xs text-muted-foreground font-normal">${esc(it.reason)}</span>` : ""}</span>`;
-                if (it.alts.length === 0) return primary;
-                const altsStr = it.alts.map(a => esc(a)).join(" · ");
-                return `${primary}<span class="text-xs text-muted-foreground">or ${altsStr}</span>`;
+                const reasonHTML = it.reason ? `<span class="text-xs text-muted-foreground font-normal">${esc(it.reason)}</span>` : "";
+                const altsHTML = it.alts.length > 0 ? `<p class="mt-1 text-xs text-muted-foreground">or ${it.alts.map(a => esc(a)).join(" \u00b7 ")}</p>` : "";
+                return `<div class="rounded-[var(--radius-inner)] bg-muted border-l-2 border-primary px-3 py-2">
+                  <p class="text-sm font-semibold text-foreground">${esc(it.value)} ${reasonHTML}</p>
+                  ${altsHTML}
+                </div>`;
               }).join("")}
             </div>
           </div>`;

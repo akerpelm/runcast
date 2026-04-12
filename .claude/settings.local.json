@@ -44,7 +44,8 @@
       "Bash(npx astro:*)",
       "Bash(node_modules/.bin/astro --version)",
       "WebFetch(domain:astro.build)",
-      "Bash(git stash drop:*)"
+      "Bash(git stash drop:*)",
+      "Bash(timeout 15 npm run dev:*)"
     ]
   }
 }

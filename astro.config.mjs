@@ -13,12 +13,12 @@ export default defineConfig({
   fonts: [
     {
       provider: fontProviders.google(),
-      name: "Fraunces",
+      name: "Space Grotesk",
       cssVariable: "--font-display",
     },
     {
       provider: fontProviders.google(),
-      name: "Outfit",
+      name: "Inter",
       cssVariable: "--font-body",
     },
     {

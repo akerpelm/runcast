@@ -10,27 +10,15 @@ import Footer from "@/components/layout/Footer.astro";
 >
   <Header />
 
-  <main class="mx-auto max-w-7xl px-4 pt-3 pb-6 sm:px-6 lg:px-8" role="main">
+  <main class="mx-auto max-w-4xl px-4 pt-4 pb-4 sm:px-6 lg:pt-3 lg:pb-2" role="main">
     <h1 class="sr-only">Should I Run: Today's Running Weather Briefing</h1>
 
-    <div id="hero-tagline" class="mb-6 text-center hidden">
-      <p class="text-base font-semibold text-foreground sm:text-lg">Weather apps give you a number. <span class="text-primary">We give you a plan.</span></p>
-      <p class="mt-1 text-xs text-muted-foreground">Pace adjustments, clothing recs, surface warnings, and optimal timing — no signup needed.</p>
-    </div>
-    <script>
-      const LS_SEEN = "runcast-seen";
-      if (!localStorage.getItem(LS_SEEN)) {
-        document.getElementById("hero-tagline")?.classList.remove("hidden");
-        localStorage.setItem(LS_SEEN, "1");
-      }
-    </script>
-
     <!-- Location fallback banner — shown when geolocation denied, hidden by default -->
-    <div id="location-fallback-banner" class="hidden mb-4 rounded-[var(--radius-base)] bg-warning/5 px-4 py-3 flex items-start gap-3">
+    <div id="location-fallback-banner" class="hidden mb-6 rounded-[var(--radius-base)] border border-warning/20 bg-warning/5 px-4 py-3 flex items-start gap-3">
       <svg class="h-4 w-4 mt-0.5 shrink-0 text-warning" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
       <div class="flex-1">
         <p class="text-sm font-medium text-foreground">We couldn't detect your exact location</p>
-        <p class="mt-0.5 text-xs text-muted-foreground">Showing approximate results. Search for your city above for accurate data.</p>
+        <p class="mt-0.5 text-xs text-muted-foreground">Search for your city above for accurate data.</p>
       </div>
       <button id="dismiss-location-banner" class="shrink-0 text-xs text-muted-foreground hover:text-foreground transition-colors" aria-label="Dismiss">&times;</button>
     </div>
@@ -38,73 +26,72 @@ import Footer from "@/components/layout/Footer.astro";
     <section aria-label="Today's running briefing" aria-live="polite" id="briefing-section">
       <!-- Loading skeleton -->
       <div id="briefing-skeleton">
-        <!-- Hero skeleton -->
-        <div class="rounded-[var(--radius-container)] card-surface-raised p-6">
-          <div class="mb-4 flex items-center gap-3">
-            <div class="h-7 w-28 skeleton-pulse"></div>
-            <div class="h-5 w-40 skeleton-pulse"></div>
+        <!-- Hero skeleton — oversized temperature -->
+        <div class="card-surface p-6">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="h-6 w-24 skeleton-pulse"></div>
           </div>
-          <div class="grid gap-4 sm:grid-cols-3">
-            {Array.from({ length: 3 }).map(() => (
-              <div class="rounded-[var(--radius-inner)] card-inset p-4">
-                <div class="mb-2 h-4 w-20 skeleton-pulse"></div>
-                <div class="h-8 w-24 skeleton-pulse"></div>
-              </div>
+          <div class="flex items-start justify-between">
+            <div>
+              <div class="h-16 w-40 skeleton-pulse mb-2"></div>
+              <div class="h-4 w-24 skeleton-pulse"></div>
+            </div>
+            <div class="h-10 w-10 skeleton-pulse"></div>
+          </div>
+          <div class="mt-6 h-4 w-3/4 skeleton-pulse"></div>
+          <div class="mt-4 flex flex-wrap gap-2">
+            {Array.from({ length: 5 }).map(() => (
+              <div class="h-6 w-20 rounded-full skeleton-pulse"></div>
             ))}
           </div>
-        </div>
-
-        <!-- Settings bar skeleton -->
-        <div class="mt-4 rounded-[var(--radius-container)] card-surface p-4">
-          <div class="flex items-center gap-4">
-            <div class="h-4 w-24 skeleton-pulse"></div>
-            <div class="h-4 w-px bg-border"></div>
-            <div class="h-4 w-20 skeleton-pulse"></div>
-          </div>
-        </div>
-
-        <!-- Timeline skeleton -->
-        <div class="mt-6 rounded-[var(--radius-container)] card-surface-raised p-4">
-          <div class="mb-3 h-5 w-32 skeleton-pulse"></div>
-          <div class="flex items-center gap-2">
-            <div class="h-8 w-8 skeleton-pulse"></div>
-            <div class="flex flex-1 gap-2 overflow-hidden justify-center">
-              {Array.from({ length: 8 }).map(() => (
-                <div class="flex w-16 shrink-0 flex-col items-center gap-1.5 rounded-[var(--radius-inner)] card-inset p-2">
+          <div class="mt-6 border-t border-border pt-4">
+            <div class="mb-3 flex items-center gap-2">
+              {Array.from({ length: 3 }).map(() => (
+                <div class="h-6 w-16 skeleton-pulse"></div>
+              ))}
+            </div>
+            <div class="scroll-fade flex gap-1">
+              {Array.from({ length: 12 }).map(() => (
+                <div class="flex w-16 shrink-0 flex-col items-center gap-1.5 p-2">
                   <div class="h-3 w-8 skeleton-pulse"></div>
                   <div class="h-5 w-5 rounded-full skeleton-pulse"></div>
                   <div class="h-4 w-8 skeleton-pulse"></div>
                 </div>
               ))}
             </div>
-            <div class="h-8 w-8 skeleton-pulse"></div>
           </div>
         </div>
 
-        <!-- Best window + daylight skeleton -->
-        <div class="mt-6 grid gap-4 sm:grid-cols-2">
-          <div class="rounded-[var(--radius-container)] card-surface-raised p-5">
-            <div class="mb-3 h-5 w-28 skeleton-pulse"></div>
-            <div class="h-6 w-36 skeleton-pulse"></div>
-            <div class="mt-2 h-4 w-48 skeleton-pulse"></div>
+        <!-- Bottom sections skeleton -->
+        <div class="mt-8 space-y-6">
+          <!-- Clothing skeleton -->
+          <div class="card-surface p-5">
+            <div class="mb-4 h-5 w-32 skeleton-pulse"></div>
+            <div class="space-y-4">
+              {Array.from({ length: 3 }).map(() => (
+                <div>
+                  <div class="mb-1.5 h-3 w-12 skeleton-pulse"></div>
+                  <div class="h-8 w-48 skeleton-pulse rounded-full"></div>
+                </div>
+              ))}
+            </div>
           </div>
-          <div class="rounded-[var(--radius-container)] card-surface-raised p-5">
-            <div class="mb-3 h-5 w-24 skeleton-pulse"></div>
-            <div class="h-6 w-32 skeleton-pulse"></div>
-            <div class="mt-2 h-4 w-44 skeleton-pulse"></div>
-          </div>
-        </div>
 
-        <!-- Clothing skeleton -->
-        <div class="mt-6 rounded-[var(--radius-container)] card-surface-raised p-5">
-          <div class="mb-4 h-5 w-40 skeleton-pulse"></div>
-          <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 3 }).map(() => (
-              <div class="rounded-[var(--radius-inner)] card-inset p-3">
-                <div class="mb-2 h-3 w-16 skeleton-pulse"></div>
-                <div class="h-4 w-28 skeleton-pulse"></div>
+          <!-- Run Windows + Pace skeleton row -->
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div class="card-surface p-5">
+              <div class="mb-3 h-4 w-24 skeleton-pulse"></div>
+              <div class="h-6 w-36 skeleton-pulse"></div>
+              <div class="mt-2 h-4 w-48 skeleton-pulse"></div>
+            </div>
+            <div class="card-surface p-5">
+              <div class="mb-3 h-4 w-28 skeleton-pulse"></div>
+              <div class="flex gap-1.5">
+                {Array.from({ length: 5 }).map(() => (
+                  <div class="h-6 w-16 rounded-full skeleton-pulse"></div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </div>

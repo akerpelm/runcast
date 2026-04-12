@@ -10,13 +10,13 @@ import { htmlBadge } from "./starwind-html";
 
 export function renderHeroForecast(b: HourBriefing, ctx: RenderContext): string {
   const h = b.hour;
-  const icon = getConditionIcon(h.weatherCode);
+  const icon = getConditionIcon(h.weatherCode, "h-8 w-8");
   const condLabel = getConditionLabel(h.weatherCode);
 
   const td = (f: number) => tempDisplay(f, ctx.useCelsius);
   const sd = (mph: number) => speedDisplay(mph, ctx.useMetric);
 
-  // Run type badge — map to Starwind badge variants
+  // Run type badge
   const typeBadgeMap: Record<string, { variant: "error" | "warning" | "info" | "success"; label: string }> = {
     TREADMILL: { variant: "error", label: "Treadmill Day" },
     TREADMILL_OR_EASY: { variant: "warning", label: "Treadmill / Easy" },
@@ -36,7 +36,7 @@ export function renderHeroForecast(b: HourBriefing, ctx: RenderContext): string 
   if (b.nextThunderstorm) {
     const ts = formatTime(new Date(b.nextThunderstorm));
     const tsDay = getDayLabel(b.nextThunderstorm.slice(0, 10));
-    forecastNote = `<span class="text-xs text-error font-medium">⚡ ${tsDay} ${ts}</span>`;
+    forecastNote = `<span class="text-xs text-error font-medium">\u26A1 ${tsDay} ${ts}</span>`;
   }
   if (b.hour.precipitation > 0) {
     forecastNote += `<span class="text-xs text-info">${rainIcon} Raining now</span>`;
@@ -51,35 +51,23 @@ export function renderHeroForecast(b: HourBriefing, ctx: RenderContext): string 
     forecastNote = `<span class="text-xs text-success">No rain</span>`;
   }
 
-  // Accent stripe
-  const worstSeverity = b.safetyAlerts.length > 0 ? b.safetyAlerts[0].severity : null;
-  const stripeColor = worstSeverity === "danger" ? "border-l-error" : worstSeverity === "warning" ? "border-l-warning" : worstSeverity === "caution" ? "border-l-warning/50" : "border-l-primary/40";
-
-  // Day tabs
+  // Day tabs — minimal underline active state
   const dayTabs = ctx.availableDays.map(d => {
     const active = d.date === ctx.selectedDayDate;
     const label = getDayLabel(d.date);
     return `<button data-action="select-day" data-day="${d.date}"
-      class="shrink-0 rounded-[var(--radius-inner)] px-2.5 py-1 text-xs font-semibold transition-colors
-        ${active ? "bg-primary/10 text-foreground card-inset" : "text-muted-foreground hover:text-foreground"}"
+      class="shrink-0 px-2 py-1 text-xs font-medium transition-colors
+        ${active ? "text-foreground border-b-2 border-primary" : "text-muted-foreground hover:text-foreground"}"
     >${esc(label)}</button>`;
   }).join("");
 
-  // Timeline pills
+  // Timeline pills — all hours, horizontally scrollable
   const hours = ctx.displayHours;
-  const offset = ctx.timelineOffset;
-  const visible = hours.slice(offset, offset + ctx.timelineVisible);
-  const currentDayIdx = ctx.availableDays.findIndex(d => d.date === ctx.selectedDayDate);
-  const hasPrevDay = currentDayIdx > 0;
-  const hasNextDay = currentDayIdx < ctx.availableDays.length - 1;
-  const canBack = offset > 0 || hasPrevDay;
-  const canFwd = offset + ctx.timelineVisible < hours.length || hasNextDay;
 
   const nowHour = new Date().getHours();
   const todayStr = new Date().toISOString().slice(0, 10);
 
-  const pills = visible.map((hr, i) => {
-    const idx = offset + i;
+  const pills = hours.map((hr, idx) => {
     const sel = idx === ctx.selectedHourIndex;
     const hrDate = new Date(hr.time);
     const hrNum = hrDate.getHours();
@@ -87,23 +75,23 @@ export function renderHeroForecast(b: HourBriefing, ctx: RenderContext): string 
     const label = hrNum === 0 ? "12a" : hrNum < 12 ? `${hrNum}a` : hrNum === 12 ? "12p" : `${hrNum - 12}p`;
     const hrIcon = getConditionIcon(hr.weatherCode);
 
-    const pillBg = sel ? "bg-primary/15 card-inset" : isNow ? "bg-secondary/20 border border-secondary/40 rounded-[var(--radius-inner)]" : "hover:bg-muted";
-    const labelCls = sel ? "text-foreground font-bold" : isNow ? "text-secondary font-bold" : "text-muted-foreground";
-    const tempCls = sel ? "text-foreground" : isNow ? "text-secondary" : "text-foreground";
-    const nowDot = "";
+    const pillBg = sel ? "bg-muted" : "hover:bg-muted/50";
+    const labelCls = sel ? "text-foreground font-bold" : isNow ? "text-primary font-bold" : "text-muted-foreground";
+    const tempCls = sel ? "text-foreground" : isNow ? "text-primary" : "text-foreground";
+    const nowDot = isNow && !sel ? `<span class="absolute top-0.5 right-1 h-1.5 w-1.5 rounded-full bg-primary"></span>` : "";
 
     return `<button data-action="select-hour" data-hour-index="${idx}"
-      class="flex w-16 shrink-0 flex-col items-center gap-1 rounded-[var(--radius-inner)] p-2 transition-colors cursor-pointer ${pillBg}"
-      aria-label="${formatTime(hrDate)}${isNow ? " (now)" : ""}" aria-pressed="${sel}">
+      class="relative flex w-16 shrink-0 flex-col items-center gap-1 rounded-[var(--radius-inner)] p-2 transition-colors cursor-pointer ${pillBg}"
+      aria-label="${formatTime(hrDate)}${isNow ? " (now)" : ""}" aria-pressed="${sel}"
+      ${sel ? 'data-selected-pill' : ''}>
+      ${nowDot}
       <span class="text-xs font-medium ${labelCls}">${label}</span>
       ${hrIcon}
       <span class="text-sm font-bold ${tempCls} font-data">${td(hr.temperature)}</span>
     </button>`;
   }).join("");
 
-  const navCls = "flex h-8 w-8 items-center justify-center rounded-[var(--radius-inner)] text-muted-foreground transition-colors";
-
-  // Condition chips — use Starwind badge pattern for consistency
+  // Condition chips — ghost style
   const windMph = Math.round(h.windSpeed);
   const gustMph = Math.round(h.windGusts);
   const chips: { label: string; warn?: boolean }[] = [];
@@ -120,38 +108,50 @@ export function renderHeroForecast(b: HourBriefing, ctx: RenderContext): string 
 
   // Daylight chip
   const sunIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="inline h-3 w-3 align-text-bottom"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>`;
-  chips.push({ label: `${sunIcon} ${b.daylight.sunrise} – ${b.daylight.sunset}` });
+  chips.push({ label: `${sunIcon} ${b.daylight.sunrise} \u2013 ${b.daylight.sunset}` });
   if (b.daylight.message) {
     chips.push({ label: b.daylight.message, warn: b.daylight.message.includes("after sunset") || b.daylight.message.includes("before sunrise") });
   }
 
-  const chipsHTML = `<div class="mt-2 flex flex-wrap items-center gap-1.5">
+  const chipsHTML = `<div class="mt-3 flex flex-wrap items-center gap-1.5">
     ${chips.map(c => htmlBadge(c.label, { variant: c.warn ? "warning" : "ghost", size: "sm", class: "font-normal" })).join("")}
   </div>`;
 
   return `
-    <div class="bg-card text-card-foreground card-surface flex flex-col gap-4 py-4 px-4 border-l-[3px] ${stripeColor}" data-slot="card" data-size="sm">
-      <div class="flex items-start gap-3">
-        <div class="flex-1 min-w-0">
-          <div class="flex flex-wrap items-center gap-2">
-            ${runTypeBadgeHTML}
-            ${forecastNote}
-          </div>
-          <p class="font-[var(--font-display)] text-base italic text-foreground leading-snug mt-1">${esc(generateBriefingSummary(b))}</p>
-        </div>
-        <div class="shrink-0 text-right">
-          <div class="flex items-center gap-1.5 text-xs text-muted-foreground">${icon} <span>${esc(condLabel)}</span></div>
-          <p class="text-2xl font-bold text-foreground leading-none mt-1 font-data">${td(h.temperature)}</p>
-          <p class="text-[11px] text-muted-foreground mt-0.5">Feels ${td(h.apparentTemperature)}</p>
+    <div class="bg-card text-card-foreground card-surface p-5 lg:p-5" data-slot="card">
+      <!-- Top row: badge + forecast note -->
+      <div class="flex items-center justify-between gap-3">
+        <div class="flex flex-wrap items-center gap-2">
+          ${runTypeBadgeHTML}
+          ${forecastNote}
         </div>
       </div>
-      ${chipsHTML}
-      <div class="border-t border-border pt-2">
-        <div class="mb-2 flex items-center gap-1.5 overflow-x-auto">${dayTabs}</div>
+
+      <!-- Two-column: temp + condition | briefing + chips -->
+      <div class="mt-3 flex flex-col sm:flex-row sm:items-start sm:gap-8">
+        <!-- Left: massive temp + condition -->
+        <div class="shrink-0">
+          <div class="flex items-start gap-3">
+            <p class="font-data font-bold text-foreground leading-none" style="font-size: clamp(3.5rem, 8vw, 6rem)">${td(h.temperature)}</p>
+            <div class="mt-2">${icon}</div>
+          </div>
+          <p class="mt-1 text-sm text-muted-foreground">Feels like ${td(h.apparentTemperature)} · ${esc(condLabel)}</p>
+        </div>
+
+        <!-- Right: briefing + chips -->
+        <div class="mt-4 sm:mt-1 flex-1 min-w-0">
+          <p class="text-sm text-foreground/80 leading-relaxed">${esc(generateBriefingSummary(b))}</p>
+          ${chipsHTML}
+        </div>
+      </div>
+
+      <!-- Day tabs + timeline -->
+      <div class="mt-4 lg:mt-3 border-t border-border pt-3 lg:pt-2">
+        <div class="mb-2 scroll-fade flex gap-1" id="day-tabs-scroll">${dayTabs}</div>
         <div class="flex items-center gap-1">
-          <button data-action="timeline-back" aria-label="Earlier hours" class="${navCls} ${canBack ? "hover:text-foreground hover:bg-muted" : "opacity-30 cursor-not-allowed"}" ${canBack ? "" : "disabled"}>${chevronLeft}</button>
-          <div class="flex flex-1 gap-1.5 overflow-hidden justify-center">${pills}</div>
-          <button data-action="timeline-forward" aria-label="Later hours" class="${navCls} ${canFwd ? "hover:text-foreground hover:bg-muted" : "opacity-30 cursor-not-allowed"}" ${canFwd ? "" : "disabled"}>${chevronRight}</button>
+          <button data-action="scroll-back" aria-label="Earlier hours" class="hidden lg:flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-inner)] text-muted-foreground transition-colors hover:text-foreground hover:bg-muted">${chevronLeft}</button>
+          <div class="scroll-fade flex gap-1 flex-1" id="timeline-scroll">${pills}</div>
+          <button data-action="scroll-fwd" aria-label="Later hours" class="hidden lg:flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-inner)] text-muted-foreground transition-colors hover:text-foreground hover:bg-muted">${chevronRight}</button>
         </div>
       </div>
     </div>`;

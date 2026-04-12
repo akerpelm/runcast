@@ -3,40 +3,40 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/starwind/p
 import { Switch } from "@/components/starwind/switch";
 ---
 
-<header class="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-md">
-  <div class="mx-auto flex h-12 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+<header class="sticky top-0 z-50 w-full bg-background/95 backdrop-blur-[4px]">
+  <div class="mx-auto flex h-14 max-w-4xl items-center justify-between px-4 sm:px-6">
     <!-- Logo -->
-    <a href="/" class="font-[var(--font-display)] text-xl tracking-tight text-foreground italic">ShouldI<span class="font-semibold text-primary not-italic">Run</span></a>
+    <a href="/" class="font-[var(--font-display)] text-lg font-bold leading-none tracking-tight text-foreground">ShouldI<span class="text-primary">Run</span></a>
 
-    <!-- Right side: location + log run + theme toggle -->
-    <div class="flex items-center gap-2 sm:gap-3 min-w-0">
+    <!-- Right side: location + units + theme toggle -->
+    <div class="flex items-center gap-3 min-w-0">
       <div id="location-wrapper" class="relative min-w-0">
         <button
           id="location-display"
           type="button"
-          class="flex items-center gap-1.5 rounded-full card-inset px-2.5 py-1.5 text-xs font-medium text-foreground/70 cursor-pointer hover:text-foreground hover:border hover:border-border transition-colors"
+          class="flex items-center gap-1.5 px-2 py-1.5 text-xs text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
         >
           <svg class="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
             <circle cx="12" cy="10" r="3" />
           </svg>
           <span id="location-text" class="truncate max-w-[80px] sm:max-w-[140px]">Locating...</span>
-          <svg class="h-3 w-3 ml-0.5 opacity-50 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          <svg class="h-3 w-3 ml-0.5 opacity-40 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
         </button>
 
-        <div id="location-dropdown" class="hidden fixed left-4 right-4 top-[4.5rem] sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-1 sm:w-72 rounded-[var(--radius-base)] card-surface-raised p-3 z-50">
+        <div id="location-dropdown" class="hidden fixed left-4 right-4 top-[4.5rem] sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-1 sm:w-72 rounded-[var(--radius-base)] card-surface p-3 z-50">
           <input
             id="location-search"
             type="text"
             placeholder="Search city..."
             autocomplete="off"
-            class="h-8 w-full rounded-[var(--radius-inner)] card-inset px-3 text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/50"
+            class="h-8 w-full rounded-[var(--radius-inner)] bg-muted px-3 text-sm text-foreground placeholder-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/50"
           />
           <div id="location-results" class="mt-2"></div>
           <button
             id="location-use-current"
             type="button"
-            class="mt-2 flex w-full items-center gap-2 rounded-[var(--radius-inner)] px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors"
+            class="mt-2 flex w-full items-center gap-2 rounded-[var(--radius-inner)] px-3 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
           >
             <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="1"/>
@@ -53,16 +53,16 @@ import { Switch } from "@/components/starwind/switch";
           <button
             id="units-trigger"
             type="button"
-            class="flex items-center gap-1.5 rounded-full card-inset px-2.5 py-1.5 text-xs font-medium text-foreground/70 cursor-pointer hover:text-foreground hover:border hover:border-border transition-colors shrink-0"
+            class="flex items-center gap-1 px-2 py-1.5 text-xs text-muted-foreground cursor-pointer hover:text-foreground transition-colors shrink-0"
             aria-label="Toggle units"
           >
             <span id="units-label">°F · mi</span>
-            <svg class="h-3 w-3 ml-0.5 opacity-50 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            <svg class="h-3 w-3 ml-0.5 opacity-40 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </button>
         </PopoverTrigger>
         <PopoverContent align="end" class="w-52">
           <div class="flex flex-col gap-3 px-0.5">
-            <p class="text-xs font-medium uppercase tracking-wider text-muted-foreground">Units</p>
+            <p class="text-[0.65rem] font-medium uppercase tracking-[0.1em] text-muted-foreground">Units</p>
             <Switch id="switch-temp" label="Celsius (°C)" size="sm" variant="primary" />
             <Switch id="switch-dist" label="Metric (km)" size="sm" variant="primary" />
           </div>
@@ -74,7 +74,7 @@ import { Switch } from "@/components/starwind/switch";
         id="theme-toggle"
         type="button"
         aria-label="Toggle dark mode"
-        class="flex h-8 w-8 shrink-0 items-center justify-center rounded-[var(--radius-inner)] card-inset text-muted-foreground transition-colors hover:text-foreground hover:border hover:border-border"
+        class="flex h-7 w-7 shrink-0 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
       >
         <!-- Sun icon (shown in dark mode) -->
         <svg class="hidden h-4 w-4 dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -210,7 +210,7 @@ import { Switch } from "@/components/starwind/switch";
     container.innerHTML = results.map((r, i) => {
       const label = r.admin1 ? `${r.name}, ${r.admin1}, ${r.country}` : `${r.name}, ${r.country}`;
       return `<button data-action="select-location" data-loc-index="${i}"
-        class="flex w-full items-center gap-2 rounded-[var(--radius-inner)] px-3 py-2 text-left text-sm text-foreground hover:bg-muted/30 transition-colors">
+        class="flex w-full items-center gap-2 rounded-[var(--radius-inner)] px-3 py-2 text-left text-sm text-foreground hover:bg-muted transition-colors">
         ${esc(label)}
       </button>`;
     }).join("");

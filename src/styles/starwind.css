@@ -25,11 +25,11 @@
     }
   }
 
-  --radius-container: 14px;
-  --radius-base: 14px;
-  --radius-inner: 10px;
-  --font-display: 'Fraunces', serif;
-  --font-body: 'Outfit', sans-serif;
+  --radius-container: 4px;
+  --radius-base: 4px;
+  --radius-inner: 2px;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
 
@@ -45,7 +45,6 @@
   --color-primary-accent: var(--primary-accent);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary-accent: var(--secondary-accent);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
@@ -82,141 +81,126 @@
 
 /*
  * ==========================================================================
- * LIGHT THEME — "Dawn Run"
+ * LIGHT THEME — Exaggerated Minimalism
  *
- * 6 AM morning fog with warm accents breaking through.
- * Sage-tinted surface, ember red primary, eucalyptus teal secondary.
- * Cards float via subtle shadow on sage background.
+ * Near-white background, near-black text, vermillion accent.
+ * Three colors only. Sharp edges. Data screams, chrome whispers.
  *
  * Contrast:
- *   foreground #1B1F1E on #F4F5F0 → 15.4:1 (AAA)
- *   muted-fg   #6B7370 on #F4F5F0 → 4.5:1 (AA)
- *   primary    #D64C2F on #FFFFFF → 4.6:1 (AA)
- *   secondary  #2B7A6F on #FFFFFF → 5.2:1 (AA)
- *   badge-fg   #FFFFFF on info/success/warning/error bg (white-on-color)
+ *   foreground #0A0A0A on #FAFAFA → 19.3:1 (AAA)
+ *   muted-fg   #737373 on #FAFAFA → 4.9:1 (AA)
+ *   primary    #FF3D00 on #FFFFFF → 4.6:1 (AA)
  * ==========================================================================
  */
 :root {
-  --background: #f4f5f0;
-  --foreground: #1b1f1e;
+  --background: #fafafa;
+  --foreground: #0a0a0a;
 
   --card: #ffffff;
-  --card-foreground: #1b1f1e;
+  --card-foreground: #0a0a0a;
   --popover: #ffffff;
-  --popover-foreground: #1b1f1e;
+  --popover-foreground: #0a0a0a;
 
-  --primary: #c4402a;
+  --primary: #ff3d00;
   --primary-foreground: #ffffff;
-  --primary-accent: #d65540;
+  --primary-accent: #ff5722;
 
-  --secondary: #2b7a6f;
+  --secondary: #ff3d00;
   --secondary-foreground: #ffffff;
-  --secondary-accent: #349185;
 
-  --muted: #eceee8;
-  --muted-foreground: #4a4f4d;
+  --muted: #f5f5f5;
+  --muted-foreground: #737373;
 
-  --accent: #e09f3e;
-  --accent-foreground: #1b1f1e;
+  --accent: #ff3d00;
+  --accent-foreground: #ffffff;
 
-  --info: #2563eb;
+  --info: #3b82f6;
   --info-foreground: #ffffff;
-  --success: #2b7a6f;
+  --success: #22c55e;
   --success-foreground: #ffffff;
-  --warning: #c77b1e;
+  --warning: #f59e0b;
   --warning-foreground: #ffffff;
-  --error: #c43030;
+  --error: #ef4444;
   --error-foreground: #ffffff;
 
-  --border: #e2e5de;
-  --input: #e2e5de;
-  --outline: #94a3b8;
+  --border: #e5e5e5;
+  --input: #e5e5e5;
+  --outline: #a3a3a3;
 
-  --radius: 0.875rem;
+  --radius: 0.25rem;
 
-  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.03);
-  --shadow-card-hover:
-    0 4px 12px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.04);
-  --dot-color: rgba(0, 0, 0, 0.025);
-  --glow-color: rgba(214, 76, 47, 0.035);
+  --shadow-card: none;
+  --shadow-card-hover: none;
 
-  --sidebar-background: #f4f5f0;
-  --sidebar-foreground: #1b1f1e;
-  --sidebar-primary: #d64c2f;
+  --sidebar-background: #fafafa;
+  --sidebar-foreground: #0a0a0a;
+  --sidebar-primary: #ff3d00;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #eceee8;
-  --sidebar-accent-foreground: #1b1f1e;
-  --sidebar-border: #e2e5de;
-  --sidebar-outline: #94a3b8;
+  --sidebar-accent: #f5f5f5;
+  --sidebar-accent-foreground: #0a0a0a;
+  --sidebar-border: #e5e5e5;
+  --sidebar-outline: #a3a3a3;
 }
 
 /*
  * ==========================================================================
- * DARK THEME — "Night Miles"
+ * DARK THEME — Exaggerated Minimalism
  *
- * Pre-dawn blue-black sky with luminous data points.
- * Tomato primary for high visibility, mint trail markers.
- * Cards elevated by tone, no shadows needed.
+ * Near-black background, near-white text, bright vermillion.
+ * Cards elevated by tone contrast, no shadows.
  *
  * Contrast:
- *   foreground #E8EAE6 on #0E1117 → 15.8:1 (AAA)
- *   muted-fg   #7B8794 on #0E1117 → 5.2:1 (AA)  |  on #161B22 → 4.9:1 (AA)
- *   primary    #FF6347 on #161B22 → 4.9:1 (AA)  |  #0E1117 on #FF6347 → 6.5:1 (AA)
- *   secondary  #4EEAB3 on #0E1117 → 10.8:1 (AAA)
- *
- *   -foreground tokens are for text ON the semantic badge/button bg.
- *   For colored text on the page, use text-{color} (e.g. text-success).
+ *   foreground #FAFAFA on #0A0A0A → 19.3:1 (AAA)
+ *   muted-fg   #A3A3A3 on #0A0A0A → 8.3:1 (AAA)
+ *   primary    #FF5722 on #141414 → 5.1:1 (AA)
  * ==========================================================================
  */
 .dark {
-  --background: #0e1117;
-  --foreground: #e8eae6;
+  --background: #0a0a0a;
+  --foreground: #fafafa;
 
-  --card: #161b22;
-  --card-foreground: #e8eae6;
-  --popover: #161b22;
-  --popover-foreground: #e8eae6;
+  --card: #141414;
+  --card-foreground: #fafafa;
+  --popover: #141414;
+  --popover-foreground: #fafafa;
 
-  --primary: #ff6347;
-  --primary-foreground: #0e1117;
-  --primary-accent: #ff7d66;
+  --primary: #ff5722;
+  --primary-foreground: #0a0a0a;
+  --primary-accent: #ff7043;
 
-  --secondary: #4eeab3;
-  --secondary-foreground: #0e1117;
-  --secondary-accent: #6ef0c5;
+  --secondary: #ff5722;
+  --secondary-foreground: #0a0a0a;
 
-  --muted: #1c2129;
-  --muted-foreground: #7b8794;
+  --muted: #1a1a1a;
+  --muted-foreground: #a3a3a3;
 
-  --accent: #ffd074;
-  --accent-foreground: #0e1117;
+  --accent: #ff5722;
+  --accent-foreground: #0a0a0a;
 
   --info: #60a5fa;
-  --info-foreground: #0e1117;
-  --success: #4eeab3;
-  --success-foreground: #0e1117;
+  --info-foreground: #0a0a0a;
+  --success: #4ade80;
+  --success-foreground: #0a0a0a;
   --warning: #fbbf24;
-  --warning-foreground: #0e1117;
+  --warning-foreground: #0a0a0a;
   --error: #f87171;
-  --error-foreground: #0e1117;
+  --error-foreground: #0a0a0a;
 
-  --border: #2a3040;
-  --input: #2a3040;
-  --outline: #3d4250;
+  --border: #262626;
+  --input: #262626;
+  --outline: #404040;
 
   --shadow-card: none;
   --shadow-card-hover: none;
-  --dot-color: rgba(255, 255, 255, 0.015);
-  --glow-color: rgba(78, 234, 179, 0.025);
 
-  --sidebar-background: #0e1117;
-  --sidebar-foreground: #e8eae6;
-  --sidebar-primary: #ff6347;
+  --sidebar-background: #0a0a0a;
+  --sidebar-foreground: #fafafa;
+  --sidebar-primary: #ff5722;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1c2129;
-  --sidebar-accent-foreground: #e8eae6;
-  --sidebar-border: #2a3040;
-  --sidebar-outline: #3d4250;
+  --sidebar-accent: #1a1a1a;
+  --sidebar-accent-foreground: #fafafa;
+  --sidebar-border: #262626;
+  --sidebar-outline: #404040;
 }
 
 /* ==========================================================================
@@ -228,13 +212,6 @@
   }
   body {
     @apply bg-background text-foreground font-(--font-body) antialiased;
-    background-image:
-      radial-gradient(ellipse at 80% 0%, var(--glow-color) 0%, transparent 60%),
-      radial-gradient(circle at 1px 1px, var(--dot-color) 1px, transparent 0);
-    background-size:
-      100% 100%,
-      24px 24px;
-    background-attachment: fixed;
   }
   .dark body,
   body:where(.dark) {
@@ -250,37 +227,32 @@
   h5,
   h6 {
     font-family: var(--font-display);
+    font-weight: 700;
   }
 }
 
 /* ==========================================================================
- * SURFACE UTILITIES — Trail Cartography
- *
- * Light: cards float via subtle shadow on sage background.
- * Dark: cards elevated by background tone contrast.
+ * SURFACE UTILITIES
  * ========================================================================== */
 @layer utilities {
   .card-surface {
     background: var(--card);
     border-radius: var(--radius-container);
-    box-shadow: var(--shadow-card);
+    border: 1px solid var(--border);
   }
   .card-surface-raised {
     background: var(--card);
     border-radius: var(--radius-container);
-    box-shadow: var(--shadow-card);
+    border: 1px solid var(--border);
   }
   .card-inset {
     background: var(--muted);
     border-radius: var(--radius-inner);
   }
-  .accent-stripe {
-    border-left: 3px solid var(--primary);
-  }
 }
 
 /* ==========================================================================
- * SKELETON — shimmer sweep (radar scan feel)
+ * SKELETON — shimmer sweep
  * ========================================================================== */
 @keyframes shimmer {
   0% {
@@ -328,37 +300,6 @@
   }
 }
 
-/* ==========================================================================
- * FLOAT + INTERACTIVE MOTION
- * ========================================================================== */
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-}
-
-@layer utilities {
-  .animate-float {
-    animation: float 3s ease-in-out infinite;
-  }
-}
-
-/* Card hover lift — touch devices don't get hover transform */
-@media (hover: hover) {
-  .card-surface-raised:hover,
-  .card-surface:hover {
-    box-shadow: var(--shadow-card-hover);
-    transform: translateY(-1px);
-    transition:
-      box-shadow 0.2s ease,
-      transform 0.2s ease;
-  }
-}
-
 /* Mono data class for instrument readouts */
 @layer utilities {
   .font-data {
@@ -367,8 +308,21 @@
   }
 }
 
+/* Horizontal scroll with fade edges */
+@layer utilities {
+  .scroll-fade {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    mask-image: linear-gradient(to right, transparent, black 16px, black calc(100% - 16px), transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 16px, black calc(100% - 16px), transparent);
+  }
+  .scroll-fade::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .animate-float,
   .skeleton-pulse,
   .animate-fade-up,
   .animate-enter {

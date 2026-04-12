@@ -65,7 +65,7 @@ const BUTTON_VARIANT_CLASSES: Record<ButtonVariant, string> = {
   default: "bg-foreground text-background hover:bg-foreground/90",
   primary: "bg-primary text-primary-foreground hover:bg-primary/90",
   secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/90",
-  outline: "bg-background hover:bg-muted hover:text-foreground border shadow-xs",
+  outline: "bg-background hover:bg-muted hover:text-foreground border",
   ghost: "hover:bg-muted hover:text-foreground",
   info: "bg-info text-info-foreground hover:bg-info/90",
   success: "bg-success text-success-foreground hover:bg-success/90",
@@ -92,5 +92,5 @@ export function htmlButton(
   const action = opts?.dataAction ? ` data-action="${opts.dataAction}"` : "";
   const disabled = opts?.disabled ? " disabled" : "";
   const ariaLabel = opts?.ariaLabel ? ` aria-label="${opts.ariaLabel}"` : "";
-  return `<button class="inline-flex items-center justify-center gap-1.5 rounded-md font-medium whitespace-nowrap transition-all outline-none disabled:pointer-events-none disabled:opacity-50 ${BUTTON_VARIANT_CLASSES[v]} ${BUTTON_SIZE_CLASSES[s]} ${extra}" data-slot="button"${action}${disabled}${ariaLabel}>${content}</button>`;
+  return `<button class="inline-flex items-center justify-center gap-1.5 rounded-[var(--radius-base)] font-medium whitespace-nowrap transition-all outline-none disabled:pointer-events-none disabled:opacity-50 ${BUTTON_VARIANT_CLASSES[v]} ${BUTTON_SIZE_CLASSES[s]} ${extra}" data-slot="button"${action}${disabled}${ariaLabel}>${content}</button>`;
 }

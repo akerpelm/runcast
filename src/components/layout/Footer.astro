@@ -2,46 +2,20 @@
 
 ---
 
-<footer class="mt-12 pb-8">
+<footer class="mt-8 lg:mt-4 pb-4 lg:pb-2">
   <div class="mx-auto max-w-4xl px-4 sm:px-6">
-    <div class="border-t border-border pt-6">
-      <div
-        class="flex flex-col items-center gap-4 text-center sm:flex-row sm:justify-between sm:text-left"
+    <div class="pt-4 lg:pt-2">
+      <nav
+        aria-label="Footer navigation"
+        class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-muted-foreground"
       >
-        <div>
-          <p class="font-[var(--font-display)] text-sm text-foreground italic">
-            ShouldI<span class="font-semibold text-primary not-italic">Run</span>
-          </p>
-          <p class="mt-1 text-xs text-muted-foreground">
-            Your daily running briefing. Weather-adjusted pace, gear, and
-            timing.
-          </p>
-        </div>
-        <nav
-          aria-label="Footer navigation"
-          class="flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-muted-foreground"
-        >
-          <a href="/" class="transition-colors hover:text-foreground">Home</a>
-          <span class="text-border hidden sm:inline">|</span>
-          <a href="/about/" class="transition-colors hover:text-foreground"
-            >How It Works</a
-          >
-          <span class="text-border hidden sm:inline">|</span>
-          <a href="/legal/" class="transition-colors hover:text-foreground"
-            >Privacy & Terms</a
-          >
-          <span class="text-border hidden sm:inline">|</span>
-          <a href="/blog/" class="transition-colors hover:text-foreground"
-            >Blog</a
-          >
-          <span class="text-border hidden sm:inline">|</span>
-          <a href="#" id="footer-log-run" class="transition-colors hover:text-foreground"
-            >Log a Run</a
-          >
-          <span class="text-border hidden sm:inline">|</span>
-          <span>&copy; {new Date().getFullYear()} Should I Run</span>
-        </nav>
-      </div>
+        <a href="/" class="transition-colors hover:text-foreground">Home</a>
+        <a href="/about/" class="transition-colors hover:text-foreground">How It Works</a>
+        <a href="/blog/" class="transition-colors hover:text-foreground">Blog</a>
+        <a href="/legal/" class="transition-colors hover:text-foreground">Privacy</a>
+        <a href="#" id="footer-log-run" class="transition-colors hover:text-foreground">Log a Run</a>
+      </nav>
+      <p class="mt-4 text-center text-xs text-muted-foreground/60">&copy; {new Date().getFullYear()} Should I Run</p>
     </div>
   </div>
 </footer>

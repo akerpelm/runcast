@@ -9,7 +9,7 @@ export function renderAlerts(alerts: SafetyAlert[], alertsExpanded: boolean): st
   const checkSvg = `<svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>`;
 
   if (!alerts.length) {
-    return `<div class="mb-3 flex items-center gap-2 rounded-[var(--radius-base)] bg-success/5 px-3 py-2">
+    return `<div class="mb-4 flex items-center gap-2 rounded-[var(--radius-base)] border border-success/20 bg-success/5 px-3 py-2">
       <span class="text-success shrink-0">${checkSvg}</span>
       <p class="text-xs font-medium text-success">No safety concerns</p>
     </div>`;
@@ -19,7 +19,7 @@ export function renderAlerts(alerts: SafetyAlert[], alertsExpanded: boolean): st
   const st = ALERT_STYLES[worst.severity] || ALERT_STYLES.info;
 
   if (alerts.length === 1) {
-    return `<div class="mb-3 rounded-[var(--radius-base)] border-l-4 ${st.border} ${st.bg} px-3 py-2">
+    return `<div class="mb-4 rounded-[var(--radius-base)] border-l-4 ${st.border} ${st.bg} px-3 py-2">
       <div class="flex items-center gap-2">
         <span class="${st.text} shrink-0">${st.icon}</span>
         <div class="min-w-0">
@@ -45,7 +45,7 @@ export function renderAlerts(alerts: SafetyAlert[], alertsExpanded: boolean): st
     }).join("");
   }
 
-  return `<div class="mb-3 rounded-[var(--radius-base)] border-l-4 ${st.border} ${st.bg} px-3 py-2">
+  return `<div class="mb-4 rounded-[var(--radius-base)] border-l-4 ${st.border} ${st.bg} px-3 py-2">
     <button data-action="toggle-alerts" aria-label="Toggle safety alerts" aria-expanded="${expanded}" class="flex w-full items-center gap-2 text-left">
       <span class="${st.text} shrink-0">${st.icon}</span>
       <p class="flex-1 text-xs font-bold ${st.text}">${alerts.length} alerts: ${types}</p>

@@ -10,16 +10,16 @@ import Footer from "@/components/layout/Footer.astro";
 >
   <Header />
 
-  <main class="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+  <main class="mx-auto max-w-3xl px-4 py-12 sm:px-6">
     <article>
-      <div class="rounded-[var(--radius-container)] bg-background p-6 sm:p-8 card-surface-raised">
-        <h1 class="text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
+      <div class="card-surface p-6 sm:p-10">
+        <h1 class="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
           Legal
         </h1>
         <p class="mt-2 text-sm text-muted-foreground">Last updated: March 2026</p>
 
         <!-- Terms of Service -->
-        <section class="mt-8">
+        <section class="mt-10">
           <h2 class="text-lg font-bold text-foreground">Terms of Service</h2>
           <div class="mt-3 space-y-3 text-sm leading-relaxed text-muted-foreground">
             <p>
@@ -47,57 +47,51 @@ import Footer from "@/components/layout/Footer.astro";
         </section>
 
         <!-- Privacy Policy -->
-        <section class="mt-8">
+        <section class="mt-10">
           <h2 class="text-lg font-bold text-foreground">Privacy Policy</h2>
           <div class="mt-3 space-y-3 text-sm leading-relaxed text-muted-foreground">
             <p>
-              Should I Run is designed with privacy as a core principle. Here's what we do and don't do:
+              Should I Run is designed with privacy as a core principle.
             </p>
             <ul class="list-disc list-inside space-y-1.5">
               <li><strong class="text-foreground">No accounts.</strong> There is no sign-up, login, or user profile.</li>
-              <li><strong class="text-foreground">Anonymous identifier.</strong> We generate a random anonymous ID stored in your browser's localStorage. This ID has no connection to your real identity — it exists solely to group your feedback entries together so we can improve recommendations over time. You can reset it at any time by clearing site data.</li>
+              <li><strong class="text-foreground">Anonymous identifier.</strong> We generate a random anonymous ID stored in your browser's localStorage. This ID has no connection to your real identity. You can reset it at any time by clearing site data.</li>
               <li><strong class="text-foreground">No cookies or tracking.</strong> We don't use cookies, analytics trackers, or fingerprinting.</li>
               <li><strong class="text-foreground">Local storage.</strong> Your preferences (paces, effort level, runs-hot toggle), feedback entries, and shoe history are stored in your browser's localStorage.</li>
-              <li><strong class="text-foreground">Feedback sync.</strong> When you log a run, your feedback entry — including weather conditions, what you wore, effort level, and optionally which shoes you ran in — is synced to our server (Cloudflare D1) so we can improve recommendations across sessions and devices. Entries include your anonymous ID, approximate location (~1 km precision), and the weather snapshot at the time of your run. No personally identifiable information is collected.</li>
-              <li><strong class="text-foreground">Data retention.</strong> Synced feedback entries are retained on our server indefinitely to improve recommendations. They remain associated with your original anonymous ID even if you clear localStorage and generate a new one. Because entries contain no personally identifiable information, we cannot link them back to you. If you would like your synced entries deleted, contact us with your anonymous ID (visible in your browser's localStorage under <code class="rounded bg-muted/50 px-1.5 py-0.5 text-xs font-mono">runcast-anon-id</code>) and we will remove all entries associated with it.</li>
-              <li><strong class="text-foreground">Location data.</strong> Your coordinates are sent directly from your browser to third-party weather and geocoding APIs to fetch forecasts. When you log feedback, an approximate location (latitude/longitude rounded to ~1 km) is included in the synced entry. We do not store precise coordinates.</li>
+              <li><strong class="text-foreground">Feedback sync.</strong> When you log a run, your feedback entry is synced to our server (Cloudflare D1) so we can improve recommendations. No personally identifiable information is collected.</li>
+              <li><strong class="text-foreground">Data retention.</strong> Synced feedback entries are retained indefinitely to improve recommendations. Contact us with your anonymous ID (<code class="rounded bg-muted px-1.5 py-0.5 text-xs font-mono">runcast-anon-id</code>) to request deletion.</li>
+              <li><strong class="text-foreground">Location data.</strong> Your coordinates are sent directly from your browser to third-party weather APIs. Synced feedback includes approximate location (~1 km precision).</li>
             </ul>
             <p>
-              To clear all locally stored data, open your browser's developer tools and run
-              <code class="rounded bg-muted/50 px-1.5 py-0.5 text-xs font-mono">localStorage.clear()</code>
-              on the Should I Run domain, or use your browser's "Clear site data" option.
+              To clear all locally stored data, use your browser's "Clear site data" option.
             </p>
           </div>
         </section>
 
         <!-- Third-Party Services -->
-        <section class="mt-8">
+        <section class="mt-10">
           <h2 class="text-lg font-bold text-foreground">Third-Party Services</h2>
           <div class="mt-3 space-y-3 text-sm leading-relaxed text-muted-foreground">
             <p>
               Should I Run fetches data from the following external APIs directly from your browser:
             </p>
             <div class="mt-3 space-y-3">
-              <div class="rounded-[var(--radius-base)] bg-background p-4 card-inset">
+              <div class="rounded-[var(--radius-inner)] bg-muted p-4">
                 <p class="text-sm font-semibold text-foreground">Open-Meteo</p>
-                <p class="mt-1 text-xs text-muted-foreground">Weather forecasts, hourly conditions, and air quality data. Free, open-source weather API.</p>
-                <a href="https://open-meteo.com/en/terms" class="mt-1 inline-block text-xs text-primary underline decoration-primary/30 underline-offset-2 hover:decoration-primary" target="_blank" rel="noopener noreferrer">Terms &amp; Privacy</a>
+                <p class="mt-1 text-xs text-muted-foreground">Weather forecasts, hourly conditions, and air quality data.</p>
+                <a href="https://open-meteo.com/en/terms" class="mt-1 inline-block text-xs text-primary underline decoration-primary/30 underline-offset-2 hover:decoration-primary" target="_blank" rel="noopener noreferrer">Terms & Privacy</a>
               </div>
-              <div class="rounded-[var(--radius-base)] bg-background p-4 card-inset">
+              <div class="rounded-[var(--radius-inner)] bg-muted p-4">
                 <p class="text-sm font-semibold text-foreground">BigDataCloud</p>
-                <p class="mt-1 text-xs text-muted-foreground">Reverse geocoding to display your city/state name from coordinates.</p>
+                <p class="mt-1 text-xs text-muted-foreground">Reverse geocoding to display your city/state name.</p>
                 <a href="https://www.bigdatacloud.com/privacy-policy" class="mt-1 inline-block text-xs text-primary underline decoration-primary/30 underline-offset-2 hover:decoration-primary" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
               </div>
-              <div class="rounded-[var(--radius-base)] bg-background p-4 card-inset">
+              <div class="rounded-[var(--radius-inner)] bg-muted p-4">
                 <p class="text-sm font-semibold text-foreground">ipapi.co</p>
-                <p class="mt-1 text-xs text-muted-foreground">IP-based geolocation fallback when browser geolocation is unavailable or denied.</p>
+                <p class="mt-1 text-xs text-muted-foreground">IP-based geolocation fallback.</p>
                 <a href="https://ipapi.co/privacy/" class="mt-1 inline-block text-xs text-primary underline decoration-primary/30 underline-offset-2 hover:decoration-primary" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
               </div>
             </div>
-            <p>
-              Each of these services has its own privacy policy governing how they handle requests from your browser.
-              We encourage you to review them if you have concerns.
-            </p>
           </div>
         </section>
       </div>
