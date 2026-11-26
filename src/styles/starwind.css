@@ -318,7 +318,7 @@
   }
   /* Trailing fade tells the eye a row scrolls on. */
   .fade-edge {
-    mask-image: linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 40px), transparent);
+    mask-image: linear-gradient(to right, transparent, #000 28px, #000 calc(100% - 40px), transparent);
   }
   .no-scrollbar::-webkit-scrollbar {
     display: none;
