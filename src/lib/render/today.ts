@@ -215,9 +215,15 @@ function bandWord(band: number | undefined): string {
   return band === undefined ? "already passed" : `${BAND_LABELS[band]} for running`;
 }
 
+/** Non-colour rank cue: a bar whose length grows with how good the hour is. */
+function rankBar(band: number | undefined, inset = "inset-x-2 bottom-1.5"): string {
+  if (band === undefined) return "";
+  return `<span class="pointer-events-none absolute ${inset} h-1 overflow-hidden rounded-full" aria-hidden="true"><span class="block h-full rounded-full bg-current opacity-75" style="width:${(5 - band) * 20}%"></span></span>`;
+}
+
 function bandLegend(): string {
   return `<li class="flex items-center gap-2"><span>Better</span>
-    <span class="flex gap-1" aria-hidden="true">${BAND_LABELS.map((_, i) => `<span class="run-band-${i} h-4 w-5 rounded-[4px] border border-hair"></span>`).join("")}</span>
+    <span class="flex gap-1" aria-hidden="true">${BAND_LABELS.map((_, i) => `<span class="run-band-${i} relative h-5 w-6 rounded-[4px] border border-hair">${rankBar(i, "inset-x-1 bottom-1")}</span>`).join("")}</span>
     <span>Worse</span></li>`;
 }
 
@@ -256,15 +262,16 @@ export function renderHourStrip(b: HourBriefing, bw: BestWindowResult, ctx: Rend
     const band = bands.get(hr.time);
     const extra = `, ${bandWord(band)}, ${getConditionLabel(hr.weatherCode)}${hr.precipProbability >= 30 ? `, ${hr.precipProbability}% rain` : ""}${isBest ? ", best window" : isGood ? ", also good" : ""}`;
     return `<li><button type="button" data-action="select-hour" data-hour-index="${idx}" aria-pressed="${sel}" ${sel ? "data-selected-pill" : ""}
-      class="press relative flex h-[5.5rem] w-[3.75rem] flex-col items-center justify-center gap-1 rounded-[14px] ring-1 ring-hair ${sel ? "bg-foreground text-background" : bandClass(band)} ${ring}">
+      class="press relative flex h-[6.25rem] w-[3.75rem] flex-col items-center justify-center gap-1 rounded-[14px] pb-2 ring-1 ring-hair ${sel ? "bg-foreground text-background" : bandClass(band)} ${ring}">
       <span class="text-xs font-semibold ${sel ? "" : "opacity-85"}">${isNow ? "Now" : shortHour(d)}</span>
       ${getConditionIcon(hr.weatherCode, "h-5 w-5", night)}
-      <span class="text-[0.95rem] font-bold">${td(hr.temperature)}<span class="sr-only">${esc(extra)}</span></span>
-      ${hr.precipProbability >= 30 ? `<span aria-hidden="true" class="absolute -top-2 rounded-full bg-background px-1.5 text-[0.7rem] font-bold text-foreground ring-1 ring-hair">${hr.precipProbability}%</span>` : ""}
+      <span class="text-[0.95rem] leading-none font-bold">${td(hr.temperature)}<span class="sr-only">${esc(extra)}</span></span>
+      <span class="h-3 text-[0.7rem] leading-none font-semibold opacity-85" aria-hidden="true">${hr.precipProbability >= 30 ? `${hr.precipProbability}% rain` : ""}</span>
+      ${sel ? "" : rankBar(band)}
     </button></li>`;
   }).join("");
 
-  const legend = `<ul aria-label="Legend" class="mt-4 flex flex-wrap gap-x-6 gap-y-3 text-sm text-muted-foreground">${bandLegend()}${windowLegend(good.size > 0)}</ul>`;
+  const legend = `<ul aria-label="Legend" class="mt-4 grid gap-3 text-sm text-muted-foreground">${bandLegend()}<li><ul class="flex flex-wrap gap-x-6 gap-y-2">${windowLegend(good.size > 0)}</ul></li></ul>`;
 
   return `<section aria-labelledby="hours-title" class="mt-6">
     <div class="flex items-center justify-between">
@@ -289,10 +296,11 @@ export function renderDayRibbon(b: HourBriefing, bw: BestWindowResult, ctx: Rend
     const win = best.has(hr.time) ? "ring-2 ring-window ring-offset-2 ring-offset-background" : good.has(hr.time) ? "outline-2 outline-dashed outline-window outline-offset-2" : "ring-1 ring-hair";
     const sr = `, ${bandWord(band)}, ${getConditionLabel(hr.weatherCode)}${best.has(hr.time) ? ", best window" : good.has(hr.time) ? ", also good" : ""}`;
     return `<li class="min-w-0"><button type="button" data-action="select-hour" data-hour-index="${idx}" aria-pressed="${sel}"
-      class="press flex h-[4.75rem] w-full flex-col items-center justify-center gap-1 rounded-[10px] ${sel ? "bg-foreground text-background" : bandClass(band)} ${win}">
+      class="press relative flex h-[5rem] w-full flex-col items-center justify-center gap-1 rounded-[10px] pb-1.5 ${sel ? "bg-foreground text-background" : bandClass(band)} ${win}">
       <span class="text-[0.7rem] font-semibold opacity-85">${isNow ? "Now" : shortHour(d)}</span>
       ${getConditionIcon(hr.weatherCode, "h-4 w-4", isNightHour(hr.time, b.daily.sunrise, b.daily.sunset))}
       <span class="text-[0.8rem] font-bold">${td(hr.temperature).replace(/[FC]$/, "")}<span class="sr-only">${esc(sr)}</span></span>
+      ${sel ? "" : rankBar(band, "inset-x-1.5 bottom-1")}
     </button></li>`;
   }).join("");
   return `<section aria-labelledby="ribbon-title" class="mb-8 hidden lg:block">
@@ -437,7 +445,7 @@ export function renderHourTable(b: HourBriefing, bw: BestWindowResult, ctx: Rend
     const detail = `${sd(hr.windSpeed)}${hr.precipProbability >= 20 ? ` \u00b7 ${hr.precipProbability}% rain` : ""}`;
     return `<li class="border-t border-hair first:border-t-0"><button type="button" data-action="select-hour" data-hour-index="${idx}" aria-pressed="${sel}"
       class="press my-0.5 flex min-h-12 w-full items-center gap-3 rounded-[10px] px-2.5 text-left ${sel ? "bg-foreground text-background" : "hover:bg-muted"}">
-      <span class="${bandClass(bands.get(hr.time))} h-5 w-5 shrink-0 rounded-[5px] ring-1 ring-hair" aria-hidden="true"></span>
+      <span class="${bandClass(bands.get(hr.time))} relative h-6 w-7 shrink-0 rounded-[5px] ring-1 ring-hair" aria-hidden="true">${rankBar(bands.get(hr.time), "inset-x-1 bottom-1")}</span>
       <span class="w-14 shrink-0 text-[0.95rem] font-semibold">${formatTime(d).replace(":00", "")}<span class="sr-only">, ${bandWord(bands.get(hr.time))}</span></span>
       <span class="shrink-0">${getConditionIcon(hr.weatherCode, "h-5 w-5", isNightHour(hr.time, b.daily.sunrise, b.daily.sunset))}</span>
       <span class="w-12 shrink-0 text-[0.95rem] font-bold">${td(hr.temperature)}</span>
