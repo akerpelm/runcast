@@ -113,10 +113,12 @@ export function renderVerdict(v: VerdictInput): string {
     <p class="mt-1 text-balance text-[0.95rem] text-infield-muted">${esc(v.isBestHour ? (dayLabel === "Today" || dayLabel === "Tomorrow" ? `${dayLabel}'s best window` : `Best window on ${dayLabel}`) : "Your chosen hour")} \u00b7 ${facts.map(esc).join(" \u00b7 ")}</p>
     ${hazards}
     ${more}
-    <button type="button" data-action="open-sheet" data-sheet="kit" class="press -mx-2 mt-3 flex min-h-11 w-[calc(100%+1rem)] items-center gap-2.5 rounded-[12px] border-t border-white/20 px-2 pt-3 text-left hover:bg-white/10 lg:hidden">
-      <span class="shrink-0">${shirtIcon}</span>
-      <span class="min-w-0 truncate text-[0.95rem]"><span class="text-infield-muted">Wear </span><span class="font-semibold">${esc(kit)}</span></span>
-    </button>
+    <div class="mt-3 border-t border-white/20 pt-2 lg:hidden">
+      <button type="button" data-action="open-sheet" data-sheet="kit" class="press -mx-2 flex min-h-11 w-[calc(100%+1rem)] items-center gap-2.5 rounded-[12px] px-2 text-left hover:bg-white/10">
+        <span class="shrink-0">${shirtIcon}</span>
+        <span class="min-w-0 truncate text-[0.95rem]"><span class="text-infield-muted">Wear </span><span class="font-semibold">${esc(kit)}</span></span>
+      </button>
+    </div>
   </section>`;
 }
 
