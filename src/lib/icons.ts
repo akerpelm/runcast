@@ -25,38 +25,38 @@ const cloudSnow = `<path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8
 
 const cloudLightning = `<path d="M6 16.326A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 .5 8.973"/><path d="m13 12-3 5h4l-3 5"/>`;
 
-const WMO_ICONS: Record<number, { svg: string; label: string; cls: string }> = {
-  0:  { label: "Clear",             cls: "text-warning",          svg: sun },
-  1:  { label: "Mainly clear",      cls: "text-warning",          svg: sun },
-  2:  { label: "Partly cloudy",     cls: "text-muted-foreground", svg: cloudSun },
-  3:  { label: "Overcast",          cls: "text-muted-foreground", svg: cloud },
-  45: { label: "Fog",               cls: "text-muted-foreground", svg: cloudFog },
-  48: { label: "Freezing fog",      cls: "text-info",             svg: cloudFog },
-  51: { label: "Light drizzle",     cls: "text-info",             svg: cloudDrizzle },
-  53: { label: "Drizzle",           cls: "text-info",             svg: cloudDrizzle },
-  55: { label: "Heavy drizzle",     cls: "text-info",             svg: cloudDrizzle },
-  56: { label: "Freezing drizzle",  cls: "text-info",             svg: cloudDrizzle },
-  57: { label: "Heavy fzg drizzle", cls: "text-info",             svg: cloudDrizzle },
-  61: { label: "Light rain",        cls: "text-info",             svg: cloudRain },
-  63: { label: "Rain",              cls: "text-info",             svg: cloudRain },
-  65: { label: "Heavy rain",        cls: "text-info",             svg: cloudRain },
-  66: { label: "Freezing rain",     cls: "text-info",             svg: cloudRain },
-  67: { label: "Heavy fzg rain",    cls: "text-info",             svg: cloudRain },
-  71: { label: "Light snow",        cls: "text-info",             svg: cloudSnow },
-  73: { label: "Snow",              cls: "text-info",             svg: cloudSnow },
-  75: { label: "Heavy snow",        cls: "text-info",             svg: cloudSnow },
-  77: { label: "Snow grains",       cls: "text-info",             svg: cloudSnow },
-  80: { label: "Light showers",     cls: "text-info",             svg: cloudRain },
-  81: { label: "Showers",           cls: "text-info",             svg: cloudRain },
-  82: { label: "Heavy showers",     cls: "text-info",             svg: cloudRain },
-  85: { label: "Snow showers",      cls: "text-info",             svg: cloudSnow },
-  86: { label: "Heavy snow showers",cls: "text-info",             svg: cloudSnow },
-  95: { label: "Thunderstorm",      cls: "text-warning",          svg: cloudLightning },
-  96: { label: "T-storm w/ hail",   cls: "text-error",            svg: cloudLightning },
-  99: { label: "T-storm heavy hail",cls: "text-error",            svg: cloudLightning },
+const WMO_ICONS: Record<number, { svg: string; label: string }> = {
+  0:  { label: "Clear",            svg: sun },
+  1:  { label: "Mainly clear",     svg: sun },
+  2:  { label: "Partly cloudy",    svg: cloudSun },
+  3:  { label: "Overcast",         svg: cloud },
+  45: { label: "Fog",              svg: cloudFog },
+  48: { label: "Freezing fog",     svg: cloudFog },
+  51: { label: "Light drizzle",    svg: cloudDrizzle },
+  53: { label: "Drizzle",          svg: cloudDrizzle },
+  55: { label: "Heavy drizzle",    svg: cloudDrizzle },
+  56: { label: "Freezing drizzle", svg: cloudDrizzle },
+  57: { label: "Heavy fzg drizzle",svg: cloudDrizzle },
+  61: { label: "Light rain",       svg: cloudRain },
+  63: { label: "Rain",             svg: cloudRain },
+  65: { label: "Heavy rain",       svg: cloudRain },
+  66: { label: "Freezing rain",    svg: cloudRain },
+  67: { label: "Heavy fzg rain",   svg: cloudRain },
+  71: { label: "Light snow",       svg: cloudSnow },
+  73: { label: "Snow",             svg: cloudSnow },
+  75: { label: "Heavy snow",       svg: cloudSnow },
+  77: { label: "Snow grains",      svg: cloudSnow },
+  80: { label: "Light showers",    svg: cloudRain },
+  81: { label: "Showers",          svg: cloudRain },
+  82: { label: "Heavy showers",    svg: cloudRain },
+  85: { label: "Snow showers",     svg: cloudSnow },
+  86: { label: "Heavy snow showers", svg: cloudSnow },
+  95: { label: "Thunderstorm",     svg: cloudLightning },
+  96: { label: "T-storm w/ hail",  svg: cloudLightning },
+  99: { label: "T-storm heavy hail", svg: cloudLightning },
 };
 
-const FALLBACK = { label: "Unknown", cls: "text-muted-foreground", svg: cloud };
+const FALLBACK = { label: "Unknown",svg: cloud };
 
 const NIGHT_SVG: Record<number, string> = { 0: moon, 1: moon, 2: cloudMoon };
 
