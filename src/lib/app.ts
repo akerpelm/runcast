@@ -261,7 +261,7 @@ function sheetView(id: SheetId, b: HourBriefing): SheetView {
   switch (id) {
     case "hours":
       return {
-        id, title: "Hour by hour", description: `${hourLabel} in ${state.locationName}. Each hour is shaded by how it compares with the rest of the day; pick one to see its call.`,
+        id, title: "Hour by hour", description: `${hourLabel} in ${state.locationName}. Pick an hour to see its call.`,
         snapPoints: [0.6, 0.94],
         html: `${renderHourLegend(bw)}${renderHourTable(b, bw, ctx, currentBands())}
           <h3 class="mt-6 font-(family-name:--font-display) text-lg font-bold uppercase tracking-[0.04em]">Run windows</h3>${renderWindows(bw, b, ctx)}

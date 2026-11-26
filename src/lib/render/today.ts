@@ -222,9 +222,9 @@ function rankBar(band: number | undefined, inset = "inset-x-2 bottom-1.5"): stri
 }
 
 function bandLegend(): string {
-  return `<li class="flex items-center gap-2"><span>Better</span>
-    <span class="flex gap-1" aria-hidden="true">${BAND_LABELS.map((_, i) => `<span class="run-band-${i} relative h-5 w-6 rounded-[4px] border border-hair">${rankBar(i, "inset-x-1 bottom-1")}</span>`).join("")}</span>
-    <span>Worse</span></li>`;
+  return `<li class="flex items-center gap-2.5">
+    <span class="flex shrink-0 items-end gap-0.5" aria-hidden="true">${[1, 3, 5].map((n) => `<span class="h-2 rounded-full bg-window" style="width:${n * 4}px"></span>`).join("")}</span>
+    <span>Stronger green and a longer bar mean a better hour to run, compared with the rest of the day</span></li>`;
 }
 
 function windowLegend(withGood: boolean): string {
@@ -234,7 +234,10 @@ function windowLegend(withGood: boolean): string {
 
 /** Legend for the hours sheet, matching the page. */
 export function renderHourLegend(bw: BestWindowResult): string {
-  return `<ul aria-label="Legend" class="mb-4 flex flex-wrap gap-x-6 gap-y-3 text-sm text-muted-foreground">${bandLegend()}${windowLegend(bw.ranked.length > 1)}</ul>`;
+  return `<div class="mb-4 space-y-2 text-sm text-muted-foreground">
+    <p class="flex items-center gap-2.5"><span class="relative h-5 w-14 shrink-0 overflow-hidden rounded-[6px] bg-muted" aria-hidden="true"><span class="absolute inset-y-0 left-0 w-2/3 bg-window/30"></span></span>The shaded bar behind each hour shows how good it is for running, compared with the rest of the day. Longer is better.</p>
+    <ul aria-label="Window marks" class="flex flex-wrap gap-x-6 gap-y-2">${windowLegend(bw.ranked.length > 1)}</ul>
+  </div>`;
 }
 
 // ─── Hour strip ─────────────────────────────────────────────────────────────
@@ -443,14 +446,16 @@ export function renderHourTable(b: HourBriefing, bw: BestWindowResult, ctx: Rend
       ? `<span class="shrink-0 rounded-full bg-infield px-2.5 py-0.5 text-xs font-bold text-white">Best</span>`
       : good.has(hr.time) ? `<span class="shrink-0 rounded-full border border-current px-2.5 py-0.5 text-xs font-bold">Good</span>` : "";
     const detail = `${sd(hr.windSpeed)}${hr.precipProbability >= 20 ? ` \u00b7 ${hr.precipProbability}% rain` : ""}`;
+    const band = bands.get(hr.time);
+    const fill = band === undefined || sel ? "" : `<span class="absolute inset-y-1 left-0 rounded-[10px] bg-window/25" style="width:${(5 - band) * 20}%" aria-hidden="true"></span>`;
     return `<li class="border-t border-hair first:border-t-0"><button type="button" data-action="select-hour" data-hour-index="${idx}" aria-pressed="${sel}"
-      class="press my-0.5 flex min-h-12 w-full items-center gap-3 rounded-[10px] px-2.5 text-left ${sel ? "bg-foreground text-background" : "hover:bg-muted"}">
-      <span class="${bandClass(bands.get(hr.time))} relative h-6 w-7 shrink-0 rounded-[5px] ring-1 ring-hair" aria-hidden="true">${rankBar(bands.get(hr.time), "inset-x-1 bottom-1")}</span>
-      <span class="w-14 shrink-0 text-[0.95rem] font-semibold">${formatTime(d).replace(":00", "")}<span class="sr-only">, ${bandWord(bands.get(hr.time))}</span></span>
-      <span class="shrink-0">${getConditionIcon(hr.weatherCode, "h-5 w-5", isNightHour(hr.time, b.daily.sunrise, b.daily.sunset))}</span>
-      <span class="w-12 shrink-0 text-[0.95rem] font-bold">${td(hr.temperature)}</span>
-      <span class="min-w-0 flex-1 truncate text-sm ${sel ? "" : "text-muted-foreground"}">${detail}</span>
-      ${tag}
+      class="press relative my-0.5 flex min-h-12 w-full items-center gap-3 rounded-[10px] px-2.5 text-left ${sel ? "bg-foreground text-background" : band === undefined ? "opacity-60 hover:bg-muted" : "hover:bg-muted"}">
+      ${fill}
+      <span class="relative w-14 shrink-0 text-[0.95rem] font-semibold">${formatTime(d).replace(":00", "")}<span class="sr-only">, ${bandWord(bands.get(hr.time))}</span></span>
+      <span class="relative shrink-0">${getConditionIcon(hr.weatherCode, "h-5 w-5", isNightHour(hr.time, b.daily.sunrise, b.daily.sunset))}</span>
+      <span class="relative w-12 shrink-0 text-[0.95rem] font-bold">${td(hr.temperature)}</span>
+      <span class="relative min-w-0 flex-1 truncate text-sm ${sel ? "" : "text-muted-foreground"}">${detail}</span>
+      ${tag ? `<span class="relative">${tag}</span>` : ""}
     </button></li>`;
   }).join("");
   return `<ul>${rows}</ul>`;
