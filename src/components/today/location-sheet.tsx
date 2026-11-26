@@ -4,8 +4,7 @@ import { searchLocations } from "@/lib/geo";
 import { crosshairIcon, searchIcon } from "@/lib/icons";
 import { SvgIcon } from "./svg-icon";
 import { useToday } from "./today-context";
-
-const field = "h-12 w-full rounded-[12px] border border-input bg-card px-3 pl-9 text-base text-foreground placeholder:text-muted-foreground focus:border-outline focus:outline-none";
+import { fieldClass } from "./field";
 
 function useDebounced<T>(value: T, ms: number): T {
   const [debounced, setDebounced] = useState(value);
@@ -44,12 +43,12 @@ export function LocationSheet() {
           await actions.usePreciseLocation();
           setLocating(false);
         }}
-        className="press mt-4 flex min-h-12 w-full items-center gap-3 rounded-[14px] bg-infield px-4 text-left text-base font-bold text-white hover:opacity-95"
+        className="press mt-4 flex min-h-14 w-full items-center gap-3 rounded-[14px] bg-foreground px-4 py-3 text-left text-base font-bold text-background hover:opacity-90 aria-busy:opacity-70"
       >
         <SvgIcon svg={crosshairIcon} />
         <span>
           {locating ? "Finding you…" : "Use my precise location"}
-          <span className="block text-sm font-normal text-infield-muted">Your browser will ask once</span>
+          <span className="mt-0.5 block text-sm font-normal opacity-80">Your browser will ask once</span>
         </span>
       </button>
       <form
@@ -75,7 +74,7 @@ export function LocationSheet() {
             onChange={(e) => setQuery(e.target.value)}
             aria-describedby="loc-status"
             aria-controls="loc-results"
-            className={field}
+            className={`${fieldClass} pl-10`}
           />
         </div>
         <p id="loc-status" className="sr-only" aria-live="polite">

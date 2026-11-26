@@ -5,11 +5,12 @@ import {
 } from "@/lib/feedback";
 import { syncFeedback } from "@/lib/sync";
 import { useToday } from "./today-context";
+import { fieldClass, primaryButtonClass } from "./field";
 
 const chip = "press inline-flex min-h-11 items-center rounded-full border px-4 text-[0.95rem] font-semibold";
 const chipOn = "border-foreground bg-foreground text-background";
 const chipOff = "border-hair text-foreground hover:bg-muted";
-const primary = "press inline-flex min-h-12 items-center justify-center rounded-full bg-foreground px-6 text-base font-bold text-background hover:opacity-90";
+const primary = primaryButtonClass;
 const stepTitle = "font-(family-name:--font-body) text-base font-bold";
 
 const FEEL = [
@@ -85,7 +86,14 @@ export function LogSheet() {
 
   return (
     <div>
-      <p className="mb-4 text-sm font-semibold text-muted-foreground">Step {step} of 4</p>
+      <div className="mb-5">
+        <p className="text-sm font-semibold text-muted-foreground">Step {step} of 4</p>
+        <div className="mt-2 grid grid-cols-4 gap-1.5" aria-hidden="true">
+          {[1, 2, 3, 4].map((n) => (
+            <span key={n} className={`h-1.5 rounded-full transition-colors ${n <= step ? "bg-foreground" : "bg-muted"}`} />
+          ))}
+        </div>
+      </div>
       <div className="space-y-4">
         <section>
           <h3 className={stepTitle}>{editing ? "What did you actually wear?" : "What did you wear?"}</h3>
@@ -147,7 +155,7 @@ export function LogSheet() {
                   placeholder="e.g. Pegasus 41"
                   value={shoes ?? ""}
                   onChange={(e) => setShoes(e.target.value.trim() ? e.target.value : null)}
-                  className="mt-2 h-12 w-full rounded-[12px] border border-input bg-card px-3 text-base"
+                  className={`${fieldClass} mt-2`}
                 />
               </>
             )}
@@ -158,11 +166,11 @@ export function LogSheet() {
         <button
           type="button"
           onClick={() => { dismissFeedbackToday(); actions.closeSheet(); }}
-          className="press min-h-11 rounded-full px-3 text-[0.95rem] font-semibold text-muted-foreground hover:bg-muted hover:text-foreground"
+          className="press -ml-3 min-h-11 rounded-full px-3 text-[0.95rem] font-semibold text-muted-foreground hover:bg-muted hover:text-foreground"
         >
           Not today
         </button>
-        {ready && <button type="button" onClick={submit} className={primary}>Log it</button>}
+        <button type="button" onClick={submit} disabled={!ready} className={primary}>Log it</button>
       </div>
     </div>
   );

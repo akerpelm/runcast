@@ -3,8 +3,7 @@ import { EFFORTS, EFFORT_LABELS, EMPTY_PACES, parsePace, type EffortLevel } from
 import { paceForDisplay, paceUnit } from "@/lib/display";
 import { formatPace } from "@/lib/formulas/pace";
 import { useToday } from "./today-context";
-
-const field = "h-12 w-full rounded-[12px] border border-input bg-card px-3 text-base text-foreground placeholder:text-muted-foreground focus:border-outline focus:outline-none";
+import { fieldClass, primaryButtonClass } from "./field";
 
 export function PacesSheet() {
   const { view, actions } = useToday();
@@ -36,7 +35,9 @@ export function PacesSheet() {
 
   return (
     <form onSubmit={save} noValidate>
-      <p className="text-[0.95rem] text-muted-foreground">Enter the paces you train at. Each lane shows how today's weather changes them.</p>
+      <p className="text-[0.95rem] text-muted-foreground">
+        Enter the paces you train at, and each lane shows how today's weather changes them. Type <span className="font-semibold text-foreground">830</span> for 8:30. Leave any you don't use blank.
+      </p>
       <div className="mt-3">
         {EFFORTS.map((e, i) => (
           <div key={e} className="grid grid-cols-[2.5rem_1fr_7.5rem] items-center gap-3 border-t border-hair py-2">
@@ -50,7 +51,7 @@ export function PacesSheet() {
               type="text"
               inputMode="numeric"
               autoComplete="off"
-              placeholder={e === "easy" ? (prefs.metric ? "5:00" : "8:00") : "optional"}
+              placeholder="m:ss"
               value={values[e]}
               aria-invalid={error?.effort === e}
               aria-describedby={error?.effort === e ? "pace-error" : undefined}
@@ -58,7 +59,12 @@ export function PacesSheet() {
                 setValues((v) => ({ ...v, [e]: ev.target.value }));
                 if (error?.effort === e) setError(null);
               }}
-              className={`${field} text-center font-semibold`}
+              onBlur={() => {
+                // Phone number pads have no colon, so "830" is tidied to "8:30" once the field is left.
+                const secs = parsePace(values[e]);
+                if (secs > 0) setValues((v) => ({ ...v, [e]: formatPace(secs) }));
+              }}
+              className={`${fieldClass} text-center font-semibold tabular-nums`}
             />
           </div>
         ))}
@@ -80,7 +86,7 @@ export function PacesSheet() {
         </button>
       </div>
       <div className="sticky bottom-0 -mx-1 bg-[var(--raised)] px-1 pt-2 pb-1">
-        <button type="submit" className="press inline-flex min-h-12 w-full items-center justify-center rounded-full bg-foreground px-6 text-base font-bold text-background hover:opacity-90">
+        <button type="submit" className={`${primaryButtonClass} w-full`}>
           Save paces
         </button>
       </div>
