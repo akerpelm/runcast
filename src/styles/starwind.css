@@ -25,12 +25,10 @@
     }
   }
 
-  --radius-container: 4px;
-  --radius-base: 4px;
-  --radius-inner: 2px;
-  --font-display: 'Space Grotesk', sans-serif;
-  --font-body: 'Inter', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --radius-container: 16px;
+  --radius-base: 12px;
+  --radius-inner: 8px;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 @theme inline {
@@ -61,6 +59,20 @@
   --color-input: var(--input);
   --color-outline: var(--outline);
 
+  --color-track: var(--track);
+  --color-track-deep: var(--track-deep);
+  --color-track-ink: var(--track-ink);
+  --color-track-muted: var(--track-muted);
+  --color-infield: var(--infield);
+  --color-infield-muted: var(--infield-muted);
+  --color-indoor: var(--indoor);
+  --color-caution: var(--caution);
+  --color-caution-ink: var(--caution-ink);
+  --color-danger: var(--danger);
+  --color-hair: var(--hair);
+  --color-raised: var(--raised);
+  --color-window: var(--window);
+
   --radius-xs: calc(var(--radius) - 0.375rem);
   --radius-sm: calc(var(--radius) - 0.25rem);
   --radius-md: calc(var(--radius) - 0.125rem);
@@ -79,128 +91,146 @@
   --color-sidebar-outline: var(--sidebar-outline);
 }
 
+
 /*
  * ==========================================================================
- * LIGHT THEME — Exaggerated Minimalism
- *
- * Near-white background, near-black text, vermillion accent.
- * Three colors only. Sharp edges. Data screams, chrome whispers.
- *
- * Contrast:
- *   foreground #0A0A0A on #FAFAFA → 19.3:1 (AAA)
- *   muted-fg   #737373 on #FAFAFA → 4.9:1 (AA)
- *   primary    #FF3D00 on #FFFFFF → 4.6:1 (AA)
+ * TRACK WORLD: light (chalk ground, rubber lanes, infield verdict)
+ * Contrast (checked): ink on chalk 15.8, muted on chalk 6.3,
+ * white on track 6.2, white on infield 8.2, ink on caution 9.6.
  * ==========================================================================
  */
 :root {
-  --background: #fafafa;
-  --foreground: #0a0a0a;
+  --background: #f3f1eb;
+  --foreground: #16181a;
 
-  --card: #ffffff;
-  --card-foreground: #0a0a0a;
-  --popover: #ffffff;
-  --popover-foreground: #0a0a0a;
+  --card: #fbfaf6;
+  --card-foreground: #16181a;
+  --popover: #fbfaf6;
+  --popover-foreground: #16181a;
+  --raised: #fbfaf6;
 
-  --primary: #ff3d00;
+  --primary: #a83f2a;
   --primary-foreground: #ffffff;
-  --primary-accent: #ff5722;
+  --primary-accent: #7f2e1f;
 
-  --secondary: #ff3d00;
+  --secondary: #1c5a39;
   --secondary-foreground: #ffffff;
 
-  --muted: #f5f5f5;
-  --muted-foreground: #737373;
+  --muted: #e9e6dd;
+  --muted-foreground: #5c5850;
 
-  --accent: #ff3d00;
+  --accent: #1c5a39;
   --accent-foreground: #ffffff;
 
-  --info: #3b82f6;
+  --info: #1c5a39;
   --info-foreground: #ffffff;
-  --success: #22c55e;
+  --success: #1c5a39;
   --success-foreground: #ffffff;
-  --warning: #f59e0b;
-  --warning-foreground: #ffffff;
-  --error: #ef4444;
+  --warning: #f0b429;
+  --warning-foreground: #16181a;
+  --error: #b3261e;
   --error-foreground: #ffffff;
 
-  --border: #e5e5e5;
-  --input: #e5e5e5;
-  --outline: #a3a3a3;
+  --border: #dcd7cc;
+  --input: #cfc9bc;
+  --outline: #1c5a39;
 
-  --radius: 0.25rem;
+  --track: #a83f2a;
+  --track-deep: #7f2e1f;
+  --track-ink: #ffffff;
+  --track-muted: #f6d9d0;
+  --infield: #1c5a39;
+  --infield-muted: #cfe6d8;
+  --indoor: #2b2e31;
+  --caution: #f0b429;
+  --caution-ink: #16181a;
+  --danger: #b3261e;
+  --hair: #dcd7cc;
+  --window: #1c5a39;
 
+  --radius: 0.75rem;
   --shadow-card: none;
   --shadow-card-hover: none;
+  --shadow-raised: 0 1px 2px rgb(22 24 26 / 0.08), 0 10px 28px -12px rgb(22 24 26 / 0.28);
 
-  --sidebar-background: #fafafa;
-  --sidebar-foreground: #0a0a0a;
-  --sidebar-primary: #ff3d00;
+  --sidebar-background: #f3f1eb;
+  --sidebar-foreground: #16181a;
+  --sidebar-primary: #a83f2a;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f5f5f5;
-  --sidebar-accent-foreground: #0a0a0a;
-  --sidebar-border: #e5e5e5;
-  --sidebar-outline: #a3a3a3;
+  --sidebar-accent: #e9e6dd;
+  --sidebar-accent-foreground: #16181a;
+  --sidebar-border: #dcd7cc;
+  --sidebar-outline: #1c5a39;
+
+  color-scheme: light;
 }
 
 /*
- * ==========================================================================
- * DARK THEME — Exaggerated Minimalism
- *
- * Near-black background, near-white text, bright vermillion.
- * Cards elevated by tone contrast, no shadows.
- *
- * Contrast:
- *   foreground #FAFAFA on #0A0A0A → 19.3:1 (AAA)
- *   muted-fg   #A3A3A3 on #0A0A0A → 8.3:1 (AAA)
- *   primary    #FF5722 on #141414 → 5.1:1 (AA)
- * ==========================================================================
+ * TRACK WORLD: dark (the stadium at night)
+ * Contrast (checked): ink 15.9, muted 7.5, white on track 7.8,
+ * white on infield 10.4.
  */
 .dark {
-  --background: #0a0a0a;
-  --foreground: #fafafa;
+  --background: #0f1110;
+  --foreground: #edebe4;
 
-  --card: #141414;
-  --card-foreground: #fafafa;
-  --popover: #141414;
-  --popover-foreground: #fafafa;
+  --card: #181b19;
+  --card-foreground: #edebe4;
+  --popover: #181b19;
+  --popover-foreground: #edebe4;
+  --raised: #181b19;
 
-  --primary: #ff5722;
-  --primary-foreground: #0a0a0a;
-  --primary-accent: #ff7043;
+  --primary: #e07a62;
+  --primary-foreground: #0f1110;
+  --primary-accent: #f0a08c;
 
-  --secondary: #ff5722;
-  --secondary-foreground: #0a0a0a;
+  --secondary: #6fc395;
+  --secondary-foreground: #0f1110;
 
-  --muted: #1a1a1a;
-  --muted-foreground: #a3a3a3;
+  --muted: #1f2321;
+  --muted-foreground: #a7a39a;
 
-  --accent: #ff5722;
-  --accent-foreground: #0a0a0a;
+  --accent: #6fc395;
+  --accent-foreground: #0f1110;
 
-  --info: #60a5fa;
-  --info-foreground: #0a0a0a;
-  --success: #4ade80;
-  --success-foreground: #0a0a0a;
-  --warning: #fbbf24;
-  --warning-foreground: #0a0a0a;
-  --error: #f87171;
-  --error-foreground: #0a0a0a;
+  --info: #6fc395;
+  --info-foreground: #0f1110;
+  --success: #6fc395;
+  --success-foreground: #0f1110;
+  --warning: #f0b429;
+  --warning-foreground: #16181a;
+  --error: #f2847a;
+  --error-foreground: #0f1110;
 
-  --border: #262626;
-  --input: #262626;
-  --outline: #404040;
+  --border: #2a2e2b;
+  --input: #3a3f3b;
+  --outline: #6fc395;
 
-  --shadow-card: none;
-  --shadow-card-hover: none;
+  --track: #8e3626;
+  --track-deep: #6b281c;
+  --track-ink: #ffffff;
+  --track-muted: #f2cfc4;
+  --infield: #16492f;
+  --infield-muted: #c9e3d3;
+  --indoor: #2b2e31;
+  --caution: #f0b429;
+  --caution-ink: #16181a;
+  --danger: #b3261e;
+  --hair: #2a2e2b;
+  --window: #6fc395;
 
-  --sidebar-background: #0a0a0a;
-  --sidebar-foreground: #fafafa;
-  --sidebar-primary: #ff5722;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1a1a1a;
-  --sidebar-accent-foreground: #fafafa;
-  --sidebar-border: #262626;
-  --sidebar-outline: #404040;
+  --shadow-raised: 0 1px 2px rgb(0 0 0 / 0.4), 0 12px 32px -12px rgb(0 0 0 / 0.7);
+
+  --sidebar-background: #0f1110;
+  --sidebar-foreground: #edebe4;
+  --sidebar-primary: #e07a62;
+  --sidebar-primary-foreground: #0f1110;
+  --sidebar-accent: #1f2321;
+  --sidebar-accent-foreground: #edebe4;
+  --sidebar-border: #2a2e2b;
+  --sidebar-outline: #6fc395;
+
+  color-scheme: dark;
 }
 
 /* ==========================================================================
@@ -210,12 +240,12 @@
   * {
     @apply border-border outline-outline/50;
   }
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
   body {
     @apply bg-background text-foreground font-(--font-body) antialiased;
-  }
-  .dark body,
-  body:where(.dark) {
-    color-scheme: dark;
+    font-variant-numeric: tabular-nums;
   }
   button {
     @apply cursor-pointer;
@@ -228,19 +258,40 @@
   h6 {
     font-family: var(--font-display);
     font-weight: 700;
+    text-wrap: balance;
+  }
+  ::selection {
+    background: var(--infield);
+    color: #fff;
+  }
+  :focus-visible {
+    outline: 3px solid var(--outline);
+    outline-offset: 2px;
+  }
+  /* Coloured panels (infield, track) need a white ring to stay visible. */
+  [data-surface="color"] :focus-visible {
+    outline-color: #ffffff;
+  }
+  input {
+    caret-color: var(--primary);
+  }
+  /* @tailwindcss/forms paints a blue focus ring; use the world's outline colour. */
+  input:focus,
+  textarea:focus,
+  select:focus {
+    --tw-ring-color: var(--outline);
+    border-color: var(--outline);
+  }
+  a {
+    text-underline-offset: 0.2em;
   }
 }
 
 /* ==========================================================================
- * SURFACE UTILITIES
+ * SURFACE UTILITIES (content pages keep these names)
  * ========================================================================== */
 @layer utilities {
   .card-surface {
-    background: var(--card);
-    border-radius: var(--radius-container);
-    border: 1px solid var(--border);
-  }
-  .card-surface-raised {
     background: var(--card);
     border-radius: var(--radius-container);
     border: 1px solid var(--border);
@@ -249,10 +300,29 @@
     background: var(--muted);
     border-radius: var(--radius-inner);
   }
+  .font-data {
+    font-variant-numeric: tabular-nums;
+  }
+  .pad-safe-bottom {
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+  }
+  /* Instant press feedback for touch; transform only. */
+  .press {
+    transition: transform 120ms cubic-bezier(0.2, 0.8, 0.2, 1), background-color 120ms ease-out;
+  }
+  .press:active {
+    transform: scale(0.97);
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 /* ==========================================================================
- * SKELETON — shimmer sweep
+ * SKELETON
  * ========================================================================== */
 @keyframes shimmer {
   0% {
@@ -268,7 +338,7 @@
     background: linear-gradient(
       90deg,
       var(--muted) 25%,
-      color-mix(in srgb, var(--muted) 85%, var(--foreground)) 50%,
+      color-mix(in srgb, var(--muted) 80%, var(--foreground)) 50%,
       var(--muted) 75%
     );
     background-size: 200% 100%;
@@ -277,55 +347,122 @@
   }
 }
 
-/* ==========================================================================
- * PAGE ENTER — staggered fade-up
- * ========================================================================== */
-@keyframes enter {
+/* Lane highlight settles with a short spring-like overshoot. */
+@keyframes lane-settle {
+  0% {
+    transform: scaleX(0.6);
+    opacity: 0;
+  }
+  70% {
+    transform: scaleX(1.02);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes verdict-enter {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
 
 @layer utilities {
-  .animate-enter {
-    animation: enter 0.35s ease-out both;
+  .lane-settle {
+    transform-origin: left center;
+    animation: lane-settle 380ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
-  .animate-fade-up {
-    animation: enter 0.35s ease-out both;
-  }
-}
-
-/* Mono data class for instrument readouts */
-@layer utilities {
-  .font-data {
-    font-family: var(--font-mono);
-    font-variant-numeric: tabular-nums;
-  }
-}
-
-/* Horizontal scroll with fade edges */
-@layer utilities {
-  .scroll-fade {
-    overflow-x: auto;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-    mask-image: linear-gradient(to right, transparent, black 16px, black calc(100% - 16px), transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, black 16px, black calc(100% - 16px), transparent);
-  }
-  .scroll-fade::-webkit-scrollbar {
-    display: none;
+  .verdict-enter {
+    animation: verdict-enter 320ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .skeleton-pulse,
-  .animate-fade-up,
-  .animate-enter {
+  .lane-settle,
+  .verdict-enter {
     animation: none;
+  }
+  .press,
+  .press:active {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+ * HALO world for drawers and toasts (zero-specificity selectors upstream).
+ * ========================================================================== */
+[data-halo-world="track"] {
+  --halo-surface: var(--raised);
+  --halo-surface-solid: var(--raised);
+  --halo-fg: var(--foreground);
+  --halo-fg-muted: var(--muted-foreground);
+  --halo-edge: var(--hair);
+  --halo-focus: var(--outline);
+  --halo-success: var(--infield);
+  --halo-error: var(--danger);
+  --halo-warning: var(--caution);
+  --halo-info: var(--infield);
+  --halo-blur: 0px;
+  --halo-saturate: 1;
+  --halo-world-edge: var(--hair);
+  --halo-coat-a: var(--hair);
+  --halo-coat-b: var(--hair);
+  --halo-coat-c: var(--hair);
+  --halo-shadow: var(--shadow-raised);
+}
+
+/* Sheet chrome rendered by the React host (halo Drawer parts). */
+.sheet {
+  color: var(--foreground);
+}
+.sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 20px 4px;
+}
+.sheet-title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+.sheet-desc {
+  padding: 0 20px 8px;
+  font-size: 0.95rem;
+  color: var(--muted-foreground);
+}
+.sheet-close {
+  display: inline-flex;
+  height: 44px;
+  width: 44px;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: var(--muted);
+  color: var(--foreground);
+}
+.sheet-scroll {
+  padding: 8px 20px max(24px, env(safe-area-inset-bottom));
+}
+
+/* Workaround for halo-ui-react 0.1.0: under 600px the centred toaster keeps
+   `translate: -50%` (the [data-x=center] rule outranks the mobile reset), so it
+   renders half off-screen. Remove once fixed upstream. */
+@media (max-width: 600px) {
+  .halo-toaster[data-x="center"] {
+    translate: none;
   }
 }
