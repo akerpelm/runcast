@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { EFFORTS, EFFORT_LABELS, EMPTY_PACES, parsePace, type EffortLevel } from "@/lib/state";
+import { EFFORTS, EFFORT_LABELS, EMPTY_PACES, MILE_KM, parsePace, type EffortLevel } from "@/lib/state";
 import { paceForDisplay, paceUnit } from "@/lib/display";
 import { formatPace } from "@/lib/formulas/pace";
 import { useToday } from "./today-context";
@@ -20,13 +20,13 @@ export function PacesSheet() {
     for (const effort of EFFORTS) {
       const raw = values[effort].trim();
       if (!raw) continue;
-      const parsed = parsePace(raw);
+      const parsed = parsePace(raw, prefs.metric);
       if (parsed <= 0) {
         setError({ effort, message: `Check the ${EFFORT_LABELS[effort].toLowerCase()} pace. Use minutes and seconds, like 8:30.` });
         document.getElementById(`pace-${effort}`)?.focus();
         return;
       }
-      next[effort] = prefs.metric ? Math.round(parsed * 1.609344) : parsed;
+      next[effort] = prefs.metric ? Math.round(parsed * MILE_KM) : parsed;
     }
     actions.savePaces(next);
     actions.closeSheet();
@@ -61,7 +61,7 @@ export function PacesSheet() {
               }}
               onBlur={() => {
                 // Phone number pads have no colon, so "830" is tidied to "8:30" once the field is left.
-                const secs = parsePace(values[e]);
+                const secs = parsePace(values[e], prefs.metric);
                 if (secs > 0) setValues((v) => ({ ...v, [e]: formatPace(secs) }));
               }}
               className={`${fieldClass} text-center font-semibold tabular-nums`}
