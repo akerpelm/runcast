@@ -1,15 +1,15 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import Header from "@/components/layout/Header.astro";
 import Footer from "@/components/layout/Footer.astro";
 import Today from "@/components/today/Today.astro";
+import HomeGuide from "@/components/home/HomeGuide.astro";
 ---
 
 <Layout
-  title="Should I Run — What to Wear Running Today | Weather-Adjusted Pace & Gear"
-  description="Free running weather app: get today's pace adjustment, clothing recommendation, ice warnings, air quality, and best time to run. No signup needed."
+  title="Should I Run Today? Running Weather Forecast, Pace & What to Wear"
+  description="Should I run today? Get the best time to run, your weather-adjusted pace and what to wear for where you are. A free running weather forecast, no signup."
 >
-  <Header variant="app" />
   <Today />
+  <HomeGuide />
   <Footer app />
 </Layout>

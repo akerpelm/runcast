@@ -1,0 +1,23 @@
+---
+import { GUIDE_TEMPS, guidePath } from "@/lib/seo/temperature-guide";
+
+type Props = { current?: number; class?: string };
+const { current, class: className } = Astro.props;
+---
+
+<ul class:list={["mt-4 grid grid-cols-4 gap-2", className ?? "sm:grid-cols-7"]} aria-label="Temperature guides">
+  {GUIDE_TEMPS.map((t) => (
+    <li>
+      <a
+        href={guidePath(t)}
+        aria-current={t === current ? "page" : undefined}
+        class:list={[
+          "flex min-h-11 items-center justify-center rounded-[10px] border font-(family-name:--font-display) text-lg font-bold tabular-nums",
+          t === current ? "border-foreground bg-foreground text-background" : "border-hair text-foreground hover:border-foreground",
+        ]}
+      >
+        {t}°F
+      </a>
+    </li>
+  ))}
+</ul>

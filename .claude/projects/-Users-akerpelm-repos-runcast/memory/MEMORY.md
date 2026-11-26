@@ -1,3 +1,3 @@
-- [Editorial Design Decision](feedback_design_direction.md) — Keeping warm parchment/editorial look, not neumorphism
+- [Track Lanes Design](feedback_design_direction.md) — Current look is Track Lanes; see DESIGN.md. Editorial look retired
 - [Monetization Timing](project_monetization.md) — Affiliate links deferred; blog + Plausible are next revenue moves
 - [User Profile](user_profile.md) — Builder/owner of RunCast, hands-on fullstack dev

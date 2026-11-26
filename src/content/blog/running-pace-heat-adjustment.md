@@ -52,10 +52,10 @@ Cold affects pace too, though it's less studied. Below 40°F, wind chill becomes
 
 | Wind Chill | Adjustment | Why |
 |---|---|---|
-| 30–40°F | 0–2% | Extra layers add slight drag |
-| 20–30°F | 2–4% | Footing, clothing weight, thermoregulation |
-| 10–20°F | 4–6% | Significant — limit hard efforts |
-| 0–10°F | 6–8% | Easy effort only |
+| 30–39°F | 0–2% | Extra layers add slight drag |
+| 20–29°F | 2–4% | Footing, clothing weight, thermoregulation |
+| 10–19°F | 4–6% | Significant — limit hard efforts |
+| 0–9°F | 6–8% | Easy effort only |
 | Below 0°F | 8%+ | Consider treadmill |
 
 Wind chill is calculated using the NWS formula from air temperature and wind speed. A 35°F day with 20 mph wind feels like 24°F — that's a 2–4% adjustment, not the 0% you'd expect from the thermometer alone.
