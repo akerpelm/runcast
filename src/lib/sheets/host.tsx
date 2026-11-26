@@ -2,7 +2,9 @@ import { useLayoutEffect, useRef, useSyncExternalStore } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { Drawer } from "halo-ui-react/drawer";
 import { Toaster, toast } from "halo-ui-react/toast";
-import "halo-ui-react/styles.css";
+// Imported as a URL, not as a side-effect stylesheet, so the build doesn't hoist
+// it into the page head as render-blocking CSS; it loads when the host mounts.
+import haloStylesUrl from "halo-ui-react/styles.css?url";
 import { closeSheet, sheetStore } from "./controller";
 
 function subscribeTheme(cb: () => void): () => void {
@@ -100,6 +102,10 @@ let root: Root | null = null;
 
 export function mountSheetHost(): void {
   if (root) return;
+  const link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.href = haloStylesUrl;
+  document.head.append(link);
   const el = document.createElement("div");
   el.id = "sheet-host";
   document.body.append(el);

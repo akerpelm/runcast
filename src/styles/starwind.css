@@ -466,7 +466,7 @@
    `translate: -50%` (the [data-x=center] rule outranks the mobile reset), so it
    renders half off-screen. Remove once fixed upstream. */
 @media (max-width: 600px) {
-  .halo-toaster[data-x="center"] {
+  html .halo-toaster[data-x="center"] {
     translate: none;
   }
 }
@@ -495,12 +495,10 @@
   .run-band-4 { background: var(--run-4); color: var(--run-ink-4); }
 }
 @layer utilities {
-  /* Past hours: dashed edge and dimmed, distinct from the worst band's solid fill. */
+  /* Past hours: dashed edge and no fill, distinct from the worst band's solid fill; text stays at AA. */
   .run-band-past {
     background: transparent;
     color: var(--muted-foreground);
-    opacity: 0.6;
-    box-shadow: inset 0 0 0 1px var(--hair);
-    border: 1px dashed var(--input);
+    border: 1.5px dashed var(--input);
   }
 }

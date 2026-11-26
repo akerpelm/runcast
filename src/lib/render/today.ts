@@ -25,7 +25,8 @@ function hourParts(d: Date): { h: string; ap: string } {
 export function timeRange(startISO: string, endISO: string): string {
   const a = hourParts(new Date(startISO));
   const b = hourParts(new Date(endISO));
-  return a.ap === b.ap ? `${a.h}–${b.h} ${b.ap}` : `${a.h} ${a.ap}–${b.h} ${b.ap}`;
+  // Non-breaking spaces keep "11 PM" together so a long range wraps only after "Run".
+  return a.ap === b.ap ? `${a.h}–${b.h} ${b.ap}` : `${a.h} ${a.ap}–${b.h} ${b.ap}`;
 }
 
 function shortHour(d: Date): string {
@@ -116,9 +117,9 @@ export function renderVerdict(v: VerdictInput): string {
     ${hazards}
     ${more}
     <div class="mt-4 border-t border-white/20 pt-3 lg:hidden">
-      <button type="button" data-action="open-sheet" data-sheet="kit" class="press -mx-2 w-[calc(100%+1rem)] rounded-[14px] px-2 py-1.5 text-left hover:bg-white/10" aria-label="What to wear: ${esc([b.clothing.bottom, b.clothing.top, ...b.clothing.accessories].join(", "))}. See why">
+      <button type="button" data-action="open-sheet" data-sheet="kit" class="press -mx-2 w-[calc(100%+1rem)] rounded-[14px] px-2 py-1.5 text-left hover:bg-white/10">
         <span class="flex items-center gap-2 text-sm font-semibold text-infield-muted">${shirtIcon}What to wear</span>
-        <span class="mt-2 flex flex-wrap gap-2" aria-hidden="true">${pill(b.clothing.bottom)}${pill(b.clothing.top)}${extras ? `<span class="rounded-full border border-white/50 px-3 py-1.5 text-[0.95rem] leading-tight font-semibold">+${extras} more</span>` : ""}</span>
+        <span class="mt-2 flex flex-wrap gap-2">${pill(b.clothing.bottom)}<span class="sr-only">, </span>${pill(b.clothing.top)}${extras ? `<span class="rounded-full border border-white/50 px-3 py-1.5 text-[0.95rem] leading-tight font-semibold">+${extras} more<span class="sr-only">: ${esc(b.clothing.accessories.join(", "))}</span></span>` : ""}</span>
       </button>
     </div>
   </section>`;
