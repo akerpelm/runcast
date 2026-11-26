@@ -136,14 +136,22 @@ export function buildRenderContext(state: AppState): RenderContext {
 }
 
 // ─── parsePace ──────────────────────────────────────────────────────────────
-export function parsePace(val: string): number {
+export const MILE_KM = 1.609344;
+/** Plausible training paces, 4:00–20:00 per mile, checked in miles whichever unit was typed. */
+const MIN_SEC_PER_MILE = 4 * 60;
+const MAX_SEC_PER_MILE = 20 * 60;
+
+/** Parses "7:00" or "700" into seconds per the unit typed (per km when metric); 0 if invalid. */
+export function parsePace(val: string, metric = false): number {
   const v = val.trim();
-  // Accept "7:00" or "700" or "1700" — insert colon if missing
   const m = v.match(/^(\d{1,2}):(\d{2})$/) || v.match(/^(\d{1,2})(\d{2})$/);
   if (!m) return 0;
   const min = parseInt(m[1], 10), sec = parseInt(m[2], 10);
-  if (sec >= 60 || min < 4 || min > 20) return 0;
-  return min * 60 + sec;
+  if (sec >= 60) return 0;
+  const secs = min * 60 + sec;
+  const perMile = metric ? secs * MILE_KM : secs;
+  if (perMile < MIN_SEC_PER_MILE || perMile > MAX_SEC_PER_MILE) return 0;
+  return secs;
 }
 
 // ─── localStorage ────────────────────────────────────────────────────────────
