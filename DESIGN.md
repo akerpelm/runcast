@@ -47,6 +47,24 @@ typography:
     fontWeight: 800
     lineHeight: 0.92
     letterSpacing: "-0.01em"
+  display-wide:
+    fontFamily: "Barlow Condensed, sans-serif"
+    fontSize: "4rem"
+    fontWeight: 800
+    lineHeight: 0.92
+    letterSpacing: "-0.01em"
+  wordmark:
+    fontFamily: "Barlow Condensed, sans-serif"
+    fontSize: "1.2rem"
+    fontWeight: 800
+    lineHeight: 1
+    letterSpacing: "0.01em"
+  wordmark-wide:
+    fontFamily: "Barlow Condensed, sans-serif"
+    fontSize: "1.35rem"
+    fontWeight: 800
+    lineHeight: 1
+    letterSpacing: "0.01em"
   headline:
     fontFamily: "Barlow Condensed, sans-serif"
     fontSize: "1.6rem"
@@ -83,6 +101,16 @@ typography:
   label:
     fontFamily: "Barlow, sans-serif"
     fontSize: "0.875rem"
+    fontWeight: 600
+    fontFeature: "tnum"
+  cell-temp:
+    fontFamily: "Barlow, sans-serif"
+    fontSize: "0.8rem"
+    fontWeight: 700
+    fontFeature: "tnum"
+  cell-label:
+    fontFamily: "Barlow, sans-serif"
+    fontSize: "0.7rem"
     fontWeight: 600
     fontFeature: "tnum"
 rounded:

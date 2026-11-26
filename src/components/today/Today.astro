@@ -1,48 +1,18 @@
 ---
+import { TodayApp } from "./today-app";
+import { Skeleton } from "./skeleton";
+
 type Props = { embed?: boolean };
 const { embed = false } = Astro.props;
 ---
 
-<main id="today" data-embed={embed ? "1" : undefined} data-halo-recess class="mx-auto max-w-6xl bg-background px-4 pt-3 sm:px-6">
-  <h1 class="sr-only">Should I Run: today's running briefing</h1>
-
-  <div aria-live="polite" aria-busy="true" id="briefing-region">
-    <div id="briefing-skeleton" aria-label="Loading today's briefing">
-      <p id="loading-message" class="sr-only">Loading today's briefing…</p>
-      <div class="lg:grid lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-10">
-        <div>
-          <div class="flex gap-2 pb-3">
-            {Array.from({ length: 4 }).map(() => <div class="h-11 w-24 rounded-full skeleton-pulse" />)}
-          </div>
-          <div class="rounded-[20px] bg-infield/90 px-5 pt-5 pb-6">
-            <div class="h-4 w-32 rounded bg-white/20" />
-            <div class="mt-3 h-12 w-64 rounded bg-white/25" />
-            <div class="mt-4 h-5 w-40 rounded bg-white/20" />
-            <div class="mt-2 h-4 w-56 rounded bg-white/15" />
-          </div>
-          <div class="-mt-4 rounded-b-[20px] bg-track/90 pt-8 pb-2">
-            {Array.from({ length: 5 }).map(() => <div class="h-14 border-t-2 border-white/60" />)}
-          </div>
-          <div class="mt-6 flex gap-2 overflow-hidden">
-            {Array.from({ length: 6 }).map(() => <div class="h-[5.5rem] w-[3.75rem] shrink-0 rounded-[14px] skeleton-pulse" />)}
-          </div>
-        </div>
-        <div class="hidden lg:block">
-          <div class="h-[28rem] rounded-[20px] skeleton-pulse" />
-        </div>
-      </div>
-    </div>
-
-    <div id="briefing-live" class="hidden"></div>
-  </div>
-</main>
-
-{!embed && <div id="dock"></div>}
-
-<script>
-  import { initApp } from "@/lib/app";
-
-  const main = document.getElementById("today");
-  const region = document.getElementById("briefing-region");
-  initApp({ embed: main?.dataset.embed === "1" }).finally(() => region?.setAttribute("aria-busy", "false"));
-</script>
+<!--
+  Client-only: the screen depends on device location, saved preferences and a
+  client-side forecast. The wrapper reserves a full viewport so the footer never
+  starts on screen and jumps when content replaces the skeleton.
+-->
+<div class="min-h-dvh">
+  <TodayApp client:only="react" embed={embed}>
+    <Skeleton slot="fallback" />
+  </TodayApp>
+</div>

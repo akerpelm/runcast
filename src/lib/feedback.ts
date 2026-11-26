@@ -1,6 +1,6 @@
 /**
  * Feedback module — extracted from app.ts.
- * 3-tap inline feedback flow: clothing feel + effort level + shoes (optional).
+ * Run-log storage and sync helpers. The UI lives in components/today/log-sheet.tsx.
  */
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -147,12 +147,6 @@ function localDateStr(d: Date): string {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
-function esc(str: string): string {
-  const div = document.createElement("div");
-  div.textContent = str;
-  return div.innerHTML;
-}
-
 // ─── Anonymous Profile ───────────────────────────────────────────────────────
 export function getAnonId(): string {
   let id = localStorage.getItem(LS_ANON_ID);
@@ -239,10 +233,8 @@ export function isFeedbackDismissedToday(): boolean {
   return localStorage.getItem(LS_FEEDBACK_DISMISSED) === localDateStr(new Date());
 }
 
-export function dismissFeedback(state: FeedbackState, renderCallback: () => void): void {
+export function dismissFeedbackToday(): void {
   localStorage.setItem(LS_FEEDBACK_DISMISSED, localDateStr(new Date()));
-  state.feedbackSubmitted = true;
-  renderCallback();
 }
 
 // ─── Save ────────────────────────────────────────────────────────────────────
@@ -318,23 +310,8 @@ export function saveFeedback(b: FeedbackBriefing, ctx: FeedbackContext, state: F
   window.dispatchEvent(new CustomEvent("runcast:feedback-submitted"));
 }
 
-// ─── Submit ──────────────────────────────────────────────────────────────────
-export function submitFeedback(
-  state: FeedbackState,
-  getBriefing: () => FeedbackBriefing | null,
-  getContext: () => FeedbackContext,
-  renderCallback: () => void,
-): void {
-  const b = getBriefing();
-  if (b) {
-    saveFeedback(b, getContext(), state);
-    state.feedbackSubmitted = true;
-    renderCallback();
-  }
-}
-
 // ─── Clothing tier options for the "what did you wear?" picker ──────────────
-const TOP_OPTIONS = [
+export const TOP_OPTIONS = [
   "Singlet or sports bra",
   "T-shirt or singlet",
   "T-shirt or light long sleeve",
@@ -345,7 +322,7 @@ const TOP_OPTIONS = [
   "Base + mid + wind shell",
 ];
 
-const BOTTOM_OPTIONS = [
+export const BOTTOM_OPTIONS = [
   "Split shorts",
   "Shorts",
   "Shorts or half tights",
@@ -353,165 +330,3 @@ const BOTTOM_OPTIONS = [
   "Insulated tights",
   "Insulated tights + wind pants",
 ];
-
-// ─── Render ──────────────────────────────────────────────────────────────────
-const chip = "press inline-flex min-h-11 items-center rounded-full border px-4 text-[0.95rem] font-semibold";
-const chipOn = "border-foreground bg-foreground text-background";
-const chipOff = "border-hair text-foreground hover:bg-muted";
-const stepTitle = "font-(family-name:--font-body) text-base font-bold";
-const primaryBtn = "press inline-flex min-h-12 items-center justify-center rounded-full bg-foreground px-6 text-base font-bold text-background hover:opacity-90";
-
-/** Body of the "Log run" sheet. Shows the confirmation once today's run is logged. */
-export function renderFeedback(b: FeedbackBriefing, state: FeedbackState): string {
-  if (state.feedbackSubmitted && hasFeedbackToday()) {
-    const count = getFeedbackCount();
-    const insight = getPersonalInsight();
-    return `<div id="feedback-section" class="py-2">
-      <p class="text-lg font-bold">Logged. See you tomorrow.</p>
-      <p class="mt-1 text-[0.95rem] text-muted-foreground">${count > 1 ? `${count} runs tracked on this device.` : "Your first run is tracked."}${insight ? ` ${esc(insight)}` : ""}</p>
-    </div>`;
-  }
-
-  // Pre-fill worn clothing from recommendation if not yet set
-  if (state.feedbackWornTop === null) state.feedbackWornTop = b.clothing.top;
-  if (state.feedbackWornBottom === null) state.feedbackWornBottom = b.clothing.bottom;
-
-  // Steps: 1=what did you wear, 2=clothing feel, 3=effort, 4=shoes
-  const step = !state.feedbackWornConfirmed ? 1
-    : !state.feedbackClothing ? 2
-    : !state.feedbackEffortLevel ? 3
-    : 4;
-
-  const clothingOptions = [
-    { value: "too-cold", label: "Too cold" },
-    { value: "just-right", label: "Just right" },
-    { value: "too-warm", label: "Too warm" },
-  ];
-  const effortPills = [
-    { value: "easy", label: "Easy" },
-    { value: "moderate", label: "Moderate" },
-    { value: "hard", label: "Hard" },
-    { value: "race", label: "Race" },
-  ];
-
-  function pill(group: string, value: string, label: string, selected: string | null): string {
-    const active = value === selected;
-    return `<button type="button" data-action="feedback-select" data-fb-group="${group}" data-fb-value="${esc(value)}" aria-pressed="${active}"
-      class="${chip} ${active ? chipOn : chipOff}">${esc(label)}</button>`;
-  }
-
-  let step1HTML: string;
-  if (!state.feedbackWornEditing) {
-    const matchesRec = state.feedbackWornTop === b.clothing.top && state.feedbackWornBottom === b.clothing.bottom;
-    step1HTML = `<section>
-      <h3 class="${stepTitle}">What did you wear?</h3>
-      <dl class="mt-2 rounded-[14px] bg-muted px-4 py-3 text-[0.95rem]">
-        <dt class="text-sm text-muted-foreground">Top</dt><dd class="font-semibold">${esc(state.feedbackWornTop ?? "")}</dd>
-        <dt class="mt-2 text-sm text-muted-foreground">Bottom</dt><dd class="font-semibold">${esc(state.feedbackWornBottom ?? "")}</dd>
-      </dl>
-      <p class="mt-2 text-sm text-muted-foreground">${matchesRec ? "Matches today's pick." : "Different from today's pick. That helps tune it."}</p>
-      <div class="mt-3 flex gap-2">
-        ${state.feedbackWornConfirmed ? "" : `<button type="button" data-action="feedback-worn-confirm" class="${primaryBtn}">Wore this</button>`}
-        <button type="button" data-action="feedback-worn-edit" class="${chip} ${chipOff}">Change</button>
-      </div>
-    </section>`;
-  } else {
-    step1HTML = `<section>
-      <h3 class="${stepTitle}">What did you actually wear?</h3>
-      <p class="mt-3 text-sm font-semibold text-muted-foreground">Top</p>
-      <div class="mt-1 flex flex-wrap gap-2">${TOP_OPTIONS.map(t => pill("wornTop", t, t, state.feedbackWornTop)).join("")}</div>
-      <p class="mt-3 text-sm font-semibold text-muted-foreground">Bottom</p>
-      <div class="mt-1 flex flex-wrap gap-2">${BOTTOM_OPTIONS.map(t => pill("wornBottom", t, t, state.feedbackWornBottom)).join("")}</div>
-      <button type="button" data-action="feedback-worn-confirm" class="${primaryBtn} mt-4">Done</button>
-    </section>`;
-  }
-
-  const step2HTML = step >= 2 ? `<section class="border-t border-hair pt-4">
-      <h3 class="${stepTitle}">How did the clothing feel?</h3>
-      <div class="mt-2 flex flex-wrap gap-2">${clothingOptions.map(o => pill("clothing", o.value, o.label, state.feedbackClothing)).join("")}</div>
-    </section>` : "";
-
-  const step3HTML = step >= 3 ? `<section class="border-t border-hair pt-4">
-      <h3 class="${stepTitle}">How hard was it?</h3>
-      <div class="mt-2 flex flex-wrap gap-2">${effortPills.map(p => pill("effortLevel", p.value, p.label, state.feedbackEffortLevel)).join("")}</div>
-    </section>` : "";
-
-  let step4HTML = "";
-  if (step >= 4) {
-    const shoeHistory = getShoeHistory();
-    const body = shoeHistory.length > 0 && !state.feedbackShoesOther
-      ? `<div class="mt-2 flex flex-wrap gap-2">${shoeHistory.slice(0, 5).map(sh => pill("shoes", sh.name, sh.name, state.feedbackShoes)).join("")}
-          <button type="button" data-action="feedback-shoe-other" class="${chip} ${chipOff}">Other shoe</button></div>`
-      : `<label for="fb-shoe" class="sr-only">Shoe name</label><input id="fb-shoe" data-action="feedback-shoe-text" type="text" placeholder="e.g. Pegasus 41" value="${state.feedbackShoes ? esc(state.feedbackShoes) : ""}"
-          class="mt-2 h-12 w-full rounded-[12px] border border-input bg-card px-3 text-base" />`;
-    step4HTML = `<section class="border-t border-hair pt-4">
-      <h3 class="${stepTitle}">Shoes <span class="text-sm font-normal text-muted-foreground">optional</span></h3>${body}
-    </section>`;
-  }
-
-  const ready = state.feedbackWornConfirmed && state.feedbackClothing && state.feedbackEffortLevel;
-  return `<div id="feedback-section">
-    <p class="mb-4 text-sm font-semibold text-muted-foreground">Step ${step} of 4</p>
-    <div class="space-y-4">${step1HTML}${step2HTML}${step3HTML}${step4HTML}</div>
-    <div class="mt-6 flex items-center justify-between gap-3 border-t border-hair pt-4">
-      <button type="button" data-action="dismiss-feedback" class="press min-h-11 rounded-full px-3 text-[0.95rem] font-semibold text-muted-foreground hover:bg-muted hover:text-foreground">Not today</button>
-      ${ready ? `<button type="button" data-action="feedback-submit" class="${primaryBtn}">Log it</button>` : ""}
-    </div>
-  </div>`;
-}
-
-// ─── Event handling ──────────────────────────────────────────────────────────
-export function handleFeedbackAction(
-  action: string,
-  target: HTMLElement,
-  state: FeedbackState,
-  getBriefing: () => FeedbackBriefing | null,
-  getContext: () => FeedbackContext,
-  renderCallback: () => void,
-): boolean {
-  switch (action) {
-    case "open-feedback":
-      state.feedbackOpen = true;
-      renderCallback();
-      return true;
-    case "dismiss-feedback":
-      dismissFeedback(state, renderCallback);
-      return true;
-    case "feedback-worn-confirm":
-      state.feedbackWornConfirmed = true;
-      state.feedbackWornEditing = false;
-      renderCallback();
-      return true;
-    case "feedback-worn-edit":
-      state.feedbackWornEditing = true;
-      renderCallback();
-      return true;
-    case "feedback-select": {
-      const group = target.dataset.fbGroup;
-      const value = target.dataset.fbValue || "";
-      if (group === "clothing") {
-        state.feedbackClothing = state.feedbackClothing === value ? null : value;
-      } else if (group === "effortLevel") {
-        state.feedbackEffortLevel = state.feedbackEffortLevel === value ? null : value;
-      } else if (group === "shoes") {
-        state.feedbackShoes = state.feedbackShoes === value ? null : value;
-      } else if (group === "wornTop") {
-        state.feedbackWornTop = value;
-      } else if (group === "wornBottom") {
-        state.feedbackWornBottom = value;
-      }
-      renderCallback();
-      return true;
-    }
-    case "feedback-submit":
-      submitFeedback(state, getBriefing, getContext, renderCallback);
-      return true;
-    case "feedback-shoe-other":
-      state.feedbackShoesOther = true;
-      state.feedbackShoes = null;
-      renderCallback();
-      return true;
-    default:
-      return false;
-  }
-}
