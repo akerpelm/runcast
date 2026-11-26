@@ -1,33 +1,24 @@
 ---
-
+type Props = { app?: boolean };
+const { app = false } = Astro.props;
 ---
 
-<footer class="mt-8 lg:mt-4 pb-4 lg:pb-2">
-  <div class="mx-auto max-w-4xl px-4 sm:px-6">
-    <div class="pt-4 lg:pt-2">
-      <nav
-        aria-label="Footer navigation"
-        class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-muted-foreground"
-      >
-        <a href="/" class="transition-colors hover:text-foreground">Home</a>
-        <a href="/about/" class="transition-colors hover:text-foreground">How It Works</a>
-        <a href="/blog/" class="transition-colors hover:text-foreground">Blog</a>
-        <a href="/legal/" class="transition-colors hover:text-foreground">Privacy</a>
-        <a href="#" id="footer-log-run" class="transition-colors hover:text-foreground">Log a Run</a>
-      </nav>
-      <p class="mt-4 text-center text-xs text-muted-foreground/60">&copy; {new Date().getFullYear()} Should I Run</p>
-    </div>
+<footer class:list={["border-t border-hair", app ? "mt-10 pb-28 lg:pb-8" : "mt-12 pb-8"]}>
+  <div class:list={["mx-auto px-4 pt-6 sm:px-6", app ? "max-w-6xl" : "max-w-4xl"]}>
+    <nav aria-label="Footer" class="flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.95rem] text-muted-foreground">
+      <a href="/about/" class="flex min-h-11 items-center rounded-full px-2 hover:text-foreground">How it works</a>
+      <a href="/blog/" class="flex min-h-11 items-center rounded-full px-2 hover:text-foreground">Blog</a>
+      <a href="/legal/" class="flex min-h-11 items-center rounded-full px-2 hover:text-foreground">Privacy</a>
+      <a href="/#log" id="footer-log-run" class="flex min-h-11 items-center rounded-full px-2 hover:text-foreground">Log a run</a>
+    </nav>
+    <p class="mt-3 px-2 text-sm text-muted-foreground">&copy; {new Date().getFullYear()} Should I Run. Weather by Open-Meteo.</p>
   </div>
 </footer>
 
 <script>
   document.getElementById("footer-log-run")?.addEventListener("click", (e) => {
+    if (window.location.pathname !== "/") return;
     e.preventDefault();
-    if (window.location.pathname !== "/") {
-      window.location.href = "/";
-      return;
-    }
     window.dispatchEvent(new CustomEvent("runcast:open-feedback"));
-    document.getElementById("feedback-section")?.scrollIntoView({ behavior: "smooth", block: "center" });
   });
 </script>

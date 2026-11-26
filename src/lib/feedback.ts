@@ -355,203 +355,109 @@ const BOTTOM_OPTIONS = [
 ];
 
 // ─── Render ──────────────────────────────────────────────────────────────────
+const chip = "press inline-flex min-h-11 items-center rounded-full border px-4 text-[0.95rem] font-semibold";
+const chipOn = "border-foreground bg-foreground text-background";
+const chipOff = "border-hair text-foreground hover:bg-muted";
+const stepTitle = "text-base font-bold";
+const primaryBtn = "press inline-flex min-h-12 items-center justify-center rounded-full bg-foreground px-6 text-base font-bold text-background hover:opacity-90";
+
+/** Body of the "Log run" sheet. Shows the confirmation once today's run is logged. */
 export function renderFeedback(b: FeedbackBriefing, state: FeedbackState): string {
-  if (state.feedbackSubmitted || isFeedbackDismissedToday()) {
-    if (state.feedbackSubmitted && hasFeedbackToday()) {
-      const count = getFeedbackCount();
-      const insight = getPersonalInsight();
-      const insightStr = insight ? ` \u00b7 ${esc(insight)}` : "";
-      const countStr = count > 1 ? `${count} runs tracked` : "";
-      return `
-        <div id="feedback-section" class="mb-3 flex items-center gap-2 rounded-[var(--radius-base)] border border-border bg-success/5 px-3 py-2">
-          <svg viewBox="0 0 24 24" class="h-3.5 w-3.5 text-success shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-          <p class="text-xs text-muted-foreground">Logged, see you tomorrow${countStr ? ` \u00b7 ${countStr}` : ""}${insightStr}</p>
-        </div>`;
-    }
-    return '<div id="feedback-section"></div>';
-  }
-
-  if (state.feedbackOpen) {
-    // Pre-fill worn clothing from recommendation if not yet set
-    if (state.feedbackWornTop === null) state.feedbackWornTop = b.clothing.top;
-    if (state.feedbackWornBottom === null) state.feedbackWornBottom = b.clothing.bottom;
-
-    // Steps: 1=what did you wear, 2=clothing feel, 3=effort, 4=shoes
-    const step = !state.feedbackWornConfirmed ? 1
-      : !state.feedbackClothing ? 2
-      : !state.feedbackEffortLevel ? 3
-      : 4;
-
-    const clothingIcons: Record<string, string> = {
-      "too-cold": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="M2 12h10"/><path d="M9 4v16"/><path d="m3 9 3 3-3 3"/><path d="M12 6 9.7 3.7a1 1 0 0 1 0-1.4l.6-.6a1 1 0 0 1 1.4 0L15 5"/><path d="m20 4-8.5 8.5"/><path d="M12 18l3.3 3.3a1 1 0 0 0 1.4 0l.6-.6a1 1 0 0 0 0-1.4L14 16"/></svg>`,
-      "just-right": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><path d="M20 6 9 17l-5-5"/></svg>`,
-      "too-warm": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>`,
-    };
-    const clothingOptions = [
-      { value: "too-cold", label: "Too Cold" },
-      { value: "just-right", label: "Just Right" },
-      { value: "too-warm", label: "Too Warm" },
-    ];
-    const effortPills = [
-      { value: "easy", label: "Easy" },
-      { value: "moderate", label: "Moderate" },
-      { value: "hard", label: "Hard" },
-      { value: "race", label: "Race" },
-    ];
-
-    function pill(group: string, value: string, label: string, selected: string | null): string {
-      const active = value === selected;
-      return `<button data-action="feedback-select" data-fb-group="${group}" data-fb-value="${value}"
-        class="rounded-full px-3 py-1.5 text-xs font-semibold transition-colors
-          ${active ? "bg-primary/10 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted"}"
-      >${label}</button>`;
-    }
-
-    // Step 1: What did you wear? — show recommendation, option to change
-    let step1HTML = "";
-    if (!state.feedbackWornEditing) {
-      const matchesRec = state.feedbackWornTop === b.clothing.top && state.feedbackWornBottom === b.clothing.bottom;
-      step1HTML = `<div>
-        <p class="mb-2 text-[0.65rem] font-medium uppercase tracking-[0.1em] text-muted-foreground">1. What did you wear?</p>
-        <div class="flex items-center gap-3">
-          <div class="flex-1 rounded-[var(--radius-inner)] bg-muted p-3">
-            <p class="text-xs text-muted-foreground">Top</p>
-            <p class="text-sm font-semibold text-foreground">${esc(state.feedbackWornTop!)}</p>
-            <p class="mt-1.5 text-xs text-muted-foreground">Bottom</p>
-            <p class="text-sm font-semibold text-foreground">${esc(state.feedbackWornBottom!)}</p>
-            ${matchesRec ? `<p class="mt-1.5 text-[10px] text-muted-foreground/60">Matches our suggestion</p>` : `<p class="mt-1.5 text-[10px] text-primary">Different from our suggestion — your feedback helps us improve</p>`}
-          </div>
-          <div class="flex flex-col gap-1.5">
-            <button data-action="feedback-worn-confirm"
-              class="rounded-[var(--radius-base)] bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 transition-opacity">Wore this</button>
-            <button data-action="feedback-worn-edit"
-              class="rounded-[var(--radius-base)] px-4 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">Change</button>
-          </div>
-        </div>
-      </div>`;
-    } else {
-      // Editing mode: show tier pickers for top and bottom
-      const topPills = TOP_OPTIONS.map(t => {
-        const active = t === state.feedbackWornTop;
-        return `<button data-action="feedback-select" data-fb-group="wornTop" data-fb-value="${esc(t)}"
-          class="rounded-full px-3 py-1.5 text-xs font-semibold transition-colors text-left
-            ${active ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-muted"}"
-        >${esc(t)}</button>`;
-      }).join("");
-      const bottomPills = BOTTOM_OPTIONS.map(bt => {
-        const active = bt === state.feedbackWornBottom;
-        return `<button data-action="feedback-select" data-fb-group="wornBottom" data-fb-value="${esc(bt)}"
-          class="rounded-full px-3 py-1.5 text-xs font-semibold transition-colors text-left
-            ${active ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-muted"}"
-        >${esc(bt)}</button>`;
-      }).join("");
-      step1HTML = `<div>
-        <p class="mb-2 text-[0.65rem] font-medium uppercase tracking-[0.1em] text-muted-foreground">1. What did you actually wear?</p>
-        <div class="space-y-2">
-          <div>
-            <p class="mb-1 text-xs text-muted-foreground">Top</p>
-            <div class="flex flex-wrap gap-1.5">${topPills}</div>
-          </div>
-          <div>
-            <p class="mb-1 text-xs text-muted-foreground">Bottom</p>
-            <div class="flex flex-wrap gap-1.5">${bottomPills}</div>
-          </div>
-          <button data-action="feedback-worn-confirm"
-            class="mt-1 rounded-[var(--radius-base)] bg-primary px-4 py-1.5 text-xs font-semibold text-primary-foreground hover:opacity-90 transition-opacity">Done</button>
-        </div>
-      </div>`;
-    }
-
-    // Step 2: Clothing feel — large tappable cards with icons
-    let step2HTML = "";
-    if (step >= 2) {
-      step2HTML = `<div>
-        <p class="mb-2 text-[0.65rem] font-medium uppercase tracking-[0.1em] text-muted-foreground">2. How did the clothing feel?</p>
-        <div class="grid grid-cols-3 gap-2">
-          ${clothingOptions.map(o => {
-            const active = o.value === state.feedbackClothing;
-            return `<button data-action="feedback-select" data-fb-group="clothing" data-fb-value="${o.value}"
-              class="flex flex-col items-center gap-1.5 rounded-[var(--radius-inner)] p-3 transition-colors
-                ${active ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground hover:text-foreground"}">
-              ${clothingIcons[o.value]}
-              <span class="text-xs font-semibold">${o.label}</span>
-            </button>`;
-          }).join("")}
-        </div>
-      </div>`;
-    }
-
-    // Step 3: Effort level
-    let step3HTML = "";
-    if (step >= 3) {
-      step3HTML = `<div>
-        <p class="mb-1.5 text-[0.65rem] font-medium uppercase tracking-[0.1em] text-muted-foreground">3. Effort level?</p>
-        <div class="flex flex-wrap gap-1.5">${effortPills.map(p => pill("effortLevel", p.value, p.label, state.feedbackEffortLevel)).join("")}</div>
-      </div>`;
-    }
-
-    // Step 4: Shoes
-    let step4HTML = "";
-    if (step >= 4) {
-      const shoeHistory = getShoeHistory();
-      if (shoeHistory.length > 0 && !state.feedbackShoesOther) {
-        const shoePills = shoeHistory.slice(0, 5).map(s =>
-          pill("shoes", s.name, s.name, state.feedbackShoes)
-        ).join("");
-        const otherPill = `<button data-action="feedback-shoe-other"
-          class="rounded-full px-3 py-1.5 text-xs font-semibold transition-colors text-muted-foreground hover:text-foreground hover:bg-muted"
-        >Other...</button>`;
-        step4HTML = `<div>
-          <p class="mb-1.5 text-[0.65rem] font-medium uppercase tracking-[0.1em] text-muted-foreground">4. Shoes <span class="font-normal">(optional)</span></p>
-          <div class="flex flex-wrap gap-1.5">${shoePills}${otherPill}</div>
-        </div>`;
-      } else {
-        const val = state.feedbackShoes ? esc(state.feedbackShoes) : "";
-        step4HTML = `<div>
-          <p class="mb-1.5 text-[0.65rem] font-medium uppercase tracking-[0.1em] text-muted-foreground">4. Shoes <span class="font-normal">(optional)</span></p>
-          <input data-action="feedback-shoe-text" type="text" placeholder="What shoes?" value="${val}"
-            class="h-7 w-full max-w-[200px] rounded-[var(--radius-inner)] bg-muted px-2 text-xs text-foreground placeholder-muted-foreground/40 focus:outline-none focus:ring-1 focus:ring-primary/50" />
-        </div>`;
-      }
-    }
-
-    return `
-      <div id="feedback-section" class="mb-4 rounded-[var(--radius-base)] border border-border card-surface border-l-2 border-primary px-4 py-3">
-        <div class="flex items-center justify-between mb-3">
-          <div class="flex items-center gap-2">
-            <p class="text-sm font-semibold text-foreground">How was the run?</p>
-            <span class="text-xs text-muted-foreground">${step} of 4</span>
-          </div>
-          <button data-action="dismiss-feedback" class="text-xs text-muted-foreground hover:text-foreground transition-colors">Skip</button>
-        </div>
-        <div class="space-y-3">
-          ${step1HTML}
-          ${step2HTML}
-          ${step3HTML}
-          ${step4HTML}
-        </div>
-        ${state.feedbackWornConfirmed && state.feedbackClothing && state.feedbackEffortLevel ? `
-        <div class="mt-3 flex items-center justify-end">
-          <button data-action="feedback-submit"
-            class="rounded-[var(--radius-base)] bg-primary px-5 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
-          >Log it</button>
-        </div>` : ""}
-      </div>`;
-  }
-
-  return `
-    <div id="feedback-section" class="mb-4 flex items-center gap-3 rounded-[var(--radius-base)] border border-border card-surface border-l-2 border-primary px-4 py-3">
-      <div class="flex-1">
-        <p class="text-sm font-semibold text-foreground">Did you run today?</p>
-        <p class="text-xs text-muted-foreground">Quick log — improves your recs and keeps Should I Run free.</p>
-      </div>
-      <button data-action="open-feedback"
-        class="shrink-0 rounded-[var(--radius-base)] bg-primary px-5 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
-      >Yes</button>
-      <button data-action="dismiss-feedback"
-        class="shrink-0 rounded-full px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
-      >No</button>
+  if (state.feedbackSubmitted && hasFeedbackToday()) {
+    const count = getFeedbackCount();
+    const insight = getPersonalInsight();
+    return `<div id="feedback-section" class="py-2">
+      <p class="text-lg font-bold">Logged. See you tomorrow.</p>
+      <p class="mt-1 text-[0.95rem] text-muted-foreground">${count > 1 ? `${count} runs tracked on this device.` : "Your first run is tracked."}${insight ? ` ${esc(insight)}` : ""}</p>
     </div>`;
+  }
+
+  // Pre-fill worn clothing from recommendation if not yet set
+  if (state.feedbackWornTop === null) state.feedbackWornTop = b.clothing.top;
+  if (state.feedbackWornBottom === null) state.feedbackWornBottom = b.clothing.bottom;
+
+  // Steps: 1=what did you wear, 2=clothing feel, 3=effort, 4=shoes
+  const step = !state.feedbackWornConfirmed ? 1
+    : !state.feedbackClothing ? 2
+    : !state.feedbackEffortLevel ? 3
+    : 4;
+
+  const clothingOptions = [
+    { value: "too-cold", label: "Too cold" },
+    { value: "just-right", label: "Just right" },
+    { value: "too-warm", label: "Too warm" },
+  ];
+  const effortPills = [
+    { value: "easy", label: "Easy" },
+    { value: "moderate", label: "Moderate" },
+    { value: "hard", label: "Hard" },
+    { value: "race", label: "Race" },
+  ];
+
+  function pill(group: string, value: string, label: string, selected: string | null): string {
+    const active = value === selected;
+    return `<button type="button" data-action="feedback-select" data-fb-group="${group}" data-fb-value="${esc(value)}" aria-pressed="${active}"
+      class="${chip} ${active ? chipOn : chipOff}">${esc(label)}</button>`;
+  }
+
+  let step1HTML: string;
+  if (!state.feedbackWornEditing) {
+    const matchesRec = state.feedbackWornTop === b.clothing.top && state.feedbackWornBottom === b.clothing.bottom;
+    step1HTML = `<section>
+      <h3 class="${stepTitle}">What did you wear?</h3>
+      <dl class="mt-2 rounded-[14px] bg-muted px-4 py-3 text-[0.95rem]">
+        <dt class="text-sm text-muted-foreground">Top</dt><dd class="font-semibold">${esc(state.feedbackWornTop ?? "")}</dd>
+        <dt class="mt-2 text-sm text-muted-foreground">Bottom</dt><dd class="font-semibold">${esc(state.feedbackWornBottom ?? "")}</dd>
+      </dl>
+      <p class="mt-2 text-sm text-muted-foreground">${matchesRec ? "Matches today's pick." : "Different from today's pick. That helps tune it."}</p>
+      <div class="mt-3 flex gap-2">
+        ${state.feedbackWornConfirmed ? "" : `<button type="button" data-action="feedback-worn-confirm" class="${primaryBtn}">Wore this</button>`}
+        <button type="button" data-action="feedback-worn-edit" class="${chip} ${chipOff}">Change</button>
+      </div>
+    </section>`;
+  } else {
+    step1HTML = `<section>
+      <h3 class="${stepTitle}">What did you actually wear?</h3>
+      <p class="mt-3 text-sm font-semibold text-muted-foreground">Top</p>
+      <div class="mt-1 flex flex-wrap gap-2">${TOP_OPTIONS.map(t => pill("wornTop", t, t, state.feedbackWornTop)).join("")}</div>
+      <p class="mt-3 text-sm font-semibold text-muted-foreground">Bottom</p>
+      <div class="mt-1 flex flex-wrap gap-2">${BOTTOM_OPTIONS.map(t => pill("wornBottom", t, t, state.feedbackWornBottom)).join("")}</div>
+      <button type="button" data-action="feedback-worn-confirm" class="${primaryBtn} mt-4">Done</button>
+    </section>`;
+  }
+
+  const step2HTML = step >= 2 ? `<section class="border-t border-hair pt-4">
+      <h3 class="${stepTitle}">How did the clothing feel?</h3>
+      <div class="mt-2 flex flex-wrap gap-2">${clothingOptions.map(o => pill("clothing", o.value, o.label, state.feedbackClothing)).join("")}</div>
+    </section>` : "";
+
+  const step3HTML = step >= 3 ? `<section class="border-t border-hair pt-4">
+      <h3 class="${stepTitle}">How hard was it?</h3>
+      <div class="mt-2 flex flex-wrap gap-2">${effortPills.map(p => pill("effortLevel", p.value, p.label, state.feedbackEffortLevel)).join("")}</div>
+    </section>` : "";
+
+  let step4HTML = "";
+  if (step >= 4) {
+    const shoeHistory = getShoeHistory();
+    const body = shoeHistory.length > 0 && !state.feedbackShoesOther
+      ? `<div class="mt-2 flex flex-wrap gap-2">${shoeHistory.slice(0, 5).map(sh => pill("shoes", sh.name, sh.name, state.feedbackShoes)).join("")}
+          <button type="button" data-action="feedback-shoe-other" class="${chip} ${chipOff}">Other shoe</button></div>`
+      : `<label for="fb-shoe" class="sr-only">Shoe name</label><input id="fb-shoe" data-action="feedback-shoe-text" type="text" placeholder="e.g. Pegasus 41" value="${state.feedbackShoes ? esc(state.feedbackShoes) : ""}"
+          class="mt-2 h-12 w-full rounded-[12px] border border-input bg-card px-3 text-base" />`;
+    step4HTML = `<section class="border-t border-hair pt-4">
+      <h3 class="${stepTitle}">Shoes <span class="text-sm font-normal text-muted-foreground">optional</span></h3>${body}
+    </section>`;
+  }
+
+  const ready = state.feedbackWornConfirmed && state.feedbackClothing && state.feedbackEffortLevel;
+  return `<div id="feedback-section">
+    <p class="mb-4 text-sm font-semibold text-muted-foreground">Step ${step} of 4</p>
+    <div class="space-y-4">${step1HTML}${step2HTML}${step3HTML}${step4HTML}</div>
+    <div class="mt-6 flex items-center justify-between gap-3 border-t border-hair pt-4">
+      <button type="button" data-action="dismiss-feedback" class="press min-h-11 rounded-full px-3 text-[0.95rem] font-semibold text-muted-foreground hover:bg-muted hover:text-foreground">Not today</button>
+      ${ready ? `<button type="button" data-action="feedback-submit" class="${primaryBtn}">Log it</button>` : ""}
+    </div>
+  </div>`;
 }
 
 // ─── Event handling ──────────────────────────────────────────────────────────
