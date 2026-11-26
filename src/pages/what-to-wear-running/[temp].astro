@@ -1,0 +1,192 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/layout/Header.astro";
+import Footer from "@/components/layout/Footer.astro";
+import TempIndex from "@/components/guide/TempIndex.astro";
+import GuideTable from "@/components/guide/GuideTable.astro";
+import {
+  GUIDE_BASE, GUIDE_TEMPS, buildTemperatureGuide, directAnswer, guidePath, listPhrase, paceRangeLabel,
+} from "@/lib/seo/temperature-guide";
+
+export function getStaticPaths() {
+  return GUIDE_TEMPS.map((t) => ({ params: { temp: `${t}-degrees` }, props: { tempF: t } }));
+}
+
+const { tempF } = Astro.props as { tempF: number };
+const g = buildTemperatureGuide(tempF);
+const answer = directAnswer(g);
+const easy = g.efforts[0];
+const hardest = g.efforts[g.efforts.length - 1];
+const prev = GUIDE_TEMPS.find((t) => t === tempF - 5);
+const next = GUIDE_TEMPS.find((t) => t === tempF + 5);
+const site = Astro.site?.href.replace(/\/$/, "") ?? "";
+
+const title = `What to Wear Running in ${tempF} Degree Weather (${g.tempC}°C) | Should I Run`;
+const description = `What to wear running at ${tempF}°F: the layers for easy runs through intervals, how wind changes it, and how much ${tempF >= 55 ? "heat and humidity" : "cold"} slows your pace.`;
+
+const relatedPosts = [
+  { href: "/blog/what-to-wear-running-by-temperature/", label: "What to wear running by temperature: the full chart", show: true },
+  { href: "/blog/what-to-wear-running-30-degrees/", label: "What to wear running in 30 degree weather", show: tempF >= 20 && tempF <= 35 && tempF !== 30 },
+  { href: "/blog/what-to-wear-running-40-degrees/", label: "What to wear running in 40 degree weather", show: tempF >= 35 && tempF <= 45 && tempF !== 40 },
+  { href: "/blog/is-it-too-cold-to-run/", label: "Is it too cold to run?", show: tempF <= 25 },
+  { href: "/blog/running-on-ice-black-ice/", label: "Running on ice: black ice safety", show: g.iceWatch },
+  { href: "/blog/running-in-wind/", label: "How much does wind slow you down?", show: tempF <= 50 },
+  { href: "/blog/is-it-too-hot-to-run/", label: "Is it too hot to run?", show: tempF >= 75 },
+  { href: "/blog/running-pace-heat-adjustment/", label: "How heat and humidity change your pace", show: tempF >= 60 },
+].filter((p) => p.show);
+
+const faq = [
+  {
+    q: `Can I wear shorts running at ${tempF}°F?`,
+    a: easy && /shorts/i.test(easy.rec.bottom)
+      ? `Yes for most runners. On an easy run you dress for about ${easy.dressFor}°F, where ${easy.rec.bottom.toLowerCase()} are the usual pick.`
+      : hardest && /shorts/i.test(hardest.rec.bottom)
+        ? `For hard sessions, yes: intervals dress for about ${hardest.dressFor}°F, which is shorts weather. For easy runs, ${easy?.rec.bottom.toLowerCase()} are the better pick.`
+        : `Most runners will want ${easy?.rec.bottom.toLowerCase()} instead. Even interval sessions only dress for about ${hardest?.dressFor}°F at this temperature.`,
+  },
+  {
+    q: `Do I need gloves running at ${tempF}°F?`,
+    a: easy && easy.rec.accessories.some((a) => /glove/i.test(a))
+      ? `Yes. ${easy.rec.accessories.find((a) => /glove/i.test(a))} are part of the easy-run kit at this temperature, and hands cool fastest in the first mile.`
+      : `Usually not in calm air. Add light gloves if it's windy or you run cold.`,
+  },
+  {
+    q: `Does ${tempF}°F slow down your running pace?`,
+    a: g.heat.length
+      ? `It depends on humidity. Should I Run adds temperature and dew point (the Hadley method): at ${tempF}°F with a ${g.heat[g.heat.length - 1]?.dewPointF}°F dew point, expect ${paceRangeLabel(g.heat[g.heat.length - 1]?.pace ?? { min: 0, max: 0 })} slower.`
+      : g.calmPace.max > 0
+        ? `In calm air, about ${paceRangeLabel(g.calmPace)} slower, and more as wind chill drops.`
+        : `Not in calm air. Wind is the bigger factor: a headwind costs about 1.2 seconds per mile for every mph.`,
+  },
+];
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Should I Run", item: `${site}/` },
+      { "@type": "ListItem", position: 2, name: "What to wear running", item: `${site}${GUIDE_BASE}/` },
+      { "@type": "ListItem", position: 3, name: `${tempF}°F`, item: `${site}${guidePath(tempF)}` },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+  },
+];
+
+const extras = (a: string[]) => (a.length ? listPhrase(a) : "None");
+const kit = (r: { bottom: string; top: string }) => `${r.bottom}, ${r.top.toLowerCase()}`;
+const withWarning = (p: { min: number; max: number; warning?: string }) => `${paceRangeLabel(p)}${p.warning ? `. ${p.warning}` : ""}`;
+const effortRows = g.efforts.map((e) => ({ head: e.label, cells: [`${e.dressFor}°F`, e.rec.bottom, e.rec.top, extras(e.rec.accessories)] }));
+const windRows = [
+  { head: "Calm", cells: [`${tempF}°F`, easy ? kit(easy.rec) : "", withWarning(g.calmPace)] },
+  ...g.wind.map((w) => ({
+    head: `${w.windMph}\u00a0mph`,
+    cells: [`${w.feelsLike}°F`, `${kit(w.easy)}${w.easy.accessories.includes("Wind-resistant layer") ? ", wind-resistant layer" : ""}`, withWarning(w.pace)],
+  })),
+];
+const heatRows = g.heat.map((h) => ({ head: `${h.dewPointF}°F`, cells: [String(h.combined), withWarning(h.pace)] }));
+const link = "font-semibold text-primary underline decoration-primary/30 underline-offset-2 hover:decoration-primary";
+---
+
+<Layout title={title} description={description}>
+  <Header />
+  <main class="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-14">
+    <nav aria-label="Breadcrumb" class="text-sm text-muted-foreground">
+      <ol class="flex flex-wrap items-center gap-1">
+        <li><a href="/" class="hover:text-foreground">Today</a></li>
+        <li aria-hidden="true">/</li>
+        <li><a href={`${GUIDE_BASE}/`} class="hover:text-foreground">What to wear running</a></li>
+        <li aria-hidden="true">/</li>
+        <li aria-current="page" class="text-foreground">{tempF}°F</li>
+      </ol>
+    </nav>
+
+    <article class="mt-6">
+      <h1 class="text-4xl leading-[1.05] tracking-tight text-foreground sm:text-5xl">
+        What to wear running in {tempF}&nbsp;degree weather
+      </h1>
+      <p class="mt-4 max-w-[65ch] text-lg leading-relaxed text-foreground">{answer}</p>
+      <p class="mt-3 max-w-[65ch] leading-relaxed text-muted-foreground">
+        That's the runner's rule: your body makes heat, so you dress for a warmer day than the forecast. How much warmer depends on how hard you're running.
+        <a href="/" class={link}>Get today's kit for your location</a>, which also accounts for wind, rain, humidity and your own paces.
+      </p>
+
+      <section class="mt-12">
+        <h2 class="text-2xl text-foreground">By effort at {tempF}°F</h2>
+        <p class="mt-2 max-w-[65ch] text-muted-foreground">
+          Easy runs dress for {easy?.dressFor}°F. Intervals generate the most heat and dress for {hardest?.dressFor}°F.
+        </p>
+        <GuideTable caption={`What to wear running at ${tempF}°F by effort`} columns={["Effort", "Dress for", "Bottom", "Top", "Extras"]} rows={effortRows} />
+      </section>
+
+      {g.wind.length > 0 && (
+        <section class="mt-12">
+          <h2 class="text-2xl text-foreground">When it's windy</h2>
+          <p class="mt-2 max-w-[65ch] text-muted-foreground">
+            Wind makes {tempF}°F feel colder. These use the National Weather Service wind chill formula, the same one Should I Run uses for cold pace. Above 15&nbsp;mph, add a wind-resistant layer.
+          </p>
+          <GuideTable caption={`Wind chill and kit at ${tempF}°F`} columns={["Wind", "Feels like", "Easy-run kit", "Pace cost"]} rows={windRows} />
+          <p class="mt-3 max-w-[65ch] text-sm text-muted-foreground">
+            Pace cost is how much slower the same effort runs. A headwind adds about 1.2 seconds per mile per mph on top, and a tailwind gives back only half of that. <a href="/blog/running-in-wind/" class={link}>More on running in wind</a>.
+          </p>
+        </section>
+      )}
+
+      {g.heat.length > 0 && (
+        <section class="mt-12">
+          <h2 class="text-2xl text-foreground">How humidity changes your pace at {tempF}°F</h2>
+          <p class="mt-2 max-w-[65ch] text-muted-foreground">
+            Heat cost depends on the dew point as much as the temperature. Should I Run adds the two together (the Hadley method) and slows your paces once the total passes 100.
+          </p>
+          <GuideTable caption={`Heat pace adjustment at ${tempF}°F by dew point`} columns={["Dew point", "Temp + dew point", "Slow down by"]} rows={heatRows} />
+        </section>
+      )}
+
+      {g.iceWatch && (
+        <section class="mt-12">
+          <h2 class="text-2xl text-foreground">Watch for ice</h2>
+          <p class="mt-2 max-w-[65ch] leading-relaxed text-muted-foreground">
+            Around and below freezing, the bigger risk is footing, not clothing. Bridges and overpasses freeze first, and roads that were wet yesterday can hold black ice this morning. Should I Run checks six ice scenarios against the last 24 hours of weather and flags them in the verdict.
+            <a href="/blog/running-on-ice-black-ice/" class={link}>How to run on ice</a>.
+          </p>
+        </section>
+      )}
+
+      <section class="mt-12">
+        <h2 class="text-2xl text-foreground">Common questions</h2>
+        <dl class="mt-4 border-t border-hair">
+          {faq.map((f) => (
+            <div class="border-b border-hair py-4">
+              <dt class="font-semibold text-foreground">{f.q}</dt>
+              <dd class="mt-1 max-w-[65ch] leading-relaxed text-muted-foreground">{f.a}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
+      <section class="mt-12">
+        <h2 class="text-2xl text-foreground">Other temperatures</h2>
+        <div class="mt-3 flex flex-wrap gap-x-6 gap-y-2">
+          {prev !== undefined && <a href={guidePath(prev)} class={link}>&larr; {prev}°F</a>}
+          {next !== undefined && <a href={guidePath(next)} class={link}>{next}°F &rarr;</a>}
+        </div>
+        <TempIndex current={tempF} />
+      </section>
+
+      {relatedPosts.length > 0 && (
+        <section class="mt-12">
+          <h2 class="text-2xl text-foreground">Related guides</h2>
+          <ul class="mt-3 space-y-2">
+            {relatedPosts.map((p) => <li><a href={p.href} class={link}>{p.label}</a></li>)}
+          </ul>
+        </section>
+      )}
+    </article>
+  </main>
+  <Footer />
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</Layout>

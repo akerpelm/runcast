@@ -8,8 +8,8 @@
     <rect x="20" y="29" width="32" height="14" rx="7" fill="#1c5a39" stroke="#fff" stroke-width="2.5"/>
   </g>
   <text x="226" y="186" font-family="'Barlow Condensed', 'Arial Narrow', sans-serif" font-size="80" font-weight="800" fill="#ffffff" letter-spacing="1">SHOULD I RUN</text>
-  <text x="130" y="290" font-family="'Barlow', Arial, sans-serif" font-size="40" font-weight="600" fill="#ffffff">When to run, how fast, and what to wear. Today.</text>
-  <text x="130" y="338" font-family="'Barlow', Arial, sans-serif" font-size="26" fill="#cfe6d8">Weather-adjusted pace · Ice and heat warnings · Best run window</text>
+  <text x="130" y="272" font-family="'Barlow', Arial, sans-serif" font-size="40" font-weight="600" fill="#ffffff">When to run, how fast, and what to wear. Today.</text>
+  <text x="130" y="318" font-family="'Barlow', Arial, sans-serif" font-size="26" fill="#cfe6d8">Weather-adjusted pace, ice and heat warnings, and the best time to run</text>
   <!-- Lanes -->
   <rect x="80" y="340" width="1040" height="220" rx="36" fill="#a83f2a"/>
   <rect x="80" y="340" width="1040" height="40" fill="#a83f2a"/>

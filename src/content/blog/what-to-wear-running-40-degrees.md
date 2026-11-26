@@ -56,6 +56,10 @@ Some runners generate more metabolic heat than others. If you're someone who's a
 2. **Skipping gloves.** Your hands will be cold for the first mile. Lightweight gloves are worth it even if you stash them later.
 3. **Overdressing the bottom half.** Your legs have large muscle groups generating heat. Shorts work for most runners down to the mid-30s.
 
+## Nearby Temperatures
+
+A few degrees changes the kit. See [35°F](/what-to-wear-running/35-degrees/), [40°F](/what-to-wear-running/40-degrees/) and [45°F](/what-to-wear-running/45-degrees/), or the [full temperature guide](/what-to-wear-running/).
+
 ## Bottom Line
 
 Forty degrees is nearly ideal running weather — you just need the right layers. Start with a long-sleeve tech tee, shorts or half tights, and light gloves. Adjust up for wind, down for harder efforts. And let [Should I Run](/) do the math for you based on today's actual conditions.

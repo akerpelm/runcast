@@ -88,6 +88,10 @@ A headband or ear cover on calm days. If the wind chill drops into the teens, sw
 
 No. A wind chill of 30°F is in the 0–2% slower pace range, so it barely affects performance. For where the real limits are, see [is it too cold to run](/blog/is-it-too-cold-to-run/).
 
+## Nearby Temperatures
+
+A few degrees changes the kit. See [25°F](/what-to-wear-running/25-degrees/), [30°F](/what-to-wear-running/30-degrees/) and [35°F](/what-to-wear-running/35-degrees/), or the [full temperature guide](/what-to-wear-running/).
+
 ## Bottom Line
 
 At 30°F, start with a long-sleeve tech tee, shorts or half tights, light gloves and a headband for an easy run on a calm day. Add tights and a half-zip once there's a breeze, and a jacket or wind shell once it's over 15 mph. Wear less for harder efforts. For the complete chart at every temperature, see [what to wear running by temperature](/blog/what-to-wear-running-by-temperature/), or [check today's conditions](/) and let [Should I Run](/) work it out for you.

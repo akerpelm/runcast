@@ -1,0 +1,62 @@
+---
+import { getCollection } from "astro:content";
+import TempIndex from "@/components/guide/TempIndex.astro";
+import { GUIDE_BASE } from "@/lib/seo/temperature-guide";
+
+const posts = (await getCollection("blog"))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+  .slice(0, 6);
+
+const answers = [
+  { title: "When to run", body: "Every hour of the forecast is scored for temperature, humidity, wind, rain, UV, daylight and ice, and the best window leads the page." },
+  { title: "How fast", body: "Your easy through interval paces, adjusted for heat with the Hadley temperature plus dew point method, and for cold and wind with NWS wind chill." },
+  { title: "What to wear", body: "Clothing for the temperature you'll feel while running, warmer for harder efforts, with layers added for wind and rain." },
+  { title: "Is it safe", body: "Warnings for ice, heat, storms, wind, air quality and UV, using NWS, WHO and EPA thresholds, shown inside the verdict." },
+];
+
+const link = "font-semibold text-primary underline decoration-primary/30 underline-offset-2 hover:decoration-primary";
+---
+
+<section aria-labelledby="home-title" class="mt-12 border-t border-hair">
+  <div class="mx-auto max-w-6xl px-4 pt-12 sm:px-6">
+    <div class="grid gap-x-16 gap-y-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+      <div>
+        <h1 id="home-title" class="text-4xl leading-[1.05] tracking-tight text-foreground sm:text-5xl">Should I run today?</h1>
+        <p class="mt-4 max-w-[60ch] text-lg leading-relaxed text-foreground">
+          Should I Run is a free running forecast. It tells you the best time to run today, how much the weather will slow your paces, and what to wear, for wherever you are.
+        </p>
+        <p class="mt-3 max-w-[60ch] leading-relaxed text-muted-foreground">
+          No account and nothing to install: add it to your phone's home screen and it opens like an app.
+          <a href="/about/" class={link}>How the numbers work</a>.
+        </p>
+        <dl class="mt-8 border-t border-hair">
+          {answers.map((a) => (
+            <div class="border-b border-hair py-4">
+              <dt class="font-semibold text-foreground">{a.title}</dt>
+              <dd class="mt-1 max-w-[60ch] leading-relaxed text-muted-foreground">{a.body}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      <div>
+        <h2 class="text-2xl text-foreground">What to wear running at any temperature</h2>
+        <p class="mt-2 max-w-[60ch] text-muted-foreground">
+          The same clothing logic as the forecast, worked out for every 5°F. <a href={`${GUIDE_BASE}/`} class={link}>See the full chart</a>.
+        </p>
+        <TempIndex class="sm:grid-cols-5" />
+
+        <h2 class="mt-10 text-2xl text-foreground">Running weather guides</h2>
+        <ul class="mt-3 border-t border-hair">
+          {posts.map((p) => (
+            <li class="border-b border-hair">
+              <a href={`/blog/${p.id}/`} class="flex min-h-12 items-center py-2 font-semibold text-foreground hover:text-primary">{p.data.title}</a>
+            </li>
+          ))}
+        </ul>
+        <a href="/blog/" class={`${link} mt-3 inline-block`}>All guides</a>
+      </div>
+    </div>
+  </div>
+</section>

@@ -33,6 +33,8 @@ If you always end up carrying your jacket home, turn on the **"I run hot"** sett
 
 ## Step 2: The Running Clothing Chart
 
+For any single temperature, the [temperature guides](/what-to-wear-running/) break this down by effort, wind and humidity, from [0°F](/what-to-wear-running/0-degrees/) to [90°F](/what-to-wear-running/90-degrees/).
+
 Once you have your dress-for temperature, find your row:
 
 | Dress-For Temp | Bottom | Top | Accessories |

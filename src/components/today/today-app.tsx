@@ -58,7 +58,8 @@ function TodayScreen({ embed }: { embed: boolean }) {
     <TodayContext.Provider value={{ view, actions }}>
       <AppHeader />
       <main data-halo-recess className="mx-auto max-w-6xl bg-background px-4 pt-3 sm:px-6">
-        <h1 className="sr-only">Should I Run: today's running briefing</h1>
+        {/* The page's h1 is the server-rendered "Should I run today?" below the app, so search engines see it without JavaScript. */}
+        <h2 className="sr-only">Today's running briefing</h2>
         <p className="sr-only" aria-live="polite">{view.updating ? "Updating forecast…" : ""}</p>
         <DayTabs />
         <DayRibbon />

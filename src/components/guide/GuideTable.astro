@@ -1,0 +1,34 @@
+---
+/**
+ * A data table that stays a real <table> (for search snippets and screen readers)
+ * but stacks each row into labelled lines on phones instead of scrolling sideways.
+ */
+type Props = { columns: string[]; rows: { head: string; cells: string[] }[]; caption?: string };
+const { columns, rows, caption } = Astro.props;
+const [headLabel, ...cellLabels] = columns;
+---
+
+<table class="mt-4 w-full border-t border-hair text-[0.95rem] max-sm:block">
+  {caption && <caption class="sr-only">{caption}</caption>}
+  <thead class="max-sm:sr-only">
+    <tr class="border-b border-hair">
+      <th scope="col" class="py-2 pr-4 text-left text-sm font-semibold text-muted-foreground">{headLabel}</th>
+      {cellLabels.map((c) => <th scope="col" class="py-2 pr-4 text-left text-sm font-semibold text-muted-foreground">{c}</th>)}
+    </tr>
+  </thead>
+  <tbody class="max-sm:block">
+    {rows.map((r) => (
+      <tr class="border-b border-hair max-sm:block max-sm:py-3">
+        <th scope="row" class="py-3 pr-4 text-left align-top font-semibold whitespace-nowrap text-foreground max-sm:block max-sm:py-0 max-sm:pb-1 max-sm:text-base">{r.head}</th>
+        {r.cells.map((cell, i) => (
+          <td
+            data-label={cellLabels[i]}
+            class="py-3 pr-4 align-top tabular-nums max-sm:grid max-sm:grid-cols-[6.5rem_1fr] max-sm:gap-x-3 max-sm:py-0.5 max-sm:pr-0 max-sm:before:text-muted-foreground max-sm:before:content-[attr(data-label)]"
+          >
+            {cell}
+          </td>
+        ))}
+      </tr>
+    ))}
+  </tbody>
+</table>

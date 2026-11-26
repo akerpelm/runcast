@@ -4,14 +4,9 @@ Disallow: /404.html
 
 Sitemap: https://shouldirun.today/sitemap-index.xml
 
-# AI training crawlers — disallow content scraping for model training
+# AI search and answer tools (OAI-SearchBot, ChatGPT-User, PerplexityBot, Claude-SearchBot,
+# Claude-User) may read the site so it can be cited. Training crawlers below are blocked.
 User-agent: GPTBot
-Disallow: /
-
-User-agent: ChatGPT-User
-Disallow: /
-
-User-agent: OAI-SearchBot
 Disallow: /
 
 User-agent: ClaudeBot
@@ -21,9 +16,6 @@ User-agent: Claude-Web
 Disallow: /
 
 User-agent: anthropic-ai
-Disallow: /
-
-User-agent: PerplexityBot
 Disallow: /
 
 User-agent: Bytespider
