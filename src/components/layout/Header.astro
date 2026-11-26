@@ -25,8 +25,11 @@ const gear = `<svg viewBox="0 0 24 24" aria-hidden="true" class="h-5 w-5" fill="
           class="press flex min-h-11 min-w-0 items-center gap-1.5 rounded-full border border-hair bg-card px-3 text-[0.95rem] font-semibold hover:bg-muted"
         >
           <span class="shrink-0 text-primary" set:html={pinIcon} />
-          <span id="location-text" class="truncate max-w-[8rem] sm:max-w-[16rem]">Locating…</span>
-          <span id="location-approx" class="hidden shrink-0 text-sm font-medium text-muted-foreground">approx.</span>
+          <span id="location-text" class="truncate max-w-[11rem] sm:max-w-[16rem]">Locating…</span>
+          <span id="location-approx" class="hidden shrink-0 items-center text-sm font-medium text-muted-foreground">
+            <span class="h-2.5 w-2.5 rounded-full bg-caution ring-1 ring-foreground/40 sm:hidden" aria-hidden="true"></span>
+            <span class="sr-only sm:not-sr-only">approx.</span>
+          </span>
           <span class="sr-only">, change location</span>
         </button>
         <button type="button" data-action="open-sheet" data-sheet="settings" aria-label="Settings: units and appearance" class="press flex h-11 w-11 shrink-0 items-center justify-center rounded-full hover:bg-muted" set:html={gear} />

@@ -178,10 +178,10 @@ function render(): void {
         ${renderKitLine(b, ctx)}
         ${embedMode ? "" : renderLogRow(isLogged())}
       </div>
-      <aside aria-label="Hour detail" class="relative hidden min-w-0 lg:sticky lg:top-20 lg:block lg:max-h-[calc(100dvh-6rem)] lg:overflow-y-auto lg:pr-1">
+      <aside aria-label="Hour detail" class="hidden min-w-0 lg:block">
         <section aria-labelledby="aside-hours" class="rounded-[20px] border border-hair bg-card p-4">
           <h2 id="aside-hours" class="px-2 font-(--font-display) text-lg font-bold uppercase tracking-[0.04em]">Hour by hour</h2>
-          <div class="mt-2">${renderHourTable(b, bw, ctx)}</div>
+          <div id="aside-hour-list" class="relative mt-2 max-h-[24rem] overflow-y-auto pr-1">${renderHourTable(b, bw, ctx)}</div>
         </section>
         <section aria-labelledby="aside-windows" class="mt-6">
           <h2 id="aside-windows" class="font-(--font-display) text-lg font-bold uppercase tracking-[0.04em]">Run windows</h2>
@@ -210,9 +210,9 @@ function render(): void {
     requestAnimationFrame(() => {
       centerInScroller(live.querySelector<HTMLElement>("[data-selected-pill]"), document.getElementById("timeline-scroll"));
       centerInScroller(live.querySelector<HTMLElement>("[data-action='select-day'][aria-pressed='true']"), document.getElementById("day-tabs-scroll"));
-      const aside = live.querySelector<HTMLElement>("aside");
-      const row = aside?.querySelector<HTMLElement>("[data-hour-index][aria-pressed='true']");
-      if (aside && row) aside.scrollTop = row.offsetTop - aside.clientHeight / 3;
+      const list = document.getElementById("aside-hour-list");
+      const row = list?.querySelector<HTMLElement>("[data-hour-index][aria-pressed='true']");
+      if (list && row) list.scrollTop = row.offsetTop - list.clientHeight / 3;
     });
     shouldScrollTimeline = false;
   }
@@ -495,7 +495,9 @@ function setLocationChip(name: string, source: GeoSource): void {
   const text = document.getElementById("location-text");
   const approx = document.getElementById("location-approx");
   if (text) text.textContent = name;
-  approx?.classList.toggle("hidden", !(source === "ip" || source === "default"));
+  const isApprox = source === "ip" || source === "default";
+  approx?.classList.toggle("hidden", !isApprox);
+  approx?.classList.toggle("inline-flex", isApprox);
 }
 
 async function changeLocation(loc: GeoLocation): Promise<void> {

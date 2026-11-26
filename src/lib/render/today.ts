@@ -74,11 +74,12 @@ function daylightNote(b: HourBriefing): string | null {
   return null;
 }
 
+/** Hazards clamp to two lines on phones; the row opens the hour sheet with the full note. */
 function hazardRow(a: SafetyAlert): string {
-  return `<li class="flex gap-3">
+  return `<li><button type="button" data-action="open-sheet" data-sheet="hours" class="press -mx-2 flex w-[calc(100%+1rem)] gap-3 rounded-[12px] px-2 py-1 text-left hover:bg-white/10">
     ${hazardMark(a.severity)}
-    <p class="min-w-0 line-clamp-2 lg:line-clamp-none"><span class="font-semibold">${esc(a.title)}.</span> <span class="text-infield-muted">${esc(a.message)}</span></p>
-  </li>`;
+    <span class="min-w-0"><span class="line-clamp-2 lg:line-clamp-none"><span class="font-semibold">${esc(a.title)}.</span> <span class="text-infield-muted">${esc(a.message)}</span></span><span class="mt-0.5 block text-sm font-semibold underline decoration-white/40 underline-offset-4 lg:hidden">Full details</span></span>
+  </button></li>`;
 }
 
 export function renderVerdict(v: VerdictInput): string {
@@ -108,7 +109,7 @@ export function renderVerdict(v: VerdictInput): string {
 
   return `<section aria-labelledby="verdict-title" data-surface="color" class="${v.animate ? "verdict-enter " : ""}relative z-10 rounded-[20px] px-5 pt-5 pb-6 text-white shadow-[var(--shadow-raised)] ${indoor ? "bg-indoor" : "bg-infield"}">
     <h2 id="verdict-title" class="font-(--font-display) text-[3.25rem] leading-[0.92] font-extrabold uppercase tracking-[-0.01em] sm:text-[4rem]">${esc(headline(v))}</h2>
-    <p class="mt-3 text-lg font-semibold">${esc(RUN_TYPE_COPY[b.runType.type] ?? b.runType.reason)}<span class="font-normal text-infield-muted"> \u00b7 ${v.isBestHour ? `${esc(dayLabel.toLowerCase() === "today" ? "today's" : dayLabel)} best window` : "your chosen hour"}</span></p>
+    <p class="mt-3 text-pretty text-lg font-semibold">${esc(RUN_TYPE_COPY[b.runType.type] ?? b.runType.reason)}<span class="font-normal text-infield-muted"> \u00b7 ${v.isBestHour ? `${esc(dayLabel.toLowerCase() === "today" ? "today's" : dayLabel)} best window` : "your chosen hour"}</span></p>
     <p class="mt-1 text-[0.95rem] text-infield-muted">${facts.map(esc).join(" · ")}</p>
     ${hazards}
     ${more}
@@ -324,7 +325,7 @@ export function renderConditions(b: HourBriefing, ctx: RenderContext): string {
 
   return `${notes}
     <p class="mb-2 text-[0.95rem]"><span class="font-semibold">Why this call:</span> <span class="text-muted-foreground">${esc(b.runType.reason)}</span></p>
-    <dl class="grid grid-cols-[auto_1fr] gap-x-6">${rows.map(([k, v]) => `<dt class="border-t border-hair py-2.5 text-sm text-muted-foreground">${k}</dt><dd class="border-t border-hair py-2.5 text-right text-[0.95rem] font-semibold">${esc(v)}</dd>`).join("")}</dl>`;
+    <dl class="grid grid-cols-[auto_1fr]">${rows.map(([k, v]) => `<dt class="border-t border-hair py-2.5 pr-6 text-sm text-muted-foreground">${k}</dt><dd class="border-t border-hair py-2.5 text-right text-[0.95rem] font-semibold">${esc(v)}</dd>`).join("")}</dl>`;
 }
 
 /** Full-day hour table; rows select the hour. */
