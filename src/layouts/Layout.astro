@@ -7,6 +7,8 @@ interface Props {
   description?: string;
   noindex?: boolean;
   ogImage?: string;
+  /** Iframe preview on the portfolio hub: no analytics, no service worker. */
+  embed?: boolean;
 }
 
 const {
@@ -14,6 +16,7 @@ const {
   description = "Free daily running briefing with weather-adjusted pace, clothing recommendations, ice warnings, and optimal run timing. No account needed.",
   noindex = false,
   ogImage,
+  embed = false,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || Astro.url.origin);
@@ -26,15 +29,25 @@ const ogImageURL = ogImage
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#FF3D00" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f3f1eb" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f1110" />
     <meta name="mobile-web-app-capable" content="yes" />
-    <link rel="apple-touch-icon" href="/icon-192.svg" />
+    <meta name="apple-mobile-web-app-title" content="Should I Run" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="generator" content={Astro.generator} />
+
+    {!embed && (
+      /* ?embed=1 is an alias for /embed/; pages are static, so redirect client-side before paint. */
+      <script is:inline>
+        if (new URLSearchParams(location.search).get("embed") === "1") location.replace("/embed/");
+      </script>
+    )}
 
     <!-- Theme: prevent flash by setting class before paint -->
     <script is:inline>
@@ -54,9 +67,8 @@ const ogImageURL = ogImage
     <link rel="preconnect" href="https://air-quality-api.open-meteo.com" />
 
     <!-- Self-hosted fonts via Astro Fonts API -->
-    <Font cssVariable="--font-display" />
-    <Font cssVariable="--font-body" />
-    <Font cssVariable="--font-mono" />
+    <Font cssVariable="--font-display" preload={[{ weight: "800" }]} />
+    <Font cssVariable="--font-body" preload={[{ weight: "400" }, { weight: "600" }]} />
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
@@ -80,14 +92,30 @@ const ogImageURL = ogImage
     <!-- Canonical -->
     <link rel="canonical" href={canonicalURL.href} />
 
-    <!-- Privacy-friendly analytics by Plausible -->
-    <script async src="https://plausible.io/js/pa-DjNsHBzg9pQdRPNvM3OdN.js"></script>
-    <script is:inline>
-      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-      plausible.init();
-    </script>
+    {!embed && (
+      <>
+        <!-- Privacy-friendly analytics by Plausible -->
+        <script async src="https://plausible.io/js/pa-DjNsHBzg9pQdRPNvM3OdN.js"></script>
+        <script is:inline>
+          window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+          plausible.init();
+        </script>
+      </>
+    )}
 
     <title>{title}</title>
+
+    {import.meta.env.DEV && (
+      /* Dev only: the sheet host is imported lazily rather than rendered as an
+         island, so Astro never injects @vitejs/plugin-react's refresh preamble. */
+      <script is:inline type="module">
+        import RefreshRuntime from "/@react-refresh";
+        RefreshRuntime.injectIntoGlobalHook(window);
+        window.$RefreshReg$ = () => {};
+        window.$RefreshSig$ = () => (type) => type;
+        window.__vite_plugin_react_preamble_installed__ = true;
+      </script>
+    )}
 
     <!-- JSON-LD: WebApplication -->
     <script
@@ -102,7 +130,7 @@ const ogImageURL = ogImage
         url: (Astro.site || Astro.url.origin).toString(),
         applicationCategory: "SportsApplication",
         operatingSystem: "Any",
-        browserRequirements: "Requires JavaScript. Requires Geolocation.",
+        browserRequirements: "Requires JavaScript.",
         offers: {
           "@type": "Offer",
           price: "0",
@@ -135,15 +163,16 @@ const ogImageURL = ogImage
       })}
     />
   </head>
-  <body class="min-h-screen bg-background text-foreground antialiased">
+  <body class="min-h-dvh bg-background text-foreground antialiased">
     <slot />
 
-    <!-- Service worker registration -->
-    <script is:inline>
-      if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("/sw.js");
-      }
-    </script>
+    {!embed && (
+      <script is:inline>
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.register("/sw.js");
+        }
+      </script>
+    )}
 
     <!-- Theme toggle logic -->
     <script>

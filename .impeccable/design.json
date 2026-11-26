@@ -1,0 +1,812 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-26T03:16:22+00:00",
+  "title": "Design System: Should I Run",
+  "extensions": {
+    "colorMeta": {
+      "chalk": {
+        "role": "neutral",
+        "displayName": "Chalk",
+        "canonical": "#f3f1eb",
+        "tonalRamp": [
+          "#0c0b0a",
+          "#262523",
+          "#43423f",
+          "#63615d",
+          "#84827d",
+          "#a6a5a0",
+          "#cac9c5",
+          "#efeeeb"
+        ]
+      },
+      "chalk-raised": {
+        "role": "neutral",
+        "displayName": "Raised Chalk",
+        "canonical": "#fbfaf6",
+        "tonalRamp": [
+          "#0b0b0a",
+          "#252523",
+          "#424240",
+          "#62615e",
+          "#83827f",
+          "#a6a5a2",
+          "#cac9c6",
+          "#efeeec"
+        ]
+      },
+      "chalk-muted": {
+        "role": "neutral",
+        "displayName": "Worn Chalk",
+        "canonical": "#e9e6dd",
+        "tonalRamp": [
+          "#0c0b09",
+          "#262521",
+          "#44423d",
+          "#63615b",
+          "#85827a",
+          "#a7a59e",
+          "#cbc9c3",
+          "#f0eeea"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#16181a",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#242526",
+          "#414244",
+          "#5f6164",
+          "#808385",
+          "#a3a5a7",
+          "#c7c9cb",
+          "#edeff0"
+        ]
+      },
+      "ink-muted": {
+        "role": "neutral",
+        "displayName": "Ink Muted",
+        "canonical": "#5c5850",
+        "tonalRamp": [
+          "#0c0b09",
+          "#272521",
+          "#44423c",
+          "#64615a",
+          "#868279",
+          "#a8a59d",
+          "#ccc9c3",
+          "#f1eee9"
+        ]
+      },
+      "hair": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#dcd7cc",
+        "tonalRamp": [
+          "#0c0b08",
+          "#272520",
+          "#44423c",
+          "#656159",
+          "#868278",
+          "#a9a59c",
+          "#ccc9c1",
+          "#f1eee8"
+        ]
+      },
+      "field-edge": {
+        "role": "neutral",
+        "displayName": "Field Edge",
+        "canonical": "#cfc9bc",
+        "tonalRamp": [
+          "#0c0b08",
+          "#272520",
+          "#45423a",
+          "#656157",
+          "#878276",
+          "#a9a59a",
+          "#cdc9c0",
+          "#f1eee7"
+        ]
+      },
+      "track-rubber": {
+        "role": "primary",
+        "displayName": "Track Rubber",
+        "canonical": "#a83f2a",
+        "tonalRamp": [
+          "#1c0200",
+          "#43130a",
+          "#6d2a1c",
+          "#9a4231",
+          "#c85d47",
+          "#e58874",
+          "#ffb3a1",
+          "#ffdecf"
+        ]
+      },
+      "track-rubber-deep": {
+        "role": "primary",
+        "displayName": "Deep Rubber",
+        "canonical": "#7f2e1f",
+        "tonalRamp": [
+          "#1a0402",
+          "#3e1811",
+          "#663025",
+          "#914a3c",
+          "#bd6655",
+          "#da8f7e",
+          "#f7b7a9",
+          "#ffe1d6"
+        ]
+      },
+      "track-rubber-muted": {
+        "role": "primary",
+        "displayName": "Rubber Chalk",
+        "canonical": "#f6d9d0",
+        "tonalRamp": [
+          "#100907",
+          "#2d221f",
+          "#4e3e39",
+          "#715c55",
+          "#957c74",
+          "#b69f98",
+          "#d8c4be",
+          "#faebe6"
+        ]
+      },
+      "infield": {
+        "role": "secondary",
+        "displayName": "Infield Green",
+        "canonical": "#1c5a39",
+        "tonalRamp": [
+          "#010f06",
+          "#102b1c",
+          "#264b35",
+          "#3d6d50",
+          "#56916e",
+          "#81b393",
+          "#acd5ba",
+          "#d8f8e3"
+        ]
+      },
+      "infield-muted": {
+        "role": "secondary",
+        "displayName": "Infield Mist",
+        "canonical": "#cfe6d8",
+        "tonalRamp": [
+          "#070d09",
+          "#1e2822",
+          "#39463e",
+          "#55665c",
+          "#73887c",
+          "#98aa9f",
+          "#becdc4",
+          "#e6f2eb"
+        ]
+      },
+      "indoor": {
+        "role": "secondary",
+        "displayName": "Indoor Slate",
+        "canonical": "#2b2e31",
+        "tonalRamp": [
+          "#0a0b0c",
+          "#242527",
+          "#404244",
+          "#5f6264",
+          "#7f8386",
+          "#a2a5a8",
+          "#c7c9cc",
+          "#edeff1"
+        ]
+      },
+      "caution": {
+        "role": "tertiary",
+        "displayName": "Caution Amber",
+        "canonical": "#f0b429",
+        "tonalRamp": [
+          "#170700",
+          "#381f00",
+          "#5d3a00",
+          "#855700",
+          "#af7600",
+          "#cd9c35",
+          "#ebc378",
+          "#ffeab2"
+        ]
+      },
+      "danger": {
+        "role": "tertiary",
+        "displayName": "Danger Red",
+        "canonical": "#b3261e",
+        "tonalRamp": [
+          "#200000",
+          "#490906",
+          "#761e17",
+          "#a6342a",
+          "#d84d40",
+          "#f47d6e",
+          "#ffab9c",
+          "#ffd8cc"
+        ]
+      },
+      "run-band-0": {
+        "role": "secondary",
+        "displayName": "Run Band 0",
+        "canonical": "#1c5a39",
+        "tonalRamp": [
+          "#010f06",
+          "#102b1c",
+          "#264b35",
+          "#3d6d50",
+          "#56916e",
+          "#81b393",
+          "#acd5ba",
+          "#d8f8e3"
+        ]
+      },
+      "run-band-1": {
+        "role": "secondary",
+        "displayName": "Run Band 1",
+        "canonical": "#2f7a50",
+        "tonalRamp": [
+          "#001005",
+          "#0a2d1a",
+          "#1e4d32",
+          "#336f4c",
+          "#4b9469",
+          "#79b58f",
+          "#a6d7b7",
+          "#d4f9e0"
+        ]
+      },
+      "run-band-2": {
+        "role": "secondary",
+        "displayName": "Run Band 2",
+        "canonical": "#86bb98",
+        "tonalRamp": [
+          "#030f06",
+          "#142b1d",
+          "#2a4a36",
+          "#426c51",
+          "#5d906f",
+          "#86b194",
+          "#b0d3bb",
+          "#dbf7e4"
+        ]
+      },
+      "run-band-3": {
+        "role": "secondary",
+        "displayName": "Run Band 3",
+        "canonical": "#c3dfcb",
+        "tonalRamp": [
+          "#070d08",
+          "#1d2820",
+          "#37473b",
+          "#526759",
+          "#708a78",
+          "#95ac9c",
+          "#bccfc1",
+          "#e4f3e8"
+        ]
+      },
+      "run-band-4": {
+        "role": "secondary",
+        "displayName": "Run Band 4",
+        "canonical": "#e6e4dc",
+        "tonalRamp": [
+          "#0c0b09",
+          "#262522",
+          "#43423e",
+          "#63615b",
+          "#84827b",
+          "#a7a59f",
+          "#cac9c4",
+          "#efeeea"
+        ]
+      },
+      "night-ground": {
+        "role": "neutral",
+        "displayName": "Night Ground",
+        "canonical": "#0f1110",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242525",
+          "#414242",
+          "#606261",
+          "#808382",
+          "#a3a6a4",
+          "#c8cac9",
+          "#edefee"
+        ]
+      },
+      "night-raised": {
+        "role": "neutral",
+        "displayName": "Night Raised",
+        "canonical": "#181b19",
+        "tonalRamp": [
+          "#0a0b0b",
+          "#242524",
+          "#404341",
+          "#5f6260",
+          "#808381",
+          "#a3a6a4",
+          "#c7cac8",
+          "#edefee"
+        ]
+      },
+      "night-muted": {
+        "role": "neutral",
+        "displayName": "Night Muted",
+        "canonical": "#1f2321",
+        "tonalRamp": [
+          "#0a0b0b",
+          "#232625",
+          "#404341",
+          "#5e6260",
+          "#7f8481",
+          "#a2a6a4",
+          "#c6cac8",
+          "#ecefee"
+        ]
+      },
+      "night-ink": {
+        "role": "neutral",
+        "displayName": "Night Ink",
+        "canonical": "#edebe4",
+        "tonalRamp": [
+          "#0c0b09",
+          "#262522",
+          "#43423e",
+          "#63615c",
+          "#84827c",
+          "#a6a5a0",
+          "#cac9c4",
+          "#efeeeb"
+        ]
+      },
+      "night-ink-muted": {
+        "role": "neutral",
+        "displayName": "Night Ink Muted",
+        "canonical": "#a7a39a",
+        "tonalRamp": [
+          "#0c0b09",
+          "#272521",
+          "#44423c",
+          "#64615a",
+          "#868279",
+          "#a8a59d",
+          "#ccc9c3",
+          "#f0eee9"
+        ]
+      },
+      "night-hair": {
+        "role": "neutral",
+        "displayName": "Night Hairline",
+        "canonical": "#2a2e2b",
+        "tonalRamp": [
+          "#0a0b0b",
+          "#242624",
+          "#404341",
+          "#5e625f",
+          "#7f8480",
+          "#a2a6a3",
+          "#c7cac7",
+          "#ecefed"
+        ]
+      },
+      "night-track-rubber": {
+        "role": "primary",
+        "displayName": "Night Track Rubber",
+        "canonical": "#8e3626",
+        "tonalRamp": [
+          "#1a0302",
+          "#3f170f",
+          "#682e23",
+          "#934839",
+          "#c06452",
+          "#dd8d7c",
+          "#fab6a7",
+          "#ffe0d4"
+        ]
+      },
+      "night-track-rubber-deep": {
+        "role": "primary",
+        "displayName": "Night Deep Rubber",
+        "canonical": "#6b281c",
+        "tonalRamp": [
+          "#180503",
+          "#3b1a14",
+          "#61332a",
+          "#8a4e42",
+          "#b56b5d",
+          "#d39285",
+          "#f1baae",
+          "#ffe3da"
+        ]
+      },
+      "night-track-rubber-muted": {
+        "role": "primary",
+        "displayName": "Night Rubber Chalk",
+        "canonical": "#f2cfc4",
+        "tonalRamp": [
+          "#110907",
+          "#2f211d",
+          "#503d37",
+          "#745a52",
+          "#997a70",
+          "#ba9e95",
+          "#dbc3bc",
+          "#fceae4"
+        ]
+      },
+      "night-infield": {
+        "role": "secondary",
+        "displayName": "Night Infield Green",
+        "canonical": "#16492f",
+        "tonalRamp": [
+          "#030e07",
+          "#142b1e",
+          "#2b4a38",
+          "#436c54",
+          "#5e8f72",
+          "#87b197",
+          "#b1d3bd",
+          "#dcf6e5"
+        ]
+      },
+      "night-infield-muted": {
+        "role": "secondary",
+        "displayName": "Night Infield Mist",
+        "canonical": "#c9e3d3",
+        "tonalRamp": [
+          "#070d09",
+          "#1e2822",
+          "#37463d",
+          "#53675b",
+          "#71897b",
+          "#96ab9e",
+          "#bdcec4",
+          "#e5f2ea"
+        ]
+      },
+      "night-signal-green": {
+        "role": "secondary",
+        "displayName": "Signal Green",
+        "canonical": "#6fc395",
+        "tonalRamp": [
+          "#001005",
+          "#052d1a",
+          "#174e33",
+          "#2b714e",
+          "#42956a",
+          "#73b690",
+          "#a2d8b8",
+          "#d1fae1"
+        ]
+      },
+      "night-oxide-text": {
+        "role": "primary",
+        "displayName": "Night Oxide",
+        "canonical": "#e07a62",
+        "tonalRamp": [
+          "#1b0301",
+          "#41150c",
+          "#6a2d1f",
+          "#964633",
+          "#c4624b",
+          "#e18b76",
+          "#fdb5a3",
+          "#ffdfd1"
+        ]
+      },
+      "night-run-band-0": {
+        "role": "secondary",
+        "displayName": "Night Run Band 0",
+        "canonical": "#79d0a0",
+        "tonalRamp": [
+          "#001005",
+          "#032d1a",
+          "#144e32",
+          "#28714d",
+          "#3f9669",
+          "#71b790",
+          "#a1d8b7",
+          "#d0fbe1"
+        ]
+      },
+      "night-run-band-1": {
+        "role": "secondary",
+        "displayName": "Night Run Band 1",
+        "canonical": "#4fa577",
+        "tonalRamp": [
+          "#001005",
+          "#042d1a",
+          "#154e32",
+          "#29714d",
+          "#409669",
+          "#72b78f",
+          "#a1d8b7",
+          "#d0fbe0"
+        ]
+      },
+      "night-run-band-2": {
+        "role": "secondary",
+        "displayName": "Night Run Band 2",
+        "canonical": "#2c6a49",
+        "tonalRamp": [
+          "#010f06",
+          "#102c1c",
+          "#254b36",
+          "#3c6e51",
+          "#55926f",
+          "#80b394",
+          "#acd5bb",
+          "#d8f8e3"
+        ]
+      },
+      "night-run-band-3": {
+        "role": "secondary",
+        "displayName": "Night Run Band 3",
+        "canonical": "#1f4331",
+        "tonalRamp": [
+          "#050e08",
+          "#192920",
+          "#31483b",
+          "#4b6959",
+          "#678c78",
+          "#8eae9c",
+          "#b6d1c1",
+          "#e0f4e8"
+        ]
+      },
+      "night-run-band-4": {
+        "role": "secondary",
+        "displayName": "Night Run Band 4",
+        "canonical": "#1b201d",
+        "tonalRamp": [
+          "#0a0c0b",
+          "#232624",
+          "#3f4341",
+          "#5e6360",
+          "#7e8480",
+          "#a1a7a3",
+          "#c6cac8",
+          "#ecefed"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Verdict headline only."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Sheet and drawer titles."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Uppercase section headings."
+      },
+      "numeral": {
+        "displayName": "Numeral",
+        "purpose": "Lane numbers in the gutter."
+      },
+      "pace": {
+        "displayName": "Pace",
+        "purpose": "Adjusted paces on the lanes."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Verdict lines, kit, conditions, sheet copy."
+      },
+      "body-strong": {
+        "displayName": "Body Strong",
+        "purpose": "Lane names, emphasised values."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Tabs, chips, legends, field labels, data keys."
+      }
+    },
+    "shadows": [
+      {
+        "name": "raised",
+        "value": "0 1px 2px rgb(22 24 26 / 0.08), 0 10px 28px -12px rgb(22 24 26 / 0.28)",
+        "purpose": "Verdict panel, sheets, drawers, toasts (light)."
+      },
+      {
+        "name": "raised-night",
+        "value": "0 1px 2px rgb(0 0 0 / 0.4), 0 12px 32px -12px rgb(0 0 0 / 0.7)",
+        "purpose": "Same roles on the night ground."
+      }
+    ],
+    "motion": [
+      {
+        "name": "press",
+        "value": "transform 120ms cubic-bezier(0.2, 0.8, 0.2, 1); :active scale(0.97)",
+        "purpose": "Instant press feedback on every button."
+      },
+      {
+        "name": "lane-settle",
+        "value": "380ms cubic-bezier(0.16, 1, 0.3, 1); scaleX 0.6 → 1.02 → 1 from the left, opacity 0 → 1",
+        "purpose": "Selected-lane highlight settling in."
+      },
+      {
+        "name": "verdict-enter",
+        "value": "320ms cubic-bezier(0.16, 1, 0.3, 1); opacity 0 → 1, translateY 6px → 0",
+        "purpose": "Verdict panel arriving after a change."
+      },
+      {
+        "name": "sheet-spring",
+        "value": "halo-ui-react Drawer springs (world: track)",
+        "purpose": "Bottom sheets and right drawers with drag momentum and snap points."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "prefers-reduced-motion: reduce disables press, lane-settle, verdict-enter and skeleton shimmer",
+        "purpose": "Every animation is optional."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Verdict Panel",
+      "kind": "card",
+      "refersTo": "verdict-panel",
+      "description": "The infield: the one raised surface, carrying the verdict, effort line, conditions and hazards.",
+      "html": "<section class=\"ds-verdict\"><h2 class=\"ds-verdict-h\">Run 6–7 AM</h2><p class=\"ds-verdict-effort\">Any workout goes</p><p class=\"ds-verdict-line\">Today's best window · 41°F, feels 33°F · Overcast · wind 10 mph</p><ul class=\"ds-verdict-hazards\"><li><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\"><path d=\"M12 1.5 22.5 12 12 22.5 1.5 12Z\" fill=\"var(--caution, #f0b429)\" stroke=\"#16181a\" stroke-width=\"1.2\"/><path d=\"M12 7v6M12 16.5v.5\" stroke=\"#16181a\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></svg><span><b>Ice possible.</b> <span class=\"ds-muted\">Bridges and shaded paths may be slick.</span></span></li></ul></section>",
+      "css": ".ds-verdict { font-family: var(--font-body, Barlow, sans-serif); font-variant-numeric: tabular-nums; background: var(--infield, #1c5a39); color: #fff; border-radius: 20px; padding: 20px 20px 24px; box-shadow: var(--shadow-raised, 0 1px 2px rgb(22 24 26 / 0.08), 0 10px 28px -12px rgb(22 24 26 / 0.28)); } .ds-verdict-h { font-family: var(--font-display, 'Barlow Condensed', sans-serif); margin: 0; font-size: 3.25rem; line-height: 0.92; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; } .ds-verdict-effort { margin: 12px 0 0; font-size: 1.125rem; font-weight: 600; } .ds-verdict-line { margin: 4px 0 0; font-size: 0.95rem; color: var(--infield-muted, #cfe6d8); } .ds-verdict-hazards { list-style: none; margin: 16px 0 0; padding: 16px 0 0; border-top: 1px solid rgb(255 255 255 / 0.2); font-size: 0.95rem; } .ds-verdict-hazards li { display: flex; gap: 12px; align-items: flex-start; } .ds-verdict .ds-muted { color: var(--infield-muted, #cfe6d8); }"
+    },
+    {
+      "name": "Effort Lanes",
+      "kind": "custom",
+      "refersTo": "lane",
+      "description": "Track-rubber lanes with numerals in a gutter and struck base → adjusted pace; the selected lane is deeper.",
+      "html": "<ul class=\"ds-lanes\"><li><button class=\"ds-lane\" aria-pressed=\"true\"><span class=\"ds-lane-n\">1</span><span class=\"ds-lane-name\">Easy</span><span class=\"ds-lane-pace\"><s>8:00</s><b>8:00–8:10</b><small>/mi</small></span></button></li><li><button class=\"ds-lane\" aria-pressed=\"false\"><span class=\"ds-lane-n\">2</span><span class=\"ds-lane-name\">Endurance</span><span class=\"ds-lane-pace\"><s>7:30</s><b>7:30–7:39</b><small>/mi</small></span></button></li><li><button class=\"ds-lane\" aria-pressed=\"false\"><span class=\"ds-lane-n\">3</span><span class=\"ds-lane-name\">Tempo</span><span class=\"ds-lane-pace\"><s>6:50</s><b>6:50–6:58</b><small>/mi</small></span></button></li></ul>",
+      "css": ".ds-lanes { font-family: var(--font-body, Barlow, sans-serif); font-variant-numeric: tabular-nums; list-style: none; margin: 0; padding: 0 0 8px; background: var(--track, #a83f2a); color: var(--track-ink, #fff); border-radius: 0 0 20px 20px; } .ds-lane { display: grid; grid-template-columns: 2.75rem minmax(0,1fr) auto; align-items: center; width: 100%; min-height: 52px; padding: 0 16px 0 0; border: 0; border-top: 2px solid rgb(255 255 255 / 0.9); background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; } .ds-lane:hover { background: rgb(0 0 0 / 0.1); } .ds-lane[aria-pressed=true] { background: var(--track-deep, #7f2e1f); } .ds-lane-n { font-family: var(--font-display, 'Barlow Condensed', sans-serif); display: flex; align-self: stretch; align-items: center; justify-content: center; border-right: 2px solid rgb(255 255 255 / 0.9); font-size: 1.5rem; font-weight: 800; } .ds-lane-name { padding-left: 12px; font-weight: 600; } .ds-lane-pace { display: flex; align-items: baseline; gap: 8px; white-space: nowrap; } .ds-lane-pace s, .ds-lane-pace small { font-size: 0.8rem; color: var(--track-muted, #f6d9d0); } .ds-lane-pace b { font-family: var(--font-display, 'Barlow Condensed', sans-serif); font-size: 1.3rem; font-weight: 700; } .ds-lane:focus-visible { outline: 3px solid #fff; outline-offset: -3px; } .ds-lane { transition: transform 120ms cubic-bezier(0.2,0.8,0.2,1), background-color 120ms ease-out; } .ds-lane:active { transform: scale(0.97); }"
+    },
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ink pill for the one committing action in a sheet (Save paces, Log it).",
+      "html": "<button class=\"ds-btn-primary\">Save paces</button>",
+      "css": ".ds-btn-primary { font-family: var(--font-body, Barlow, sans-serif); font-variant-numeric: tabular-nums; display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 24px; border: 0; border-radius: 9999px; background: var(--foreground, #16181a); color: var(--background, #f3f1eb); font-size: 1rem; font-weight: 700; cursor: pointer; } .ds-btn-primary:hover { opacity: 0.9; } .ds-btn-primary:focus-visible { outline: 3px solid var(--outline, #1c5a39); outline-offset: 2px; } .ds-btn-primary { transition: transform 120ms cubic-bezier(0.2,0.8,0.2,1), background-color 120ms ease-out; } .ds-btn-primary:active { transform: scale(0.97); }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Ink-outlined pill that fills with ink on hover (desktop Log run).",
+      "html": "<button class=\"ds-btn-secondary\">Log run</button>",
+      "css": ".ds-btn-secondary { font-family: var(--font-body, Barlow, sans-serif); font-variant-numeric: tabular-nums; min-height: 44px; padding: 0 20px; border: 1px solid var(--foreground, #16181a); border-radius: 9999px; background: transparent; color: var(--foreground, #16181a); font-size: 0.875rem; font-weight: 600; cursor: pointer; } .ds-btn-secondary:hover { background: var(--foreground, #16181a); color: var(--background, #f3f1eb); } .ds-btn-secondary:focus-visible { outline: 3px solid var(--outline, #1c5a39); outline-offset: 2px; } .ds-btn-secondary { transition: transform 120ms cubic-bezier(0.2,0.8,0.2,1), background-color 120ms ease-out; } .ds-btn-secondary:active { transform: scale(0.97); }"
+    },
+    {
+      "name": "Text Button",
+      "kind": "button",
+      "refersTo": "button-text",
+      "description": "Rubber-coloured label in a 44px pill hit area (Details, Why this kit).",
+      "html": "<button class=\"ds-btn-text\">Why this kit</button>",
+      "css": ".ds-btn-text { font-family: var(--font-body, Barlow, sans-serif); font-variant-numeric: tabular-nums; min-height: 44px; padding: 0 12px; border: 0; border-radius: 9999px; background: transparent; color: var(--primary, #a83f2a); font-size: 0.875rem; font-weight: 600; cursor: pointer; } .ds-btn-text:hover { background: var(--muted, #e9e6dd); } .ds-btn-text:focus-visible { outline: 3px solid var(--outline, #1c5a39); outline-offset: 2px; }"
+    },
+    {
+      "name": "Day Tabs",
+      "kind": "nav",
+      "refersTo": "day-tab",
+      "description": "Scrolling day selector; the active day is an ink pill.",
+      "html": "<nav class=\"ds-days\" aria-label=\"Choose a day\"><button class=\"ds-day\" aria-pressed=\"true\">Today</button><button class=\"ds-day\" aria-pressed=\"false\">Tomorrow</button><button class=\"ds-day\" aria-pressed=\"false\">Fri, 11/27</button></nav>",
+      "css": ".ds-days { font-family: var(--font-body, Barlow, sans-serif); font-variant-numeric: tabular-nums; display: flex; gap: 4px; } .ds-day { min-height: 44px; padding: 0 16px; border: 0; border-radius: 9999px; background: transparent; color: var(--muted-foreground, #5c5850); font: inherit; font-size: 0.875rem; font-weight: 600; cursor: pointer; } .ds-day:hover { background: var(--muted, #e9e6dd); color: var(--foreground, #16181a); } .ds-day[aria-pressed=true] { background: var(--foreground, #16181a); color: var(--background, #f3f1eb); } .ds-day:focus-visible { outline: 3px solid var(--outline, #1c5a39); outline-offset: 2px; }"
+    },
+    {
+      "name": "Hour Cells",
+      "kind": "custom",
+      "refersTo": "hour-cell",
+      "description": "Band-shaded hour cells with a rank bar; best/good windows get solid/dashed outlines outside the cell.",
+      "html": "<ul class=\"ds-hours\"><li><button class=\"ds-hour ds-b0 ds-best\" aria-pressed=\"false\"><span class=\"ds-hour-t\">6a</span><span class=\"ds-hour-v\">41°</span><span class=\"ds-rank\" style=\"--w:100%\"></span></button></li><li><button class=\"ds-hour ds-b1 ds-good\" aria-pressed=\"false\"><span class=\"ds-hour-t\">7a</span><span class=\"ds-hour-v\">43°</span><span class=\"ds-rank\" style=\"--w:80%\"></span></button></li><li><button class=\"ds-hour ds-sel\" aria-pressed=\"true\"><span class=\"ds-hour-t\">8a</span><span class=\"ds-hour-v\">45°</span></button></li><li><button class=\"ds-hour ds-b3\" aria-pressed=\"false\"><span class=\"ds-hour-t\">9a</span><span class=\"ds-hour-v\">46°</span><span class=\"ds-rank\" style=\"--w:40%\"></span></button></li><li><button class=\"ds-hour ds-b4\" aria-pressed=\"false\"><span class=\"ds-hour-t\">10a</span><span class=\"ds-hour-v\">47°</span><span class=\"ds-rank\" style=\"--w:20%\"></span></button></li></ul>",
+      "css": ".ds-hours { font-family: var(--font-body, Barlow, sans-serif); font-variant-numeric: tabular-nums; display: flex; gap: 10px; list-style: none; margin: 0; padding: 8px; background: var(--background, #f3f1eb); } .ds-hour { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; width: 60px; height: 100px; padding-bottom: 8px; border: 0; border-radius: 14px; box-shadow: 0 0 0 1px var(--hair, #dcd7cc); font: inherit; cursor: pointer; } .ds-hour-t { font-size: 0.75rem; font-weight: 600; opacity: 0.85; } .ds-hour-v { font-size: 0.95rem; font-weight: 700; } .ds-rank { position: absolute; left: 8px; right: 8px; bottom: 6px; height: 4px; } .ds-rank::after { content: ''; display: block; height: 100%; width: var(--w); border-radius: 9999px; background: currentColor; opacity: 0.75; } .ds-b0 { background: var(--run-0, #1c5a39); color: var(--run-ink-0, #fff); } .ds-b1 { background: var(--run-1, #2f7a50); color: var(--run-ink-1, #fff); } .ds-b3 { background: var(--run-3, #c3dfcb); color: var(--run-ink-3, #16181a); } .ds-b4 { background: var(--run-4, #e6e4dc); color: var(--run-ink-4, #16181a); } .ds-sel { background: var(--foreground, #16181a); color: var(--background, #f3f1eb); } .ds-best { outline: 3px solid var(--window, #1c5a39); outline-offset: 2px; } .ds-good { outline: 2px dashed var(--window, #1c5a39); outline-offset: 2px; } .ds-hour:focus-visible { outline: 3px solid var(--outline, #1c5a39); outline-offset: 2px; } .ds-hour { transition: transform 120ms cubic-bezier(0.2,0.8,0.2,1), background-color 120ms ease-out; } .ds-hour:active { transform: scale(0.97); }"
+    },
+    {
+      "name": "Hazard Marks",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Severity by shape plus words: diamond for caution/warning, octagon for danger.",
+      "html": "<ul class=\"ds-hazards\"><li><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\"><path d=\"M12 1.5 22.5 12 12 22.5 1.5 12Z\" fill=\"var(--caution, #f0b429)\" stroke=\"#16181a\" stroke-width=\"1.2\"/><path d=\"M12 7v6M12 16.5v.5\" stroke=\"#16181a\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></svg><p><b>Ice possible.</b> <span>Bridges and shaded paths may be slick.</span></p></li><li><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\"><path d=\"M7.9 2h8.2L22 7.9v8.2L16.1 22H7.9L2 16.1V7.9Z\" fill=\"var(--danger, #b3261e)\" stroke=\"#fff\" stroke-width=\"1.5\"/><path d=\"M12 7v6M12 16.5v.5\" stroke=\"#fff\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></svg><p><b>Thunderstorm.</b> <span>Lightning within the hour. Run inside.</span></p></li></ul>",
+      "css": ".ds-hazards { font-family: var(--font-body, Barlow, sans-serif); font-variant-numeric: tabular-nums; list-style: none; margin: 0; padding: 0; color: var(--foreground, #16181a); font-size: 0.95rem; } .ds-hazards li { display: flex; gap: 12px; align-items: flex-start; padding: 8px 0; } .ds-hazards p { margin: 0; } .ds-hazards span { color: var(--muted-foreground, #5c5850); } .ds-hazards svg { flex: none; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "48px raised-chalk field with 12px corners; outline-colour focus.",
+      "html": "<label class=\"ds-field-label\" for=\"ds-pace\">Easy <span>min:sec /mi</span></label><input id=\"ds-pace\" class=\"ds-input\" type=\"text\" inputmode=\"numeric\" placeholder=\"8:00\" />",
+      "css": ".ds-field-label { font-family: var(--font-body, Barlow, sans-serif); font-variant-numeric: tabular-nums; display: block; margin-bottom: 6px; font-weight: 600; } .ds-field-label span { display: block; font-size: 0.875rem; font-weight: 400; color: var(--muted-foreground, #5c5850); } .ds-input { font-family: var(--font-body, Barlow, sans-serif); font-variant-numeric: tabular-nums; height: 48px; width: 100%; padding: 0 12px; border: 1px solid var(--input, #cfc9bc); border-radius: 12px; background: var(--card, #fbfaf6); color: var(--foreground, #16181a); font-size: 1rem; caret-color: var(--primary, #a83f2a); } .ds-input:focus { border-color: var(--outline, #1c5a39); outline: none; } .ds-input:focus-visible { outline: 3px solid var(--outline, #1c5a39); outline-offset: 1px; }"
+    },
+    {
+      "name": "Choice Chips",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Hairline pills in the run log; the selected chip fills with ink.",
+      "html": "<div class=\"ds-chips\"><button class=\"ds-chip\" aria-pressed=\"false\">Too cold</button><button class=\"ds-chip\" aria-pressed=\"true\">Just right</button><button class=\"ds-chip\" aria-pressed=\"false\">Too warm</button></div>",
+      "css": ".ds-chips { display: flex; flex-wrap: wrap; gap: 8px; } .ds-chip { font-family: var(--font-body, Barlow, sans-serif); font-variant-numeric: tabular-nums; min-height: 44px; padding: 0 16px; border: 1px solid var(--hair, #dcd7cc); border-radius: 9999px; background: transparent; color: var(--foreground, #16181a); font-size: 0.95rem; font-weight: 600; cursor: pointer; } .ds-chip:hover { background: var(--muted, #e9e6dd); } .ds-chip[aria-pressed=true] { border-color: var(--foreground, #16181a); background: var(--foreground, #16181a); color: var(--background, #f3f1eb); } .ds-chip:focus-visible { outline: 3px solid var(--outline, #1c5a39); outline-offset: 2px; } .ds-chip { transition: transform 120ms cubic-bezier(0.2,0.8,0.2,1), background-color 120ms ease-out; } .ds-chip:active { transform: scale(0.97); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Track Lanes",
+    "overview": "**Creative North Star: \"Track Lanes\"**\n\nThe runner's day is laid out as a running track. The answer sits on the infield: a single raised green panel carrying the verdict (\"Run 6–7 AM\", or \"Treadmill day\") at condensed display scale. Directly beneath it, fused to its bottom edge, the five effort lanes run in oxide-red track rubber, divided by white lane paint, each numbered in a gutter and carrying today's condition-adjusted pace painted over the struck-through base pace. Everything else (hours, kit, conditions, windows) lives on a flat chalk ground, divided by hairlines and opened on demand in spring-loaded sheets.\n\nThe system is dense, legible and athletic rather than meteorological. It refuses the weather-app default of a giant temperature over stacked cards: weather appears only as the reasoning behind the run. Night mode is the stadium after dark, a near-black ground with the same rubber and infield deepened, never an inverted copy of day.\n\nColour is reserved for things a runner acts on. Green means the infield and the answer; red rubber means your efforts; amber and signal red appear only on hazard marks. Every coloured meaning is doubled by shape, position or words.",
+    "keyCharacteristics": [
+      "One raised object per screen: the infield verdict panel.",
+      "Lanes as full-bleed pressable rows (52px), lane paint as dividers, numerals in a gutter.",
+      "Chalk ground with hairline dividers; no cards inside cards.",
+      "Barlow Condensed uppercase for headings, numerals and paces; Barlow for everything else; tabular figures everywhere.",
+      "Hazards marked by shape (diamond, octagon) plus words.",
+      "Hour quality as five ranked green bands, each with a rank bar and screen-reader words.",
+      "Sheets for depth: bottom sheets on phones, right-side drawers on desktop."
+    ],
+    "rules": [
+      {
+        "name": "The Infield Rule",
+        "body": "Green surfaces carry the answer. Only the verdict, the best window and confirmations are green; decoration never is.",
+        "section": "colors"
+      },
+      {
+        "name": "The Paired Ink Rule",
+        "body": "Every fill ships with its ink. Text pairs are ≥4.5:1 everywhere and band text is ≥5:1; a new fill without a checked ink is not done.",
+        "section": "colors"
+      },
+      {
+        "name": "The Never-Colour-Alone Rule",
+        "body": "Hazards are a shape plus words; bands are a rank bar plus screen-reader words; best and good windows are a solid and a dashed outline. Strip the colour and every meaning survives.",
+        "section": "colors"
+      },
+      {
+        "name": "The Family-Name Rule",
+        "body": "Apply the faces with `font-(family-name:--font-display)` / `font-(family-name:--font-body)`. In Tailwind v4, `font-(--font-display)` compiles to a font-weight declaration, not a family, and silently does nothing useful.",
+        "section": "typography"
+      },
+      {
+        "name": "The Condensed-Is-Signage Rule",
+        "body": "Barlow Condensed is for headings, numerals and paces. In-sheet step titles and kit zone labels stay in Barlow.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Raised Rule",
+        "body": "Only the verdict panel is raised on the page. If something else needs emphasis, give it position or type, not a shadow.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Hairline Rule",
+        "body": "Hairlines divide; containers don't nest. There are no cards inside cards: inside a panel or sheet, sections are separated by a 1px hairline top border.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** keep the verdict panel as the only raised surface on the page, and fuse the lanes directly beneath it.",
+      "**Do** pair every fill with a checked ink: ≥4.5:1 for all text, ≥5:1 on run bands.",
+      "**Do** double every colour meaning: shape + words for hazards, rank bar + screen-reader words for bands, solid vs dashed outlines (offset onto the page ground) for windows.",
+      "**Do** make every target at least 44px, and give every control a visible 3px `:focus-visible` outline (white on coloured panels).",
+      "**Do** apply fonts with `font-(family-name:--font-display)`; never `font-(--font-display)`, which sets weight in Tailwind v4.",
+      "**Do** use tabular figures for every number, and Barlow Condensed uppercase for headings, numerals and paces.",
+      "**Do** animate only transform and opacity: halo springs for sheets, `lane-settle` and `verdict-enter` for the briefing, a 0.97 press scale for buttons. All of it switches off under `prefers-reduced-motion`.",
+      "**Do** divide with hairlines and open depth in a sheet (bottom sheet on phones, right drawer on desktop)."
+    ],
+    "donts": [
+      "**Don't** lead with weather: no giant temperature, no stack of weather cards. The run is the headline.",
+      "**Don't** nest cards inside cards or add shadows to aside sections, lists or hour cells.",
+      "**Don't** carry meaning by colour alone, including hazard levels, hour quality and run windows.",
+      "**Don't** put green on decoration; green is the infield and the answer.",
+      "**Don't** use caution amber or danger red anywhere except hazard marks and errors.",
+      "**Don't** turn on halo's glass blur or coat gradients in this world."
+    ]
+  }
+}

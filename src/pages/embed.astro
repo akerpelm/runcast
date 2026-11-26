@@ -1,0 +1,15 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/layout/Header.astro";
+import Today from "@/components/today/Today.astro";
+---
+
+<Layout
+  title="Should I Run — live preview"
+  description="A live preview of Should I Run, the daily running briefing."
+  noindex
+  embed
+>
+  <Header variant="embed" />
+  <Today embed />
+</Layout>

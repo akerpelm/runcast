@@ -117,30 +117,54 @@ async function getLocationFromIP(): Promise<GeoLocation> {
   return { latitude, longitude, name: city, source: "ip" };
 }
 
+/** True only when the user already granted geolocation, so reading it shows no prompt. */
+async function geolocationAlreadyGranted(): Promise<boolean> {
+  try {
+    const status = await navigator.permissions?.query({ name: "geolocation" });
+    return status?.state === "granted";
+  } catch {
+    return false;
+  }
+}
+
+async function browserLocation(): Promise<GeoLocation> {
+  const position = await getBrowserLocation();
+  const { latitude, longitude } = position.coords;
+  const name = await reverseGeocode(latitude, longitude);
+  return { latitude, longitude, name, source: "browser" };
+}
+
+/**
+ * Resolve a location without ever prompting: saved, then an already-granted
+ * browser fix, then IP, then the Brooklyn default.
+ */
 export async function getUserLocation(): Promise<GeoLocation> {
-  // Check for saved location first
   const saved = loadSavedLocation();
   if (saved) return saved;
 
-  // Try browser Geolocation API first
-  if (typeof navigator !== "undefined" && navigator.geolocation) {
+  if (typeof navigator !== "undefined" && navigator.geolocation && await geolocationAlreadyGranted()) {
     try {
-      const position = await getBrowserLocation();
-      const { latitude, longitude } = position.coords;
-      const name = await reverseGeocode(latitude, longitude);
-      return { latitude, longitude, name, source: "browser" };
+      return await browserLocation();
     } catch {
       // Fall through to IP-based geolocation
     }
   }
 
-  // Fall back to IP-based geolocation
   try {
     return await getLocationFromIP();
   } catch {
     // Fall through to hardcoded default
   }
 
-  // Final fallback: Brooklyn defaults
   return BROOKLYN_DEFAULT;
 }
+
+/** Ask the browser for a precise fix. This is the only path that may prompt; it rejects on denial. */
+export async function requestPreciseLocation(): Promise<GeoLocation> {
+  if (typeof navigator === "undefined" || !navigator.geolocation) {
+    throw new Error("Location isn't available in this browser.");
+  }
+  return browserLocation();
+}
+
+export const DEFAULT_LOCATION: GeoLocation = BROOKLYN_DEFAULT;

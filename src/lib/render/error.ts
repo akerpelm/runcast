@@ -1,13 +1,12 @@
 /**
- * Render: Error display — returns HTML string
+ * Render: Error display. Names the problem and the recovery.
  */
 import { esc } from "../display";
 
 export function renderErrorHTML(message: string): string {
-  return `<div class="bg-card text-card-foreground card-surface p-6" data-slot="card">
-    <div class="flex items-center gap-3 text-error">
-      <svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
-      <p class="text-sm font-medium">${esc(message)}</p>
-    </div>
-  </div>`;
+  return `<section role="alert" class="rounded-[20px] border border-hair bg-card p-6">
+    <h2 class="font-(family-name:--font-display) text-2xl font-bold uppercase">Forecast unavailable</h2>
+    <p class="mt-2 text-[0.95rem] text-muted-foreground">We couldn't load today's weather (${esc(message)}). Check your connection and try again.</p>
+    <button type="button" data-action="retry" class="press mt-4 inline-flex min-h-12 items-center rounded-full bg-foreground px-6 text-base font-bold text-background">Try again</button>
+  </section>`;
 }
