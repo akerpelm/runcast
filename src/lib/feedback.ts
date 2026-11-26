@@ -358,7 +358,7 @@ const BOTTOM_OPTIONS = [
 const chip = "press inline-flex min-h-11 items-center rounded-full border px-4 text-[0.95rem] font-semibold";
 const chipOn = "border-foreground bg-foreground text-background";
 const chipOff = "border-hair text-foreground hover:bg-muted";
-const stepTitle = "text-base font-bold";
+const stepTitle = "font-(family-name:--font-body) text-base font-bold";
 const primaryBtn = "press inline-flex min-h-12 items-center justify-center rounded-full bg-foreground px-6 text-base font-bold text-background hover:opacity-90";
 
 /** Body of the "Log run" sheet. Shows the confirmation once today's run is logged. */

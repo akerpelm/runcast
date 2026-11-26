@@ -16,7 +16,7 @@ import { localDateStr, getDayLabel, esc } from "./display";
 import { computeForHour, computeBestWindow, computeHourScores, getBriefingForFeedback, getFeedbackContext, type ComputeForHourParams, type ComputeBestWindowParams } from "./compute";
 import {
   renderVerdict, renderLanes, renderDayTabs, renderHourStrip, renderKitFull, renderDayRibbon,
-  renderKitCompact, renderConditionsGrid, bandsFor,
+  renderKitCompact, renderConditionsGrid, renderHourLegend, bandsFor,
   renderWindows, renderConditions, renderHourTable, renderDock, renderLogRow,
 } from "./render/today";
 import { renderPacesSheet, renderSettingsSheet, renderLocationSheet, renderLocationResults, type ThemeChoice } from "./render/sheets";
@@ -185,7 +185,7 @@ function render(): void {
 
   const bands = currentBands();
   const hourLabel = formatHourLabel(b.hour.time);
-  const sectionTitle = "font-(--font-display) text-lg font-bold uppercase tracking-[0.04em]";
+  const sectionTitle = "font-(family-name:--font-display) text-lg font-bold uppercase tracking-[0.04em]";
 
   live.innerHTML = `
     ${renderDayTabs(ctx)}
@@ -261,11 +261,11 @@ function sheetView(id: SheetId, b: HourBriefing): SheetView {
   switch (id) {
     case "hours":
       return {
-        id, title: "Hour by hour", description: `${hourLabel} in ${state.locationName}. Pick an hour to see its call.`,
+        id, title: "Hour by hour", description: `${hourLabel} in ${state.locationName}. Each hour is shaded by how it compares with the rest of the day; pick one to see its call.`,
         snapPoints: [0.6, 0.94],
-        html: `<p class="mb-3 text-sm">Shaded by how each hour compares for running today. Darker is better.</p>${renderHourTable(b, bw, ctx, currentBands())}
-          <h3 class="mt-6 font-(--font-display) text-lg font-bold uppercase tracking-[0.04em]">Run windows</h3>${renderWindows(bw, b, ctx)}
-          <h3 class="mt-6 mb-3 font-(--font-display) text-lg font-bold uppercase tracking-[0.04em]">Conditions</h3>${renderConditions(b, ctx, { hazards: true })}`,
+        html: `${renderHourLegend(bw)}${renderHourTable(b, bw, ctx, currentBands())}
+          <h3 class="mt-6 font-(family-name:--font-display) text-lg font-bold uppercase tracking-[0.04em]">Run windows</h3>${renderWindows(bw, b, ctx)}
+          <h3 class="mt-6 mb-3 font-(family-name:--font-display) text-lg font-bold uppercase tracking-[0.04em]">Conditions</h3>${renderConditions(b, ctx, { hazards: true })}`,
       };
     case "kit":
       return { id, title: "What to wear", snapPoints: [0.6, 0.94], html: renderKitFull(b, ctx) };

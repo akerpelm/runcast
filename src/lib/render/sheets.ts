@@ -25,7 +25,7 @@ export function renderPacesSheet(ctx: RenderContext): string {
   const inputs = EFFORTS.map((e, i) => {
     const val = ctx.paces[e] > 0 ? formatPace(paceForDisplay(ctx.paces[e], ctx.useMetric)) : "";
     return `<div class="grid grid-cols-[2.5rem_1fr_7.5rem] items-center gap-3 border-t border-hair py-2">
-      <span class="flex h-11 items-center justify-center rounded-[10px] bg-track font-(--font-display) text-xl font-extrabold text-track-ink" aria-hidden="true">${i + 1}</span>
+      <span class="flex h-11 items-center justify-center rounded-[10px] bg-track font-(family-name:--font-display) text-xl font-extrabold text-track-ink" aria-hidden="true">${i + 1}</span>
       <label for="pace-${e}" class="text-base font-semibold">${EFFORT_LABELS[e]}<span class="block text-sm font-normal text-muted-foreground">min:sec ${pu}</span></label>
       <input id="pace-${e}" data-pace-effort="${e}" type="text" inputmode="numeric" autocomplete="off" placeholder="${e === "easy" ? (ctx.useMetric ? "5:00" : "8:00") : "optional"}" value="${esc(val)}" class="${field} text-center font-semibold" />
     </div>`;

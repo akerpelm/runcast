@@ -108,9 +108,9 @@ export function renderVerdict(v: VerdictInput): string {
   const kit = [b.clothing.bottom, b.clothing.top, ...b.clothing.accessories].join(", ");
 
   return `<section aria-labelledby="verdict-title" data-surface="color" class="${v.animate ? "verdict-enter " : ""}relative z-10 rounded-[20px] px-5 pt-5 pb-6 text-white shadow-[var(--shadow-raised)] ${indoor ? "bg-indoor" : "bg-infield"}">
-    <h2 id="verdict-title" class="font-(--font-display) text-[3.25rem] leading-[0.92] font-extrabold uppercase tracking-[-0.01em] sm:text-[4rem]">${esc(headline(v))}</h2>
+    <h2 id="verdict-title" class="font-(family-name:--font-display) text-[3.25rem] leading-[0.92] font-extrabold uppercase tracking-[-0.01em] sm:text-[4rem]">${esc(headline(v))}</h2>
     <p class="mt-3 text-lg font-semibold">${esc(RUN_TYPE_COPY[b.runType.type] ?? b.runType.reason)}</p>
-    <p class="mt-1 text-balance text-[0.95rem] text-infield-muted">${esc(v.isBestHour ? `${dayLabel === "Today" ? "Today's" : `${dayLabel}'s`} best window` : "Your chosen hour")} \u00b7 ${facts.map(esc).join(" \u00b7 ")}</p>
+    <p class="mt-1 text-balance text-[0.95rem] text-infield-muted">${esc(v.isBestHour ? (dayLabel === "Today" || dayLabel === "Tomorrow" ? `${dayLabel}'s best window` : `Best window on ${dayLabel}`) : "Your chosen hour")} \u00b7 ${facts.map(esc).join(" \u00b7 ")}</p>
     ${hazards}
     ${more}
     <button type="button" data-action="open-sheet" data-sheet="kit" class="press -mx-2 mt-3 flex min-h-11 w-[calc(100%+1rem)] items-center gap-2.5 rounded-[12px] border-t border-white/20 px-2 pt-3 text-left hover:bg-white/10 lg:hidden">
@@ -145,13 +145,13 @@ export function renderLanes(b: HourBriefing, ctx: RenderContext, opts: { animate
     const sel = e === ctx.selectedEffort;
     const p = byEffort.get(e);
     const pace = p
-      ? `<span class="flex items-baseline gap-2 whitespace-nowrap"><s class="text-sm text-track-muted decoration-1"><span class="sr-only">from </span>${esc(p.base)}</s><span class="font-(--font-display) text-[1.3rem] leading-none font-bold">${esc(p.adjusted)}</span><span class="text-xs text-track-muted">${pu}</span></span>`
+      ? `<span class="flex items-baseline gap-2 whitespace-nowrap"><s class="text-sm text-track-muted decoration-1"><span class="sr-only">from </span>${esc(p.base)}</s><span class="font-(family-name:--font-display) text-[1.3rem] leading-none font-bold">${esc(p.adjusted)}</span><span class="text-xs text-track-muted">${pu}</span></span>`
       : `<span class="text-sm text-track-muted">No pace set</span>`;
     return `<li class="relative">
       <button type="button" data-action="select-effort" data-effort="${e}" aria-pressed="${sel}"
         class="press group relative grid min-h-[3.25rem] w-full grid-cols-[2.75rem_minmax(0,1fr)_auto] items-center border-t-2 border-white/90 pr-4 text-left text-track-ink ${sel ? "" : "hover:bg-black/10"}">
         ${sel ? `<span class="${animateLane ? "lane-settle " : ""}absolute inset-0 bg-track-deep" aria-hidden="true"></span>` : ""}
-        <span class="relative flex h-full items-center justify-center border-r-2 border-white/90 font-(--font-display) text-2xl font-extrabold">${i + 1}</span>
+        <span class="relative flex h-full items-center justify-center border-r-2 border-white/90 font-(family-name:--font-display) text-2xl font-extrabold">${i + 1}</span>
         <span class="relative truncate pl-3 text-base font-semibold">${EFFORT_LABELS[e]}${sel ? `<span class="sr-only"> (selected)</span>` : ""}</span>
         <span class="relative">${pace}</span>
       </button>
@@ -167,7 +167,7 @@ export function renderLanes(b: HourBriefing, ctx: RenderContext, opts: { animate
   return `<section aria-labelledby="lanes-title" data-surface="color" class="-mt-4 rounded-b-[20px] bg-track pt-4 text-track-ink">
     <div class="flex flex-wrap items-center justify-between gap-2 px-4 pt-3 pb-2">
       <div>
-        <h2 id="lanes-title" class="font-(--font-display) text-lg font-bold uppercase tracking-[0.04em]">${esc(paceTitle(getDayLabel(ctx.selectedDayDate)))}</h2>
+        <h2 id="lanes-title" class="font-(family-name:--font-display) text-lg font-bold uppercase tracking-[0.04em]">${esc(paceTitle(getDayLabel(ctx.selectedDayDate)))}</h2>
         <p class="text-sm text-track-muted">${esc(paceAdjLabel(b))}${hasAny ? "" : ". Add your paces to see adjusted times"}</p>
       </div>
       ${footer}
@@ -214,9 +214,19 @@ function bandWord(band: number | undefined): string {
 }
 
 function bandLegend(): string {
-  return `<span class="inline-flex items-center gap-2"><span class="text-muted-foreground">Better</span>
-    <span class="flex gap-0.5" aria-hidden="true">${BAND_LABELS.map((_, i) => `<span class="run-band-${i} h-3.5 w-5 rounded-sm ring-1 ring-hair"></span>`).join("")}</span>
-    <span class="text-muted-foreground">Worse</span></span>`;
+  return `<li class="flex items-center gap-2"><span>Better</span>
+    <span class="flex gap-1" aria-hidden="true">${BAND_LABELS.map((_, i) => `<span class="run-band-${i} h-4 w-5 rounded-[4px] border border-hair"></span>`).join("")}</span>
+    <span>Worse</span></li>`;
+}
+
+function windowLegend(withGood: boolean): string {
+  return `<li class="flex items-center gap-2"><span class="h-4 w-4 rounded-[4px] border-[3px] border-window" aria-hidden="true"></span>Best window</li>
+    ${withGood ? `<li class="flex items-center gap-2"><span class="h-4 w-4 rounded-[4px] border-2 border-dashed border-window" aria-hidden="true"></span>Also good</li>` : ""}`;
+}
+
+/** Legend for the hours sheet, matching the page. */
+export function renderHourLegend(bw: BestWindowResult): string {
+  return `<ul aria-label="Legend" class="mb-4 flex flex-wrap gap-x-6 gap-y-3 text-sm text-muted-foreground">${bandLegend()}${windowLegend(bw.ranked.length > 1)}</ul>`;
 }
 
 // ─── Hour strip ─────────────────────────────────────────────────────────────
@@ -252,15 +262,11 @@ export function renderHourStrip(b: HourBriefing, bw: BestWindowResult, ctx: Rend
     </button></li>`;
   }).join("");
 
-  const legend = `<p class="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-sm text-muted-foreground">
-    ${bandLegend()}
-    <span class="inline-flex items-center gap-2"><span class="inline-block h-3.5 w-3.5 rounded bg-muted ring-[3px] ring-window ring-offset-1 ring-offset-background"></span>Best window</span>
-    ${good.size ? `<span class="inline-flex items-center gap-2"><span class="inline-block h-3.5 w-3.5 rounded bg-muted outline-2 outline-dashed outline-window outline-offset-1"></span>Also good</span>` : ""}
-  </p>`;
+  const legend = `<ul aria-label="Legend" class="mt-4 flex flex-wrap gap-x-6 gap-y-3 text-sm text-muted-foreground">${bandLegend()}${windowLegend(good.size > 0)}</ul>`;
 
   return `<section aria-labelledby="hours-title" class="mt-6">
     <div class="flex items-center justify-between">
-      <h2 id="hours-title" class="font-(--font-display) text-lg font-bold uppercase tracking-[0.04em]">Hour by hour</h2>
+      <h2 id="hours-title" class="font-(family-name:--font-display) text-lg font-bold uppercase tracking-[0.04em]">Hour by hour</h2>
       <button type="button" data-action="open-sheet" data-sheet="hours" class="press min-h-11 rounded-full px-3 text-sm font-semibold text-primary hover:bg-muted lg:hidden">Details</button>
     </div>
     <ul id="timeline-scroll" class="no-scrollbar fade-edge -mx-4 mt-2 flex gap-2.5 overflow-x-auto scroll-px-4 px-4 pt-3 pb-2" style="scroll-snap-type:x proximity">${items}</ul>
@@ -278,21 +284,21 @@ export function renderDayRibbon(b: HourBriefing, bw: BestWindowResult, ctx: Rend
     const d = new Date(hr.time);
     const isNow = d.getHours() === now.getHours() && d.toDateString() === now.toDateString();
     const band = bands.get(hr.time);
-    const win = best.has(hr.time) ? "ring-[3px] ring-window ring-offset-2 ring-offset-background" : good.has(hr.time) ? "outline-2 outline-dashed outline-window outline-offset-2" : "ring-1 ring-hair";
+    const win = best.has(hr.time) ? "ring-2 ring-window ring-offset-2 ring-offset-background" : good.has(hr.time) ? "outline-2 outline-dashed outline-window outline-offset-2" : "ring-1 ring-hair";
     const sr = `, ${bandWord(band)}, ${getConditionLabel(hr.weatherCode)}${best.has(hr.time) ? ", best window" : good.has(hr.time) ? ", also good" : ""}`;
     return `<li class="min-w-0"><button type="button" data-action="select-hour" data-hour-index="${idx}" aria-pressed="${sel}"
-      class="press flex h-[4.5rem] w-full flex-col items-center justify-center gap-0.5 rounded-[10px] ${sel ? "bg-foreground text-background" : bandClass(band)} ${win}">
+      class="press flex h-[4.75rem] w-full flex-col items-center justify-center gap-1 rounded-[10px] ${sel ? "bg-foreground text-background" : bandClass(band)} ${win}">
       <span class="text-[0.7rem] font-semibold opacity-85">${isNow ? "Now" : shortHour(d)}</span>
       ${getConditionIcon(hr.weatherCode, "h-4 w-4", isNightHour(hr.time, b.daily.sunrise, b.daily.sunset))}
       <span class="text-[0.8rem] font-bold">${td(hr.temperature).replace(/[FC]$/, "")}<span class="sr-only">${esc(sr)}</span></span>
     </button></li>`;
   }).join("");
-  return `<section aria-labelledby="ribbon-title" class="mb-5 hidden lg:block">
+  return `<section aria-labelledby="ribbon-title" class="mb-8 hidden lg:block">
     <div class="flex items-end justify-between gap-6">
-      <h2 id="ribbon-title" class="font-(--font-display) text-lg font-bold uppercase tracking-[0.04em]">Your day, hour by hour</h2>
-      <p class="flex items-center gap-5 text-sm">${bandLegend()}<span class="inline-flex items-center gap-2 text-muted-foreground"><span class="inline-block h-3.5 w-3.5 rounded bg-muted ring-[3px] ring-window ring-offset-1 ring-offset-background"></span>Best window</span></p>
+      <h2 id="ribbon-title" class="font-(family-name:--font-display) text-lg font-bold uppercase tracking-[0.04em]">Your day, hour by hour</h2>
+      <ul aria-label="Legend" class="flex items-center gap-x-6 text-sm text-muted-foreground">${bandLegend()}${windowLegend(good.size > 0)}</ul>
     </div>
-    <ol class="mt-3 grid gap-1.5 px-1 py-1" style="grid-template-columns:repeat(${ctx.displayHours.length},minmax(0,1fr))">${cells}</ol>
+    <ol class="mt-4 grid gap-2 px-1 py-1" style="grid-template-columns:repeat(${ctx.displayHours.length},minmax(0,1fr))">${cells}</ol>
   </section>`;
 }
 
@@ -324,13 +330,13 @@ export function renderKitFull(b: HourBriefing, ctx: RenderContext): string {
   }
 
   const zone = (label: string, main: string, alts: string[]) => `<div class="border-t border-hair py-4">
-    <h3 class="text-sm font-semibold text-muted-foreground">${label}</h3>
+    <h3 class="font-(family-name:--font-body) text-sm font-semibold text-muted-foreground">${label}</h3>
     <p class="mt-1 text-lg font-bold">${esc(main)}</p>
     <p class="text-sm text-muted-foreground">${esc(reason(main))}${alts.length ? ` · or ${alts.map(esc).join(", ")}` : ""}</p>
   </div>`;
 
   const extras = b.clothing.accessories.length
-    ? `<div class="border-t border-hair py-4"><h3 class="text-sm font-semibold text-muted-foreground">Extras</h3>
+    ? `<div class="border-t border-hair py-4"><h3 class="font-(family-name:--font-body) text-sm font-semibold text-muted-foreground">Extras</h3>
         <ul class="mt-2 space-y-2">${b.clothing.accessories.map((a) => `<li class="flex items-baseline justify-between gap-4"><span class="text-base font-semibold">${esc(a)}</span><span class="text-sm text-muted-foreground">${esc(reason(a))}</span></li>`).join("")}</ul></div>`
     : "";
 
@@ -423,18 +429,21 @@ export function renderHourTable(b: HourBriefing, bw: BestWindowResult, ctx: Rend
   const rows = ctx.displayHours.map((hr: HourlyWeather, idx) => {
     const sel = idx === ctx.selectedHourIndex;
     const d = new Date(hr.time);
-    const tag = best.has(hr.time) ? `<span class="rounded-full bg-infield px-2 py-0.5 text-xs font-bold text-white">Best</span>` : good.has(hr.time) ? `<span class="rounded-full border border-hair px-2 py-0.5 text-xs font-bold">Good</span>` : "";
-    return `<li><button type="button" data-action="select-hour" data-hour-index="${idx}" aria-pressed="${sel}"
-      class="press grid min-h-12 w-full grid-cols-[1rem_4rem_1.5rem_3.5rem_1fr_auto] items-center gap-2 rounded-[10px] px-2 text-left text-[0.95rem] ${sel ? "bg-foreground text-background" : "hover:bg-muted"}">
-      <span class="${bandClass(bands.get(hr.time))} h-4 w-4 rounded ring-1 ring-hair" aria-hidden="true"></span>
-      <span class="font-semibold">${formatTime(d).replace(":00", "")}<span class="sr-only">, ${bandWord(bands.get(hr.time))}</span></span>
-      ${getConditionIcon(hr.weatherCode, "h-5 w-5", isNightHour(hr.time, b.daily.sunrise, b.daily.sunset))}
-      <span class="font-bold">${td(hr.temperature)}</span>
-      <span class="truncate text-sm ${sel ? "" : "text-muted-foreground"}">${sd(hr.windSpeed)}${hr.precipProbability >= 20 ? ` · ${hr.precipProbability}% rain` : ""}</span>
+    const tag = best.has(hr.time)
+      ? `<span class="shrink-0 rounded-full bg-infield px-2.5 py-0.5 text-xs font-bold text-white">Best</span>`
+      : good.has(hr.time) ? `<span class="shrink-0 rounded-full border border-current px-2.5 py-0.5 text-xs font-bold">Good</span>` : "";
+    const detail = `${sd(hr.windSpeed)}${hr.precipProbability >= 20 ? ` \u00b7 ${hr.precipProbability}% rain` : ""}`;
+    return `<li class="border-t border-hair first:border-t-0"><button type="button" data-action="select-hour" data-hour-index="${idx}" aria-pressed="${sel}"
+      class="press my-0.5 flex min-h-12 w-full items-center gap-3 rounded-[10px] px-2.5 text-left ${sel ? "bg-foreground text-background" : "hover:bg-muted"}">
+      <span class="${bandClass(bands.get(hr.time))} h-5 w-5 shrink-0 rounded-[5px] ring-1 ring-hair" aria-hidden="true"></span>
+      <span class="w-14 shrink-0 text-[0.95rem] font-semibold">${formatTime(d).replace(":00", "")}<span class="sr-only">, ${bandWord(bands.get(hr.time))}</span></span>
+      <span class="shrink-0">${getConditionIcon(hr.weatherCode, "h-5 w-5", isNightHour(hr.time, b.daily.sunrise, b.daily.sunset))}</span>
+      <span class="w-12 shrink-0 text-[0.95rem] font-bold">${td(hr.temperature)}</span>
+      <span class="min-w-0 flex-1 truncate text-sm ${sel ? "" : "text-muted-foreground"}">${detail}</span>
       ${tag}
     </button></li>`;
   }).join("");
-  return `<ul class="space-y-0.5">${rows}</ul>`;
+  return `<ul>${rows}</ul>`;
 }
 
 // ─── Dock (thumb reach) ─────────────────────────────────────────────────────
