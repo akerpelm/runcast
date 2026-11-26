@@ -1,0 +1,9 @@
+# Workers static assets serve prerendered pages without running middleware,
+# so the hub-embed framing policy lives here.
+/embed
+  Content-Security-Policy: frame-ancestors 'self' https://hub.akerpelm.workers.dev
+  X-Robots-Tag: noindex
+
+/embed/*
+  Content-Security-Policy: frame-ancestors 'self' https://hub.akerpelm.workers.dev
+  X-Robots-Tag: noindex
