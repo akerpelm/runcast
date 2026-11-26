@@ -1,41 +1,24 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#F4F5F0"/>
-      <stop offset="100%" stop-color="#ECEEE8"/>
-    </linearGradient>
-  </defs>
-
-  <!-- Background -->
-  <rect width="1200" height="630" fill="url(#bg)"/>
-
-  <!-- Card -->
-  <rect x="100" y="80" width="1000" height="470" rx="28" fill="#FFFFFF" opacity="0.9"/>
-
-  <!-- Accent stripe -->
-  <rect x="100" y="80" width="6" height="470" rx="3" fill="#D64C2F"/>
-
-  <!-- Wordmark -->
-  <text x="600" y="280" font-family="Georgia, serif" font-size="96" text-anchor="middle">
-    <tspan fill="#1B1F1E" font-style="italic" font-weight="400">ShouldI</tspan><tspan fill="#D64C2F" font-weight="700">Run</tspan>
-  </text>
-
-  <!-- Tagline -->
-  <text x="600" y="355" font-family="sans-serif" font-size="32" font-weight="500" fill="#6B7370" text-anchor="middle">
-    Your daily running briefing
-  </text>
-
-  <!-- Features -->
-  <text x="600" y="415" font-family="sans-serif" font-size="20" font-weight="400" fill="#9CA0A8" text-anchor="middle">
-    Weather-adjusted pace · Surface warnings · Gear recommendations
-  </text>
-
-  <!-- URL -->
-  <text x="600" y="510" font-family="sans-serif" font-size="18" font-weight="400" fill="#A8A29E" text-anchor="middle">
-    shouldirun.today
-  </text>
-
-  <!-- Decorative circles -->
-  <circle cx="1020" cy="160" r="40" fill="none" stroke="#D64C2F" stroke-width="1.5" opacity="0.1"/>
-  <circle cx="1020" cy="160" r="25" fill="none" stroke="#2B7A6F" stroke-width="1" opacity="0.1"/>
+  <rect width="1200" height="630" fill="#f3f1eb"/>
+  <!-- Infield verdict panel -->
+  <rect x="80" y="70" width="1040" height="300" rx="36" fill="#1c5a39"/>
+  <g transform="translate(130 128)">
+    <rect width="72" height="72" rx="18" fill="#a83f2a"/>
+    <rect x="10" y="19" width="52" height="34" rx="17" fill="none" stroke="#fff" stroke-width="3.5"/>
+    <rect x="20" y="29" width="32" height="14" rx="7" fill="#1c5a39" stroke="#fff" stroke-width="2.5"/>
+  </g>
+  <text x="226" y="186" font-family="'Barlow Condensed', 'Arial Narrow', sans-serif" font-size="80" font-weight="800" fill="#ffffff" letter-spacing="1">SHOULD I RUN</text>
+  <text x="130" y="290" font-family="'Barlow', Arial, sans-serif" font-size="40" font-weight="600" fill="#ffffff">When to run, how fast, and what to wear. Today.</text>
+  <text x="130" y="338" font-family="'Barlow', Arial, sans-serif" font-size="26" fill="#cfe6d8">Weather-adjusted pace · Ice and heat warnings · Best run window</text>
+  <!-- Lanes -->
+  <rect x="80" y="340" width="1040" height="220" rx="36" fill="#a83f2a"/>
+  <rect x="80" y="340" width="1040" height="40" fill="#a83f2a"/>
+  <g stroke="#ffffff" stroke-width="4">
+    <path d="M80 400h1040M80 450h1040M80 500h1040"/>
+    <path d="M140 400v160"/>
+  </g>
+  <g font-family="'Barlow Condensed', 'Arial Narrow', sans-serif" font-size="34" font-weight="800" fill="#ffffff">
+    <text x="102" y="437">1</text><text x="102" y="487">2</text><text x="102" y="537">3</text>
+  </g>
+  <text x="1090" y="600" font-family="'Barlow', Arial, sans-serif" font-size="24" font-weight="600" fill="#5c5850" text-anchor="end">shouldirun.today</text>
 </svg>

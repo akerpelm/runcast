@@ -1,5 +1,5 @@
 // Should I Run Service Worker — Offline-first caching
-const CACHE_VERSION = "sir-v2";
+const CACHE_VERSION = "sir-v3";
 const APP_SHELL = [
   "/",
   "/about/",
@@ -7,8 +7,8 @@ const APP_SHELL = [
   "/blog/",
   "/favicon.svg",
   "/favicon.ico",
-  "/icon-192.svg",
-  "/icon-512.svg",
+  "/icon-192.png",
+  "/icon-512.png",
   "/manifest.json",
   "/offline.html",
 ];
@@ -67,9 +67,10 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // App shell pages: cache-first with network fallback
-  if (APP_SHELL.includes(url.pathname) || url.pathname === "/") {
-    event.respondWith(cacheFirst(event.request));
+  // Pages: network-first so a deploy never serves a stale shell that points
+  // at removed asset hashes; the cached copy is the offline fallback.
+  if (event.request.mode === "navigate" || APP_SHELL.includes(url.pathname)) {
+    event.respondWith(networkFirst(event.request));
     return;
   }
 

@@ -1,27 +1,22 @@
 {
+  "id": "/",
   "name": "Should I Run",
-  "short_name": "S.I.R.",
-  "description": "Your daily running briefing. Weather, pace, and gear for today's run.",
+  "short_name": "Should I Run",
+  "description": "Your daily running briefing: when to run, how fast, and what to wear.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#F4F5F0",
-  "theme_color": "#D64C2F",
+  "orientation": "portrait",
+  "background_color": "#f3f1eb",
+  "theme_color": "#f3f1eb",
   "icons": [
-    {
-      "src": "/favicon.svg",
-      "type": "image/svg+xml",
-      "sizes": "any"
-    },
-    {
-      "src": "/icon-192.svg",
-      "type": "image/svg+xml",
-      "sizes": "192x192"
-    },
-    {
-      "src": "/icon-512.svg",
-      "type": "image/svg+xml",
-      "sizes": "512x512"
-    }
+    { "src": "/icon-192.png", "type": "image/png", "sizes": "192x192", "purpose": "any" },
+    { "src": "/icon-512.png", "type": "image/png", "sizes": "512x512", "purpose": "any" },
+    { "src": "/icon-maskable-512.png", "type": "image/png", "sizes": "512x512", "purpose": "maskable" },
+    { "src": "/favicon.svg", "type": "image/svg+xml", "sizes": "any" }
+  ],
+  "shortcuts": [
+    { "name": "Log today's run", "url": "/#log", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] }
   ],
   "categories": ["weather", "sports", "health"]
 }

@@ -1,6 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <rect width="64" height="64" rx="14" fill="#F4F5F0"/>
-  <text x="32" y="50" font-family="Georgia, serif" font-weight="400" font-size="40" font-style="italic" letter-spacing="-3" text-anchor="middle">
-    <tspan fill="#1B1F1E">SI</tspan><tspan fill="#D64C2F" font-style="normal" font-weight="700">R</tspan>
-  </text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="8" fill="#a83f2a"/>
+  <rect x="4.5" y="8.5" width="23" height="15" rx="7.5" fill="none" stroke="#fff" stroke-width="1.6"/>
+  <rect x="9" y="13" width="14" height="6" rx="3" fill="#1c5a39" stroke="#fff" stroke-width="1.2"/>
 </svg>
