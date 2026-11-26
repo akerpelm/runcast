@@ -7,7 +7,7 @@ import { getAQICategory } from "./air-quality";
 import { windChillF } from "./formulas/wind-chill";
 import { getHeatPaceAdjustment, getColdPaceAdjustment, formatPace, adjustPace, windImpactSeconds } from "./formulas/pace";
 import { getIceRisk } from "./formulas/ice-risk";
-import { findBestWindow, type HourlyConditions, type BestWindowResult } from "./formulas/best-window";
+import { findBestWindow, hourlyRunScore, type HourlyConditions, type BestWindowResult } from "./formulas/best-window";
 import { getClothingRec, getRunnerFeelsLike } from "./formulas/clothing";
 import { suggestRunType } from "./formulas/run-type";
 import { formatTime } from "./formulas/daylight";
@@ -184,8 +184,9 @@ export interface ComputeBestWindowParams {
   useCelsius: boolean;
 }
 
-export function computeBestWindow(params: ComputeBestWindowParams): BestWindowResult {
-  const { weather, selectedDayDate, availableDays, useCelsius } = params;
+/** Per-hour conditions for the selected day, exactly as the best-window scan sees them. */
+function dayConditions(params: ComputeBestWindowParams): { conditions: HourlyConditions[]; daily: DailyWeather } {
+  const { weather, selectedDayDate, availableDays } = params;
   const daily = availableDays.find(d => d.date === selectedDayDate) || weather.daily;
   const dayHours = weather.hourly.filter(h => h.time.startsWith(selectedDayDate));
   const now = new Date();
@@ -198,8 +199,6 @@ export function computeBestWindow(params: ComputeBestWindowParams): BestWindowRe
   const tempMax24h = past24h.length ? Math.max(...past24h.map(h => h.temperature)) : 50;
   const precip24h = past24h.reduce((s, h) => s + h.precipitation, 0);
 
-  const td = (f: number) => tempDisplay(f, useCelsius);
-
   const conditions: HourlyConditions[] = dayHours.map(h => ({
     time: h.time, temperature: h.temperature, dewPoint: h.dewPoint,
     windSpeed: h.windSpeed, windGust: h.windGusts,
@@ -209,8 +208,19 @@ export function computeBestWindow(params: ComputeBestWindowParams): BestWindowRe
       { precip24h, tempMin24h, tempMax24h }, new Date(h.time).getHours() < 8
     ).risk,
   }));
+  return { conditions, daily };
+}
 
+export function computeBestWindow(params: ComputeBestWindowParams): BestWindowResult {
+  const { conditions, daily } = dayConditions(params);
+  const td = (f: number) => tempDisplay(f, params.useCelsius);
   return findBestWindow(conditions, daily.sunrise, daily.sunset, 60, td);
+}
+
+/** Each hour's run score (lower is better) from the same formula the best window uses. */
+export function computeHourScores(params: ComputeBestWindowParams): Map<string, number> {
+  const { conditions, daily } = dayConditions(params);
+  return new Map(conditions.map(c => [c.time, hourlyRunScore(c, daily.sunrise, daily.sunset)]));
 }
 
 // ─── Briefing Summary Generator ──────────────────────────────────────────────

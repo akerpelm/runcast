@@ -12,10 +12,11 @@ import {
   buildRenderContext, parsePace,
   loadPaces, savePaces, loadRunsHot, saveRunsHot, loadEffort, saveEffort, loadUnits, loadDist, saveUnits, saveDist,
 } from "./state";
-import { localDateStr, getDayLabel } from "./display";
-import { computeForHour, computeBestWindow, getBriefingForFeedback, getFeedbackContext, type ComputeForHourParams, type ComputeBestWindowParams } from "./compute";
+import { localDateStr, getDayLabel, esc } from "./display";
+import { computeForHour, computeBestWindow, computeHourScores, getBriefingForFeedback, getFeedbackContext, type ComputeForHourParams, type ComputeBestWindowParams } from "./compute";
 import {
-  renderVerdict, renderLanes, renderDayTabs, renderHourStrip, renderKitLine, renderKitFull,
+  renderVerdict, renderLanes, renderDayTabs, renderHourStrip, renderKitFull, renderDayRibbon,
+  renderKitCompact, renderConditionsGrid, bandsFor,
   renderWindows, renderConditions, renderHourTable, renderDock, renderLogRow,
 } from "./render/today";
 import { renderPacesSheet, renderSettingsSheet, renderLocationSheet, renderLocationResults, type ThemeChoice } from "./render/sheets";
@@ -124,6 +125,20 @@ function makeBestWindowParams(): ComputeBestWindowParams {
   };
 }
 
+/** Shade only hours still ahead; past hours today are shown as passed, not compared. */
+function currentBands(): Map<string, number> {
+  const startOfHour = new Date();
+  startOfHour.setMinutes(0, 0, 0);
+  const ahead = [...computeHourScores(makeBestWindowParams())].filter(([t]) => new Date(t) >= startOfHour);
+  return ahead.length ? bandsFor(new Map(ahead)) : new Map();
+}
+
+function formatHourLabel(iso: string): string {
+  const d = new Date(iso);
+  const h = d.getHours() % 12 || 12;
+  return `${h} ${d.getHours() < 12 ? "AM" : "PM"}`;
+}
+
 /** The verdict defaults to the day's best window; otherwise now (today) or 8 AM. */
 function defaultHourIndex(): number {
   const bw = computeBestWindow(makeBestWindowParams());
@@ -168,32 +183,32 @@ function render(): void {
   const ctx = buildRenderContext(state);
   const isBestHour = state.displayHours[state.selectedHourIndex]?.time === bw.startHour;
 
+  const bands = currentBands();
+  const hourLabel = formatHourLabel(b.hour.time);
+  const sectionTitle = "font-(--font-display) text-lg font-bold uppercase tracking-[0.04em]";
+
   live.innerHTML = `
+    ${renderDayTabs(ctx)}
+    ${renderDayRibbon(b, bw, ctx, bands)}
     <div class="lg:grid lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-start lg:gap-10">
       <div class="min-w-0">
-        ${renderDayTabs(ctx)}
         ${renderVerdict({ b, bw, ctx, isBestHour, dayLabel: getDayLabel(state.selectedDayDate), animate: animateVerdict })}
         ${renderLanes(b, ctx, { animate: animateLane, sample: embedMode })}
-        <div class="lg:hidden">${renderHourStrip(b, bw, ctx)}</div>
-        ${renderKitLine(b, ctx)}
+        <div class="lg:hidden">${renderHourStrip(b, bw, ctx, bands)}</div>
         ${embedMode ? "" : renderLogRow(isLogged())}
       </div>
-      <aside aria-label="Hour detail" class="hidden min-w-0 lg:block">
-        <section aria-labelledby="aside-hours" class="rounded-[20px] border border-hair bg-card p-4">
-          <h2 id="aside-hours" class="px-2 font-(--font-display) text-lg font-bold uppercase tracking-[0.04em]">Hour by hour</h2>
-          <div id="aside-hour-list" class="relative mt-2 max-h-[24rem] overflow-y-auto pr-1">${renderHourTable(b, bw, ctx)}</div>
+      <aside aria-label="Hour detail" class="hidden min-w-0 space-y-5 lg:block">
+        <section aria-labelledby="aside-cond">
+          <h2 id="aside-cond" class="${sectionTitle}">Conditions at ${esc(hourLabel)}</h2>
+          <div class="mt-2">${renderConditionsGrid(b, ctx)}</div>
         </section>
-        <section aria-labelledby="aside-windows" class="mt-6">
-          <h2 id="aside-windows" class="font-(--font-display) text-lg font-bold uppercase tracking-[0.04em]">Run windows</h2>
-          <div class="mt-2">${renderWindows(bw, b, ctx)}</div>
+        <section aria-labelledby="aside-kit">
+          <h2 id="aside-kit" class="${sectionTitle}">What to wear</h2>
+          <div class="mt-1">${renderKitCompact(b, ctx)}</div>
         </section>
-        <section aria-labelledby="aside-cond" class="mt-6">
-          <h2 id="aside-cond" class="font-(--font-display) text-lg font-bold uppercase tracking-[0.04em]">Conditions</h2>
-          <div class="mt-3">${renderConditions(b, ctx)}</div>
-        </section>
-        <section aria-labelledby="aside-kit" class="mt-6">
-          <h2 id="aside-kit" class="font-(--font-display) text-lg font-bold uppercase tracking-[0.04em]">Why this kit</h2>
-          <div class="mt-2">${renderKitFull(b, ctx)}</div>
+        <section aria-labelledby="aside-windows">
+          <h2 id="aside-windows" class="${sectionTitle}">Run windows</h2>
+          <div class="mt-1">${renderWindows(bw, b, ctx)}</div>
         </section>
       </aside>
     </div>`;
@@ -210,9 +225,6 @@ function render(): void {
     requestAnimationFrame(() => {
       centerInScroller(live.querySelector<HTMLElement>("[data-selected-pill]"), document.getElementById("timeline-scroll"));
       centerInScroller(live.querySelector<HTMLElement>("[data-action='select-day'][aria-pressed='true']"), document.getElementById("day-tabs-scroll"));
-      const list = document.getElementById("aside-hour-list");
-      const row = list?.querySelector<HTMLElement>("[data-hour-index][aria-pressed='true']");
-      if (list && row) list.scrollTop = row.offsetTop - list.clientHeight / 3;
     });
     shouldScrollTimeline = false;
   }
@@ -251,9 +263,9 @@ function sheetView(id: SheetId, b: HourBriefing): SheetView {
       return {
         id, title: "Hour by hour", description: `${hourLabel} in ${state.locationName}. Pick an hour to see its call.`,
         snapPoints: [0.6, 0.94],
-        html: `${renderHourTable(b, bw, ctx)}
+        html: `<p class="mb-3 text-sm">Shaded by how each hour compares for running today. Darker is better.</p>${renderHourTable(b, bw, ctx, currentBands())}
           <h3 class="mt-6 font-(--font-display) text-lg font-bold uppercase tracking-[0.04em]">Run windows</h3>${renderWindows(bw, b, ctx)}
-          <h3 class="mt-6 mb-3 font-(--font-display) text-lg font-bold uppercase tracking-[0.04em]">Conditions</h3>${renderConditions(b, ctx)}`,
+          <h3 class="mt-6 mb-3 font-(--font-display) text-lg font-bold uppercase tracking-[0.04em]">Conditions</h3>${renderConditions(b, ctx, { hazards: true })}`,
       };
     case "kit":
       return { id, title: "What to wear", snapPoints: [0.6, 0.94], html: renderKitFull(b, ctx) };

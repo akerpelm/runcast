@@ -316,6 +316,10 @@
   .no-scrollbar {
     scrollbar-width: none;
   }
+  /* Trailing fade tells the eye a row scrolls on. */
+  .fade-edge {
+    mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent);
+  }
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
@@ -464,5 +468,35 @@
 @media (max-width: 600px) {
   .halo-toaster[data-x="center"] {
     translate: none;
+  }
+}
+
+/* Run bands: an hour's run score relative to the rest of its day.
+   Darker (light theme) / brighter (dark theme) = better. Text pairs checked ≥5:1. */
+:root {
+  --run-0: #1c5a39; --run-ink-0: #ffffff;
+  --run-1: #2f7a50; --run-ink-1: #ffffff;
+  --run-2: #86bb98; --run-ink-2: #16181a;
+  --run-3: #c3dfcb; --run-ink-3: #16181a;
+  --run-4: #e6e4dc; --run-ink-4: #16181a;
+}
+.dark {
+  --run-0: #79d0a0; --run-ink-0: #0f1110;
+  --run-1: #4fa577; --run-ink-1: #0f1110;
+  --run-2: #2c6a49; --run-ink-2: #ffffff;
+  --run-3: #1f4331; --run-ink-3: #ffffff;
+  --run-4: #1b201d; --run-ink-4: #edebe4;
+}
+@layer utilities {
+  .run-band-0 { background: var(--run-0); color: var(--run-ink-0); }
+  .run-band-1 { background: var(--run-1); color: var(--run-ink-1); }
+  .run-band-2 { background: var(--run-2); color: var(--run-ink-2); }
+  .run-band-3 { background: var(--run-3); color: var(--run-ink-3); }
+  .run-band-4 { background: var(--run-4); color: var(--run-ink-4); }
+}
+@layer utilities {
+  .run-band-past {
+    background: transparent;
+    color: var(--muted-foreground);
   }
 }
