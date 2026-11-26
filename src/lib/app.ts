@@ -192,19 +192,19 @@ function render(): void {
     ${renderDayRibbon(b, bw, ctx, bands)}
     <div class="lg:grid lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-start lg:gap-10">
       <div class="min-w-0">
-        ${renderVerdict({ b, bw, ctx, isBestHour, dayLabel: getDayLabel(state.selectedDayDate), animate: animateVerdict })}
+        ${renderVerdict({ b, bw, ctx, isBestHour, animate: animateVerdict })}
         ${renderLanes(b, ctx, { animate: animateLane, sample: embedMode })}
         <div class="lg:hidden">${renderHourStrip(b, bw, ctx, bands)}</div>
         ${embedMode ? "" : renderLogRow(isLogged())}
       </div>
       <aside aria-label="Hour detail" class="hidden min-w-0 space-y-5 lg:block">
-        <section aria-labelledby="aside-cond">
-          <h2 id="aside-cond" class="${sectionTitle}">Conditions at ${esc(hourLabel)}</h2>
-          <div class="mt-2">${renderConditionsGrid(b, ctx)}</div>
-        </section>
         <section aria-labelledby="aside-kit">
           <h2 id="aside-kit" class="${sectionTitle}">What to wear</h2>
           <div class="mt-1">${renderKitCompact(b, ctx)}</div>
+        </section>
+        <section aria-labelledby="aside-cond">
+          <h2 id="aside-cond" class="${sectionTitle}">Conditions at ${esc(hourLabel)}</h2>
+          <div class="mt-2">${renderConditionsGrid(b, ctx)}</div>
         </section>
         <section aria-labelledby="aside-windows">
           <h2 id="aside-windows" class="${sectionTitle}">Run windows</h2>

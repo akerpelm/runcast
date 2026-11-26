@@ -53,7 +53,6 @@ export type VerdictInput = {
   bw: BestWindowResult;
   ctx: RenderContext;
   isBestHour: boolean;
-  dayLabel: string;
   animate: boolean;
 };
 
@@ -83,19 +82,20 @@ function hazardRow(a: SafetyAlert): string {
 }
 
 export function renderVerdict(v: VerdictInput): string {
-  const { b, ctx, dayLabel } = v;
+  const { b, ctx } = v;
   const td = (f: number) => tempDisplay(f, ctx.useCelsius);
   const sd = (mph: number) => speedDisplay(mph, ctx.useMetric);
   const indoor = b.runType.type === "TREADMILL";
   const h = b.hour;
 
   const facts = [
-    `${td(h.temperature)}, feels ${td(h.apparentTemperature)}`,
-    getConditionLabel(h.weatherCode),
+    `${td(h.temperature)}, feels like ${td(h.apparentTemperature)}`,
+    getConditionLabel(h.weatherCode).toLowerCase(),
     h.windSpeed >= 5 ? `wind ${sd(h.windSpeed)}` : "calm",
   ];
   const dark = daylightNote(b);
-  if (dark) facts.push(dark);
+  const best = v.bw.ranked[0];
+  const context = !v.isBestHour && best ? `Your pick. The best window is ${timeRange(best.startHour, best.endHour)}.` : "";
 
   const alerts = b.safetyAlerts.filter((a) => a.severity !== "info").slice(0, 2);
   const extra = b.safetyAlerts.length - alerts.length;
@@ -105,18 +105,20 @@ export function renderVerdict(v: VerdictInput): string {
   const more = extra > 0
     ? `<button type="button" data-action="open-sheet" data-sheet="hours" class="press mt-3 inline-flex min-h-11 items-center rounded-full bg-white/15 px-4 text-sm font-semibold hover:bg-white/25">${extra} more condition note${extra > 1 ? "s" : ""}</button>`
     : "";
-  const kit = [b.clothing.bottom, b.clothing.top, ...b.clothing.accessories].join(", ");
+  const extras = b.clothing.accessories.length;
+  const pill = (t: string) => `<span class="rounded-full bg-white px-3 py-1.5 text-[0.95rem] leading-tight font-bold text-[#16181a]">${esc(t)}</span>`;
 
   return `<section aria-labelledby="verdict-title" data-surface="color" class="${v.animate ? "verdict-enter " : ""}relative z-10 rounded-[20px] px-5 pt-5 pb-6 text-white shadow-[var(--shadow-raised)] ${indoor ? "bg-indoor" : "bg-infield"}">
     <h2 id="verdict-title" class="font-(family-name:--font-display) text-[3.25rem] leading-[0.92] font-extrabold uppercase tracking-[-0.01em] sm:text-[4rem]">${esc(headline(v))}</h2>
     <p class="mt-3 text-lg font-semibold">${esc(RUN_TYPE_COPY[b.runType.type] ?? b.runType.reason)}</p>
-    <p class="mt-1 text-balance text-[0.95rem] text-infield-muted">${esc(v.isBestHour ? (dayLabel === "Today" || dayLabel === "Tomorrow" ? `${dayLabel}'s best window` : `Best window on ${dayLabel}`) : "Your chosen hour")} \u00b7 ${facts.map(esc).join(" \u00b7 ")}</p>
+    <p class="mt-1 text-balance text-[0.95rem] text-infield-muted">${esc(`${facts.join(", ")}.${dark ? ` ${dark}.` : ""}`)}</p>
+    ${context ? `<p class="mt-1 text-[0.95rem] font-semibold">${esc(context)}</p>` : ""}
     ${hazards}
     ${more}
-    <div class="mt-3 border-t border-white/20 pt-2 lg:hidden">
-      <button type="button" data-action="open-sheet" data-sheet="kit" class="press -mx-2 flex min-h-11 w-[calc(100%+1rem)] items-center gap-2.5 rounded-[12px] px-2 text-left hover:bg-white/10">
-        <span class="shrink-0">${shirtIcon}</span>
-        <span class="min-w-0 truncate text-[0.95rem]"><span class="text-infield-muted">Wear </span><span class="font-semibold">${esc(kit)}</span></span>
+    <div class="mt-4 border-t border-white/20 pt-3 lg:hidden">
+      <button type="button" data-action="open-sheet" data-sheet="kit" class="press -mx-2 w-[calc(100%+1rem)] rounded-[14px] px-2 py-1.5 text-left hover:bg-white/10" aria-label="What to wear: ${esc([b.clothing.bottom, b.clothing.top, ...b.clothing.accessories].join(", "))}. See why">
+        <span class="flex items-center gap-2 text-sm font-semibold text-infield-muted">${shirtIcon}What to wear</span>
+        <span class="mt-2 flex flex-wrap gap-2" aria-hidden="true">${pill(b.clothing.bottom)}${pill(b.clothing.top)}${extras ? `<span class="rounded-full border border-white/50 px-3 py-1.5 text-[0.95rem] leading-tight font-semibold">+${extras} more</span>` : ""}</span>
       </button>
     </div>
   </section>`;
@@ -222,9 +224,7 @@ function rankBar(band: number | undefined, inset = "inset-x-2 bottom-1.5"): stri
 }
 
 function bandLegend(): string {
-  return `<li class="flex items-center gap-2.5">
-    <span class="flex shrink-0 items-end gap-0.5" aria-hidden="true">${[1, 3, 5].map((n) => `<span class="h-2 rounded-full bg-window" style="width:${n * 4}px"></span>`).join("")}</span>
-    <span>Stronger green and a longer bar mean a better hour to run, compared with the rest of the day</span></li>`;
+  return `<li>The greener the hour, the better it is for running compared with the rest of the day.</li>`;
 }
 
 function windowLegend(withGood: boolean): string {
@@ -345,7 +345,8 @@ export function renderKitFull(b: HourBriefing, ctx: RenderContext): string {
   const zone = (label: string, main: string, alts: string[]) => `<div class="border-t border-hair py-4">
     <h3 class="font-(family-name:--font-body) text-sm font-semibold text-muted-foreground">${label}</h3>
     <p class="mt-1 text-lg font-bold">${esc(main)}</p>
-    <p class="text-sm text-muted-foreground">${esc(reason(main))}${alts.length ? ` · or ${alts.map(esc).join(", ")}` : ""}</p>
+    <p class="text-sm text-muted-foreground">${esc(reason(main))}</p>
+    ${alts.length ? `<p class="text-sm text-muted-foreground">Or ${alts.map(esc).join(", ").toLowerCase()}</p>` : ""}
   </div>`;
 
   const extras = b.clothing.accessories.length
@@ -363,7 +364,7 @@ export function renderKitFull(b: HourBriefing, ctx: RenderContext): string {
 /** Desktop: kit at a glance; the reasons open in the kit sheet. */
 export function renderKitCompact(b: HourBriefing, ctx: RenderContext): string {
   const row = (label: string, main: string, alts: string[]) =>
-    `<div class="grid grid-cols-[4.5rem_1fr] gap-3 border-t border-hair py-2.5"><dt class="text-sm text-muted-foreground">${label}</dt><dd><span class="font-semibold">${esc(main)}</span>${alts.length ? `<span class="text-sm text-muted-foreground"> \u00b7 or ${alts.map(esc).join(", ")}</span>` : ""}</dd></div>`;
+    `<div class="grid grid-cols-[4.5rem_1fr] items-baseline gap-3 border-t border-hair py-3"><dt class="text-sm text-muted-foreground">${label}</dt><dd><span class="block text-lg leading-snug font-bold">${esc(main)}</span>${alts.length ? `<span class="block text-sm text-muted-foreground">Or ${alts.map(esc).join(", ").toLowerCase()}</span>` : ""}</dd></div>`;
   return `<p class="text-sm text-muted-foreground">Dressing for ${tempDisplay(dressingFor(b, ctx), ctx.useCelsius)} at ${EFFORT_LABELS[ctx.selectedEffort].toLowerCase()} effort${ctx.runsHot ? ", runs hot" : ""}</p>
     <dl class="mt-2">${row("Legs", b.clothing.bottom, b.clothing.bottomAlts || [])}${row("Torso", b.clothing.top, b.clothing.topAlts || [])}${b.clothing.accessories.length ? row("Extras", b.clothing.accessories.join(", "), []) : ""}</dl>
     <button type="button" data-action="open-sheet" data-sheet="kit" class="press mt-1 min-h-11 rounded-full px-3 text-sm font-semibold text-primary hover:bg-muted">Why this kit</button>`;
@@ -378,7 +379,7 @@ export function renderConditionsGrid(b: HourBriefing, ctx: RenderContext): strin
     ["Feels like", td(h.apparentTemperature)],
     ["Wind", `${sd(h.windSpeed)}, gusts ${sd(h.windGusts)}`],
     ["Rain chance", `${h.precipProbability}%`],
-    ["Dew point", `${td(h.dewPoint)} \u00b7 ${Math.round(h.humidity)}%`],
+    ["Dew point", `${td(h.dewPoint)} (${Math.round(h.humidity)}% humidity)`],
     ["Air quality", b.aqiForHour !== undefined ? `AQI ${b.aqiForHour}` : "n/a"],
     ["UV index", `${h.uvIndex}`],
     ["Daylight", `${b.daylight.sunrise}\u2013${b.daylight.sunset}`],
@@ -414,9 +415,9 @@ export function renderConditions(b: HourBriefing, ctx: RenderContext, opts: { ha
     ["Temperature", `${td(h.temperature)} (feels ${td(h.apparentTemperature)})`],
     ["Wind", `${sd(h.windSpeed)}, gusts ${sd(h.windGusts)}`],
     ["Rain chance", `${h.precipProbability}%`],
-    ["Humidity", `${Math.round(h.humidity)}% · dew point ${td(h.dewPoint)}`],
+    ["Humidity", `${Math.round(h.humidity)}%, dew point ${td(h.dewPoint)}`],
     ["UV index", `${h.uvIndex}`],
-    ["Air quality", b.aqiForHour !== undefined ? `AQI ${b.aqiForHour} · ${b.aqiCategory}` : "Not available"],
+    ["Air quality", b.aqiForHour !== undefined ? `AQI ${b.aqiForHour} (${b.aqiCategory})` : "Not available"],
     ["Visibility", ctx.useMetric ? `${(h.visibility / 1000).toFixed(0)} km` : `${visMi.toFixed(0)} mi`],
     ["Daylight", `${b.daylight.sunrise} to ${b.daylight.sunset}`],
   ];
@@ -445,7 +446,7 @@ export function renderHourTable(b: HourBriefing, bw: BestWindowResult, ctx: Rend
     const tag = best.has(hr.time)
       ? `<span class="shrink-0 rounded-full bg-infield px-2.5 py-0.5 text-xs font-bold text-white">Best</span>`
       : good.has(hr.time) ? `<span class="shrink-0 rounded-full border border-current px-2.5 py-0.5 text-xs font-bold">Good</span>` : "";
-    const detail = `${sd(hr.windSpeed)}${hr.precipProbability >= 20 ? ` \u00b7 ${hr.precipProbability}% rain` : ""}`;
+    const detail = `${sd(hr.windSpeed)} wind${hr.precipProbability >= 20 ? `, ${hr.precipProbability}% rain` : ""}`;
     const band = bands.get(hr.time);
     const fill = band === undefined || sel ? "" : `<span class="absolute inset-y-1 left-0 rounded-[10px] bg-window/25" style="width:${(5 - band) * 20}%" aria-hidden="true"></span>`;
     return `<li class="border-t border-hair first:border-t-0"><button type="button" data-action="select-hour" data-hour-index="${idx}" aria-pressed="${sel}"
